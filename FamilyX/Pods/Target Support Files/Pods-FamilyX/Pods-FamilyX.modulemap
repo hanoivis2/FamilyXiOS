@@ -1,6 +1,0 @@
-framework module Pods_FamilyX {
-  umbrella header "Pods-FamilyX-umbrella.h"
-
-  export *
-  module * { export * }
-}
