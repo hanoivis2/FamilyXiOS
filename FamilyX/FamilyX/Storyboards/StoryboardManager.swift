@@ -35,4 +35,18 @@ extension UIStoryboard {
     class func dialogConfirmViewController() -> DialogConfirmViewController? {
         return mainStoryboard().instantiateViewController(withIdentifier: "DialogConfirmViewController") as? DialogConfirmViewController
     }
+    
+//    ============== define Family Tree Storyboard ===============
+    
+    class func familyTreeStoryboard() -> UIStoryboard {
+        return UIStoryboard(name: "FamilyTree", bundle: Bundle.main)
+    }
+    
+    class func editFamilyTreeViewController() -> EditFamilyTreeViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "EditFamilyTreeViewController") as? EditFamilyTreeViewController
+    }
+    
+    class func addPeopleViewController() -> AddPeopleViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "AddPeopleViewController") as? AddPeopleViewController
+    }
 }

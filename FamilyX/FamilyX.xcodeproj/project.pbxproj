@@ -34,6 +34,12 @@
 		F59F7E7525F8C9800068DEDA /* FamilyTree.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F59F7E7425F8C9800068DEDA /* FamilyTree.storyboard */; };
 		F59F7E7825F8C9930068DEDA /* ShareWithMe.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F59F7E7725F8C9930068DEDA /* ShareWithMe.storyboard */; };
 		F59F7E7B25F8C9A10068DEDA /* FamilyMembers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F59F7E7A25F8C9A10068DEDA /* FamilyMembers.storyboard */; };
+		F59F7EBC25F8D7380068DEDA /* EditFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59F7EBB25F8D7380068DEDA /* EditFamilyTreeViewController.swift */; };
+		F5AC41AE2604E0B8006CA84E /* ConnectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AC41AD2604E0B8006CA84E /* ConnectorView.swift */; };
+		F5AC41B12604E113006CA84E /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AC41B02604E113006CA84E /* NodeView.swift */; };
+		F5AC41B52604E301006CA84E /* PeopleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5AC41B42604E301006CA84E /* PeopleView.xib */; };
+		F5D5715F260518610001743C /* AddPeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D5715E260518610001743C /* AddPeopleViewController.swift */; };
+		F5FCD0E326050D1600DDDF44 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FCD0E226050D1600DDDF44 /* PeopleView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -69,6 +75,12 @@
 		F59F7E7425F8C9800068DEDA /* FamilyTree.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FamilyTree.storyboard; sourceTree = "<group>"; };
 		F59F7E7725F8C9930068DEDA /* ShareWithMe.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ShareWithMe.storyboard; sourceTree = "<group>"; };
 		F59F7E7A25F8C9A10068DEDA /* FamilyMembers.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = FamilyMembers.storyboard; sourceTree = "<group>"; };
+		F59F7EBB25F8D7380068DEDA /* EditFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFamilyTreeViewController.swift; sourceTree = "<group>"; };
+		F5AC41AD2604E0B8006CA84E /* ConnectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectorView.swift; sourceTree = "<group>"; };
+		F5AC41B02604E113006CA84E /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
+		F5AC41B42604E301006CA84E /* PeopleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PeopleView.xib; sourceTree = "<group>"; };
+		F5D5715E260518610001743C /* AddPeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPeopleViewController.swift; sourceTree = "<group>"; };
+		F5FCD0E226050D1600DDDF44 /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,6 +133,7 @@
 		F59F7DE425F8C1A00068DEDA /* FamilyX */ = {
 			isa = PBXGroup;
 			children = (
+				F5AC41B32604E2F1006CA84E /* Views */,
 				F59F7E3625F8C20B0068DEDA /* AppDelegate.swift */,
 				F59F7E3725F8C20B0068DEDA /* SceneDelegate.swift */,
 				F59F7E0525F8C1CD0068DEDA /* Controllers */,
@@ -144,6 +157,8 @@
 				F59F7E0025F8C1CD0068DEDA /* Utils.swift */,
 				F59F7E0125F8C1CD0068DEDA /* EnumStatus.swift */,
 				F59F7E0225F8C1CD0068DEDA /* Toast.swift */,
+				F5AC41AD2604E0B8006CA84E /* ConnectorView.swift */,
+				F5AC41B02604E113006CA84E /* NodeView.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -159,6 +174,7 @@
 		F59F7E0525F8C1CD0068DEDA /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F5D5715D2605184C0001743C /* FamilyTree */,
 				F59F7E0625F8C1CD0068DEDA /* SignUpViewController.swift */,
 				F59F7E0725F8C1CD0068DEDA /* ViewController.swift */,
 				F59F7E0925F8C1CD0068DEDA /* RootViewController.swift */,
@@ -183,6 +199,24 @@
 				F59F7E7A25F8C9A10068DEDA /* FamilyMembers.storyboard */,
 			);
 			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		F5AC41B32604E2F1006CA84E /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				F5AC41B42604E301006CA84E /* PeopleView.xib */,
+				F5FCD0E226050D1600DDDF44 /* PeopleView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		F5D5715D2605184C0001743C /* FamilyTree */ = {
+			isa = PBXGroup;
+			children = (
+				F59F7EBB25F8D7380068DEDA /* EditFamilyTreeViewController.swift */,
+				F5D5715E260518610001743C /* AddPeopleViewController.swift */,
+			);
+			path = FamilyTree;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -251,6 +285,7 @@
 				F59F7E7B25F8C9A10068DEDA /* FamilyMembers.storyboard in Resources */,
 				F59F7E2E25F8C1CD0068DEDA /* LaunchScreen.storyboard in Resources */,
 				F59F7DEF25F8C1A40068DEDA /* Assets.xcassets in Resources */,
+				F5AC41B52604E301006CA84E /* PeopleView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,20 +341,25 @@
 				F59F7E3825F8C20B0068DEDA /* AppDelegate.swift in Sources */,
 				F59F7E1A25F8C1CD0068DEDA /* Extension.swift in Sources */,
 				F59F7E2C25F8C1CD0068DEDA /* NavigationControllerCustom.swift in Sources */,
+				F5AC41AE2604E0B8006CA84E /* ConnectorView.swift in Sources */,
 				F59F7E2025F8C1CD0068DEDA /* Account.swift in Sources */,
+				F5D5715F260518610001743C /* AddPeopleViewController.swift in Sources */,
 				F59F7E1C25F8C1CD0068DEDA /* ColorUtils.swift in Sources */,
 				F59F7E3925F8C20B0068DEDA /* SceneDelegate.swift in Sources */,
 				F59F7E2725F8C1CD0068DEDA /* SplashViewController.swift in Sources */,
+				F5AC41B12604E113006CA84E /* NodeView.swift in Sources */,
 				F59F7E2825F8C1CD0068DEDA /* LoginViewController.swift in Sources */,
 				F59F7E1E25F8C1CD0068DEDA /* EnumStatus.swift in Sources */,
 				F59F7E2425F8C1CD0068DEDA /* RootViewController.swift in Sources */,
 				F59F7E2625F8C1CD0068DEDA /* MainViewController.swift in Sources */,
+				F59F7EBC25F8D7380068DEDA /* EditFamilyTreeViewController.swift in Sources */,
 				F59F7E2D25F8C1CD0068DEDA /* StoryboardManager.swift in Sources */,
 				F59F7E2125F8C1CD0068DEDA /* SignUpViewController.swift in Sources */,
 				F59F7E1925F8C1CD0068DEDA /* ManageCacheObject.swift in Sources */,
 				F59F7E2225F8C1CD0068DEDA /* ViewController.swift in Sources */,
 				F59F7E2525F8C1CD0068DEDA /* DialogConfirmViewController.swift in Sources */,
 				F59F7E1F25F8C1CD0068DEDA /* Toast.swift in Sources */,
+				F5FCD0E326050D1600DDDF44 /* PeopleView.swift in Sources */,
 				F59F7E1B25F8C1CD0068DEDA /* Configs.swift in Sources */,
 				F59F7E1D25F8C1CD0068DEDA /* Utils.swift in Sources */,
 			);
