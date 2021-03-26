@@ -33,7 +33,19 @@ class ColorUtils{
     }
     
     static func toolbar()->UIColor{
-        return hexStringToUIColor(hex: "#885b46")
+        return hexStringToUIColor(hex: "#885B46")
+    }
+    
+    static func main_color()->UIColor{
+        return hexStringToUIColor(hex: "#885B46")
+    }
+    
+    static func male_color()->UIColor{
+        return hexStringToUIColor(hex: "#BEDAF2")
+    }
+    
+    static func female_color()->UIColor{
+        return hexStringToUIColor(hex: "#ECBBD9")
     }
 
 }

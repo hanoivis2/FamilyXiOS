@@ -12,6 +12,8 @@ class PeopleView : UIView {
     @IBOutlet weak var img_avatar: UIImageView!
     @IBOutlet weak var lbl_name: UILabel!
     @IBOutlet weak var lbl_birthday: UILabel!
+    @IBOutlet weak var lbl_phone: UILabel!
+    @IBOutlet weak var constraint_height_avatar: NSLayoutConstraint!
     
  
     public override init(frame: CGRect) {

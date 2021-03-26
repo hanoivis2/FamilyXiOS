@@ -17,5 +17,9 @@ target 'FamilyX' do
   pod 'SCLAlertView', '~> 0.8'
   pod 'JGProgressHUD'
   pod 'ObjectMapper'
+  pod 'CropViewController'
+  pod 'DropDown'
+  pod 'DatePickerDialog'
+  pod 'PryntTrimmerView'
 
 end
