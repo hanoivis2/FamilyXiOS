@@ -64,6 +64,42 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
 //        present(addPeopleViewController!, animated: true, completion: nil)
         navigationController?.pushViewController(addPeopleViewController!, animated: true)
     }
+    
+    @IBAction func btn_add_child(_ sender: Any) {
+        let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
+        view.lbl_name.text = "Test"
+        view.lbl_birthday.text = "11111"
+        view.lbl_phone.text = "1111"
+        
+        let minX1 = peopleView[peopleCount - 2].frame.minX
+        let maxX1 = peopleView[peopleCount - 2].frame.maxX
+        let minX2 = peopleView[peopleCount - 1].frame.minX
+        let maxX2 = peopleView[peopleCount - 1].frame.maxX
+        
+        let minY1 = peopleView[peopleCount - 2].frame.minY
+        let maxY1 = peopleView[peopleCount - 2].frame.maxY
+        
+        
+        view.frame.size = CGSize(width: 40, height: 50)
+        view.frame.origin.x = maxX1 + (minX2 - maxX1)/2 - 20
+        view.frame.origin.y = maxY1 + 20
+        
+
+        
+        view.clipsToBounds = true
+        view.layer.cornerRadius = 8
+        
+        view.lbl_name.font = UIFont(name: "Helvetica", size: 4)
+        view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
+        view.constraint_height_avatar.constant = 25
+        view.backgroundColor = ColorUtils.male_color()
+        
+        self.view_canvas.addSubview(view)
+        self.peopleView.append(view)
+        
+        let line = drawLineFromPoint(start: CGPoint(x: maxX1 + (minX2 - maxX1)/2, y: (maxY1 - minY1) / 2 + 20), toPoint:CGPoint(x: maxX1 + (minX2 - maxX1)/2, y: view.frame.minY), ofColor: .black, inView: view_canvas)
+        lines.append(line)
+    }
 }
 
 extension EditFamilyTreeViewController : AddPeopleDelegate {
@@ -78,7 +114,7 @@ extension EditFamilyTreeViewController : AddPeopleDelegate {
         view.lbl_birthday.text = birthday
         view.lbl_phone.text = phone
         view.frame.size = CGSize(width: 40, height: 50)
-        view.frame.origin.x = CGFloat((peopleCount - 1)*50)
+        view.frame.origin.x = CGFloat((peopleCount - 1)*70)
         
         view.frame.origin.x += 20
         view.frame.origin.y = 20
@@ -102,7 +138,7 @@ extension EditFamilyTreeViewController : AddPeopleDelegate {
         
         if peopleView.count > 1 {
             
-            let line = drawLineFromPoint(start: CGPoint(x:peopleView[peopleCount - 2].frame.maxX, y:peopleView[peopleCount - 2].frame.maxY / 2), toPoint: CGPoint(x:peopleView[peopleCount - 1].frame.minX, y:peopleView[peopleCount - 1].frame.maxY / 2), ofColor: .black, inView: view_canvas)
+            let line = drawLineFromPoint(start: CGPoint(x:peopleView[peopleCount - 2].frame.maxX, y:(peopleView[peopleCount - 2].frame.maxY / 2) + 10), toPoint: CGPoint(x:peopleView[peopleCount - 1].frame.minX, y: (peopleView[peopleCount - 1].frame.maxY / 2) + 10), ofColor: .black, inView: view_canvas)
             lines.append(line)
         }
         

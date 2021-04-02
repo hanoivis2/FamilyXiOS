@@ -13,11 +13,18 @@
             <rect key="frame" x="0.0" y="0.0" width="54" height="73"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="female" translatesAutoresizingMaskIntoConstraints="NO" id="aC6-6y-90f">
-                    <rect key="frame" x="0.0" y="0.0" width="54" height="25"/>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="female" translatesAutoresizingMaskIntoConstraints="NO" id="aC6-6y-90f">
+                    <rect key="frame" x="14.5" y="0.0" width="25" height="25"/>
+                    <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
+                        <constraint firstAttribute="width" constant="25" id="Fbw-QZ-s78"/>
                         <constraint firstAttribute="height" constant="25" id="Z3e-bH-suc"/>
                     </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="12.5"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0708734091" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEf-ql-eUT">
                     <rect key="frame" x="2" y="41" width="50" height="30"/>
@@ -47,7 +54,6 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" red="0.89726156000000001" green="0.76000779870000001" blue="0.81176918750000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
-                <constraint firstItem="aC6-6y-90f" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="1JU-WP-Bah"/>
                 <constraint firstItem="aC6-6y-90f" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="CCv-LK-g5y"/>
                 <constraint firstItem="dEf-ql-eUT" firstAttribute="top" secondItem="qYK-tN-Dnp" secondAttribute="bottom" constant="2" id="DzP-fP-pz2"/>
                 <constraint firstAttribute="trailing" secondItem="BX8-Ta-2AZ" secondAttribute="trailing" constant="2" id="JcK-Th-0wG"/>
@@ -57,7 +63,7 @@
                 <constraint firstItem="BX8-Ta-2AZ" firstAttribute="top" secondItem="aC6-6y-90f" secondAttribute="bottom" constant="2" id="cQx-bD-vWs"/>
                 <constraint firstItem="BX8-Ta-2AZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="2" id="kb9-m5-W5C"/>
                 <constraint firstItem="dEf-ql-eUT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="2" id="pDS-xG-gf5"/>
-                <constraint firstItem="aC6-6y-90f" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="pUe-J2-pb5"/>
+                <constraint firstItem="aC6-6y-90f" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="u4K-xL-jjX"/>
                 <constraint firstItem="qYK-tN-Dnp" firstAttribute="top" secondItem="BX8-Ta-2AZ" secondAttribute="bottom" constant="2" id="wM9-o0-gRr"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="dEf-ql-eUT" secondAttribute="bottom" constant="2" id="y05-Se-NMa"/>
             </constraints>
