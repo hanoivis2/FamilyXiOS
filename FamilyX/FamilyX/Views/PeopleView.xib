@@ -14,7 +14,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="female" translatesAutoresizingMaskIntoConstraints="NO" id="aC6-6y-90f">
-                    <rect key="frame" x="14.5" y="0.0" width="25" height="25"/>
+                    <rect key="frame" x="14.5" y="3" width="25" height="25"/>
                     <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="25" id="Fbw-QZ-s78"/>
@@ -26,14 +26,8 @@
                         </userDefinedRuntimeAttribute>
                     </userDefinedRuntimeAttributes>
                 </imageView>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0708734091" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dEf-ql-eUT">
-                    <rect key="frame" x="2" y="41" width="50" height="30"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="4"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="06/02/1998" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qYK-tN-Dnp">
-                    <rect key="frame" x="2" y="34" width="50" height="5"/>
+                    <rect key="frame" x="2" y="37" width="50" height="5"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="5" id="8x7-c7-3Hk"/>
                     </constraints>
@@ -41,11 +35,8 @@
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vy" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BX8-Ta-2AZ">
-                    <rect key="frame" x="2" y="27" width="50" height="5"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="5" id="oeJ-wq-iV0"/>
-                    </constraints>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Vy" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BX8-Ta-2AZ">
+                    <rect key="frame" x="2" y="30" width="50" height="5"/>
                     <fontDescription key="fontDescription" type="boldSystem" pointSize="4"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
@@ -54,18 +45,15 @@
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
             <color key="backgroundColor" red="0.89726156000000001" green="0.76000779870000001" blue="0.81176918750000004" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
             <constraints>
-                <constraint firstItem="aC6-6y-90f" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="CCv-LK-g5y"/>
-                <constraint firstItem="dEf-ql-eUT" firstAttribute="top" secondItem="qYK-tN-Dnp" secondAttribute="bottom" constant="2" id="DzP-fP-pz2"/>
+                <constraint firstItem="aC6-6y-90f" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="3" id="CCv-LK-g5y"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="qYK-tN-Dnp" secondAttribute="bottom" constant="5" id="JU4-0t-1yH"/>
                 <constraint firstAttribute="trailing" secondItem="BX8-Ta-2AZ" secondAttribute="trailing" constant="2" id="JcK-Th-0wG"/>
                 <constraint firstItem="qYK-tN-Dnp" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="2" id="LqH-5d-82X"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="dEf-ql-eUT" secondAttribute="trailing" constant="2" id="ROj-Hj-Cet"/>
                 <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="qYK-tN-Dnp" secondAttribute="trailing" constant="2" id="XgQ-N3-scx"/>
                 <constraint firstItem="BX8-Ta-2AZ" firstAttribute="top" secondItem="aC6-6y-90f" secondAttribute="bottom" constant="2" id="cQx-bD-vWs"/>
                 <constraint firstItem="BX8-Ta-2AZ" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="2" id="kb9-m5-W5C"/>
-                <constraint firstItem="dEf-ql-eUT" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="2" id="pDS-xG-gf5"/>
                 <constraint firstItem="aC6-6y-90f" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="u4K-xL-jjX"/>
                 <constraint firstItem="qYK-tN-Dnp" firstAttribute="top" secondItem="BX8-Ta-2AZ" secondAttribute="bottom" constant="2" id="wM9-o0-gRr"/>
-                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="dEf-ql-eUT" secondAttribute="bottom" constant="2" id="y05-Se-NMa"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
@@ -73,7 +61,6 @@
                 <outlet property="img_avatar" destination="aC6-6y-90f" id="26E-TK-bq6"/>
                 <outlet property="lbl_birthday" destination="qYK-tN-Dnp" id="BGM-KR-XbR"/>
                 <outlet property="lbl_name" destination="BX8-Ta-2AZ" id="2SW-eR-pmU"/>
-                <outlet property="lbl_phone" destination="dEf-ql-eUT" id="GiS-zp-7di"/>
             </connections>
             <point key="canvasLocation" x="-576.81159420289862" y="-47.209821428571423"/>
         </view>

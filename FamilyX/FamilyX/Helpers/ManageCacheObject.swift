@@ -55,13 +55,13 @@ class ManageCacheObject: NSObject {
         }
     }
     
-    static func isLogin()->Bool{
-        let account = ManageCacheObject.getCurrentAccount()
-        if(account.email == ""){
-            return false
-        }
-        return true
-    }
+//    static func isLogin()->Bool{
+//        let account = ManageCacheObject.getCurrentAccount()
+//        if(account.id == ""){
+//            return false
+//        }
+//        return true
+//    }
     static func clearUser(){
         UserDefaults.standard.set(nil, forKey: KEY_ACCOUNT)
     }

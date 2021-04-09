@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Loaf
 
 class EditFamilyTreeViewController : UIViewController, NavigationControllerCustomDelegate {
     
@@ -22,10 +23,12 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         }
     }
     var zoomScale:[CGFloat] = [1,2,3,4]
-    var peopleCount = 0
-    
-    var peopleView = [PeopleView]()
+
+    var peopleViews = [PeopleView]()
+//    var people = [People]()
     var lines = [CAShapeLayer]()
+    
+    var firstView = true
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +36,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         constraint_view_canvas_width.constant = self.view.frame.width * 4
         constraint_view_canvas_height.constant = self.view.frame.height * 4
         view_canvas.backgroundColor = .clear
+        
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,6 +46,62 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
         navigationControllerCustom.setUpNavigationBar(self, hideBackButton:true, hideFilterButton:true, title: "EDIT TREE")
         self.navigationItem.hidesBackButton = true
+    
+        
+        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //Add default node
+        if firstView == true {
+            firstView = false
+            
+            let people = People()
+            people.id = 1
+            people.fullName = "Default"
+            people.birthday = "01/01/2000"
+            people.image = UIImage(named: "male")!
+            people.gender = GENDER_ID.MALE.rawValue
+
+            let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
+
+            view.frame.size = CGSize(width: _peopleNodeWidth, height: _peopleNodeHeight)
+            view.frame.origin.x = 0
+            view.frame.origin.x += CGFloat(_defaultPaddingLeft)
+            view.frame.origin.y += CGFloat(_defaultPaddingTop)
+            view.clipsToBounds = true
+            view.layer.cornerRadius = 8
+
+            view.people = people
+            view.delegate = self
+
+            view.lbl_name.text = people.fullName
+            view.lbl_birthday.text = people.birthday
+            view.lbl_name.font = UIFont(name: "Helvetica-Bold", size: 4)
+            view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
+            view.constraint_height_avatar.constant = 25
+            view.img_avatar.image = people.image
+            view.setupView()
+            if people.gender == GENDER_ID.MALE.rawValue {
+                view.backgroundColor = ColorUtils.male_color()
+            }
+            else {
+                view.backgroundColor = ColorUtils.female_color()
+            }
+
+
+            self.view_canvas.addSubview(view)
+            
+            
+            self.peopleViews.append(view)
+//            self.people.append(people)
+
+            view_canvas.frame.origin.x = 0
+            view_canvas.frame.origin.y = 0
+        }
+        
         
     }
     
@@ -52,98 +113,186 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     }
     
     @IBAction func btn_zoom_out(_ sender: Any) {
-        if zoomLevel > 2 {
+        if zoomLevel > 1 {
             zoomLevel -= 1
         }
     }
     
-    @IBAction func btn_add_node(_ sender: Any) {
-        let addPeopleViewController:AddPeopleViewController?
-        addPeopleViewController = UIStoryboard.addPeopleViewController()
-        addPeopleViewController?.delegate = self
-//        present(addPeopleViewController!, animated: true, completion: nil)
-        navigationController?.pushViewController(addPeopleViewController!, animated: true)
+    
+    func addWife(rootPeople:People, newPeople:People) {
+        
+        if newPeople.gender == GENDER_ID.MALE.rawValue {
+            Loaf.init("Wife's gender must be female", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
+        }
+        else {
+            var relativePeopleNode = PeopleView()
+            //find relative people node
+            for item in self.peopleViews {
+                if item.people.id == rootPeople.id {
+                    relativePeopleNode = item
+                    break
+                }
+            }
+
+            let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
+
+            view.frame.size = CGSize(width: _peopleNodeWidth, height: _peopleNodeHeight)
+            view.frame.origin.x = relativePeopleNode.frame.maxX + CGFloat(_nodeSpace)
+            view.frame.origin.y = relativePeopleNode.frame.origin.y
+            view.clipsToBounds = true
+            view.layer.cornerRadius = 8
+
+            view.people = newPeople
+            view.delegate = self
+
+            view.lbl_name.text = newPeople.fullName
+            view.lbl_birthday.text = newPeople.birthday
+            view.lbl_name.font = UIFont(name: "Helvetica-Bold", size: 4)
+            view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
+            view.constraint_height_avatar.constant = 25
+            view.img_avatar.image = newPeople.image
+            view.setupView()
+            if newPeople.gender == GENDER_ID.MALE.rawValue {
+                view.backgroundColor = ColorUtils.male_color()
+            }
+            else {
+                view.backgroundColor = ColorUtils.female_color()
+            }
+            
+            
+            let minY1 = relativePeopleNode.frame.minY
+            let maxY1 = relativePeopleNode.frame.maxY
+            let avgY = (minY1 + maxY1) / 2
+            
+            let line = drawLineFromPoint(start: CGPoint(x: relativePeopleNode.frame.maxX, y: avgY), toPoint: CGPoint(x:view.frame.minX, y: avgY), ofColor: .black, inView: view_canvas)
+            lines.append(line)
+
+
+            self.view_canvas.addSubview(view)
+            self.peopleViews.append(view)
+//            self.people.append(rootPeople)
+
+            view_canvas.frame.origin.x = 0
+            view_canvas.frame.origin.y = 0
+        }
+    }
+
+    func addChild(rootPeople:People, newPeople:People) {
+      
+        if rootPeople.wifeId == 0 {
+            Loaf.init("This person has not had wife yet", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
+        }
+        else {
+            var fatherNode = PeopleView()
+            var motherNode = PeopleView()
+            
+            for item in self.peopleViews {
+                if item.people.id == rootPeople.id {
+                    fatherNode = item
+                }
+                if item.people.id == rootPeople.wifeId {
+                    motherNode = item
+                }
+            }
+            
+            if rootPeople.childrenId.count == 1 {
+               
+                let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
+                
+                let minX1 = fatherNode.frame.minX
+                let maxX1 = fatherNode.frame.maxX
+                let minX2 = motherNode.frame.minX
+                let maxX2 = motherNode.frame.maxX
+
+                let minY1 = fatherNode.frame.minY
+                let maxY1 = fatherNode.frame.maxY
+
+                view.frame.size = CGSize(width: _peopleNodeWidth, height: _peopleNodeHeight)
+                view.frame.origin.x = (minX2 + maxX1 - CGFloat(_peopleNodeWidth)) / 2
+                view.frame.origin.y = maxY1 + CGFloat(_childrenParentSpace)
+                view.clipsToBounds = true
+                view.layer.cornerRadius = 8
+
+                view.people = newPeople
+                view.delegate = self
+
+                view.lbl_name.text = newPeople.fullName
+                view.lbl_birthday.text = newPeople.birthday
+                view.lbl_name.font = UIFont(name: "Helvetica-Bold", size: 4)
+                view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
+                view.constraint_height_avatar.constant = 25
+                view.img_avatar.image = newPeople.image
+                view.setupView()
+                if newPeople.gender == GENDER_ID.MALE.rawValue {
+                    view.backgroundColor = ColorUtils.male_color()
+                }
+                else {
+                    view.backgroundColor = ColorUtils.female_color()
+                }
+                           
+                let line = drawLineFromPoint(start: CGPoint(x: (minX2 + maxX1) / 2, y: (maxY1 + minY1) / 2), toPoint:CGPoint(x: (minX2 + maxX1) / 2, y: view.frame.minY), ofColor: .black, inView: view_canvas)
+                lines.append(line)
+
+
+                self.view_canvas.addSubview(view)
+                self.peopleViews.append(view)
+//                self.people.append(newPeople)
+
+                view_canvas.frame.origin.x = 0
+                view_canvas.frame.origin.y = 0
+            }
+            else {
+                
+            }
+
+        }
+        
+       
+        
     }
     
-    @IBAction func btn_add_child(_ sender: Any) {
-        let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
-        view.lbl_name.text = "Test"
-        view.lbl_birthday.text = "11111"
-        view.lbl_phone.text = "1111"
-        
-        let minX1 = peopleView[peopleCount - 2].frame.minX
-        let maxX1 = peopleView[peopleCount - 2].frame.maxX
-        let minX2 = peopleView[peopleCount - 1].frame.minX
-        let maxX2 = peopleView[peopleCount - 1].frame.maxX
-        
-        let minY1 = peopleView[peopleCount - 2].frame.minY
-        let maxY1 = peopleView[peopleCount - 2].frame.maxY
-        
-        
-        view.frame.size = CGSize(width: 40, height: 50)
-        view.frame.origin.x = maxX1 + (minX2 - maxX1)/2 - 20
-        view.frame.origin.y = maxY1 + 20
-        
-
-        
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 8
-        
-        view.lbl_name.font = UIFont(name: "Helvetica", size: 4)
-        view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
-        view.constraint_height_avatar.constant = 25
-        view.backgroundColor = ColorUtils.male_color()
-        
-        self.view_canvas.addSubview(view)
-        self.peopleView.append(view)
-        
-        let line = drawLineFromPoint(start: CGPoint(x: maxX1 + (minX2 - maxX1)/2, y: (maxY1 - minY1) / 2 + 20), toPoint:CGPoint(x: maxX1 + (minX2 - maxX1)/2, y: view.frame.minY), ofColor: .black, inView: view_canvas)
-        lines.append(line)
-    }
 }
 
 extension EditFamilyTreeViewController : AddPeopleDelegate {
-    func addPeople(name: String, birthday: String, gender: Int, phone: String, avatar: UIImage) {
-        view_canvas.transform = CGAffineTransform(scaleX: 2, y: 2)
+    func addPeople(people:People, relativePeople:People, relationshipType:Int) {
         
-        
-        peopleCount += 1
-     
-        let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
-        view.lbl_name.text = name
-        view.lbl_birthday.text = birthday
-        view.lbl_phone.text = phone
-        view.frame.size = CGSize(width: 40, height: 50)
-        view.frame.origin.x = CGFloat((peopleCount - 1)*70)
-        
-        view.frame.origin.x += 20
-        view.frame.origin.y = 20
-        
-        view.clipsToBounds = true
-        view.layer.cornerRadius = 8
-        
-        view.lbl_name.font = UIFont(name: "Helvetica", size: 4)
-        view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
-        view.constraint_height_avatar.constant = 25
-        view.img_avatar.image = avatar
-        if gender == GENDER_ID.MALE.rawValue {
-            view.backgroundColor = ColorUtils.male_color()
+        if relationshipType == 0 {
+            
+//            for i in 0..<self.people.count {
+//                if self.people[i].id == relativePeople.id {
+//                    self.people[i].wifeId = people.id
+//                    break
+//                }
+//            }
+            
+            for i in 0..<self.peopleViews.count {
+                if self.peopleViews[i].people.id == relativePeople.id {
+                    self.peopleViews[i].people.wifeId = people.id
+                    break
+                }
+            }
+            
+            addWife(rootPeople: relativePeople, newPeople: people)
         }
         else {
-            view.backgroundColor = ColorUtils.female_color()
-        }
-        
-        self.view_canvas.addSubview(view)
-        self.peopleView.append(view)
-        
-        if peopleView.count > 1 {
             
-            let line = drawLineFromPoint(start: CGPoint(x:peopleView[peopleCount - 2].frame.maxX, y:(peopleView[peopleCount - 2].frame.maxY / 2) + 10), toPoint: CGPoint(x:peopleView[peopleCount - 1].frame.minX, y: (peopleView[peopleCount - 1].frame.maxY / 2) + 10), ofColor: .black, inView: view_canvas)
-            lines.append(line)
+//            for i in 0..<self.people.count {
+//                if self.people[i].id == relativePeople.id {
+//                    self.people[i].childrenId.append(people.id)
+//                    break
+//                }
+//            }
+            
+            for i in 0..<self.peopleViews.count {
+                if self.peopleViews[i].people.id == relativePeople.id {
+                    self.peopleViews[i].people.childrenId.append(people.id)
+                    break
+                }
+            }
+            
+            addChild(rootPeople: relativePeople, newPeople: people)
         }
         
-        view_canvas.frame.origin.x = 0
-        view_canvas.frame.origin.y = 0
     }
     
     
@@ -162,6 +311,90 @@ extension EditFamilyTreeViewController : AddPeopleDelegate {
 
         view.layer.addSublayer(shapeLayer)
         return shapeLayer
+    }
+    
+    private func showPopup(_ controller: UIViewController, sourceView: UIView) {
+      let presentationController = AlwaysPresentAsPopover.configurePresentation(forController: controller)
+      presentationController.sourceView = sourceView
+      presentationController.sourceRect = sourceView.bounds
+      presentationController.permittedArrowDirections = [.down, .up]
+      self.present(controller, animated: true)
+    }
+}
+
+extension EditFamilyTreeViewController : PeopleViewDelegate {
+    
+    func nodeTapped(people: People, sourceView: UIView) {
+        
+        let listName = ["Edit node", "Add node"]
+        let listIcon = ["editNode", "addNode"]
+       
+        let controller = ArrayChoiceReportViewController(Direction.allValues)
+       
+        controller.people = people
+        controller.list_icons = listIcon
+        controller.listString = listName
+        controller.preferredContentSize = CGSize(width: 120, height: 90)
+        controller.delegate = self
+       
+        showPopup(controller, sourceView: sourceView)
+        
+    }
+}
+
+extension EditFamilyTreeViewController : ArrayChoiceReportViewControllerDelegate {
+    
+    func selectAt(pos: Int, people:People) {
+        if pos == 0 {
+            let editPeopleViewController:EditPeopleViewController?
+            editPeopleViewController = UIStoryboard.editPeopleViewController()
+            editPeopleViewController?.delegate = self
+            editPeopleViewController?.people = people
+            navigationController?.pushViewController(editPeopleViewController!, animated: true)
+        }
+        else {
+            
+            if people.gender == GENDER_ID.FEMALE.rawValue {
+                Loaf.init("You can only add node from male node", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
+            }
+            else {
+                let addPeopleViewController:AddPeopleViewController?
+                addPeopleViewController = UIStoryboard.addPeopleViewController()
+                addPeopleViewController?.relativePerson = people
+                addPeopleViewController?.delegate = self
+                navigationController?.pushViewController(addPeopleViewController!, animated: true)
+            }
+        }
+    }
+}
+
+extension EditFamilyTreeViewController : EditPeopleDelegate {
+    func editPeople(people:People) {
+        for i in 0..<self.peopleViews.count {
+            if peopleViews[i].people.id == people.id {
+                
+                let item = peopleViews[i]
+                
+                item.people.fullName = people.fullName
+                item.people.birthday = people.birthday
+                item.people.gender = people.gender
+                item.people.image = people.image
+                
+                item.lbl_name.text = people.fullName
+                item.lbl_birthday.text = people.birthday
+                item.img_avatar.image = people.image
+                if people.gender == GENDER_ID.MALE.rawValue {
+                    item.backgroundColor = ColorUtils.male_color()
+                }
+                else {
+                    item.backgroundColor = ColorUtils.female_color()
+                }
+                
+//                self.people[i] = people
+                
+                break
+            }
+        }
     }
 }
 

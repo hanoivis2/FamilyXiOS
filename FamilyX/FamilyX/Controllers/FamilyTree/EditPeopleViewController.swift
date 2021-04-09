@@ -1,31 +1,21 @@
 //
-//  AddPeopleViewController.swift
+//  EditPeopleViewController.swift
 //  FamilyX
 //
-//  Created by Gia Huy on 20/03/2021.
+//  Created by Gia Huy on 07/04/2021.
 //
 
 import UIKit
 import DropDown
 import CropViewController
 import DatePickerDialog
-import Loaf
 
-struct GenderType {
-    var id: Int
-    var text: String
+
+protocol EditPeopleDelegate {
+    func editPeople(people:People)
 }
 
-struct RelationshipType {
-    var id: Int
-    var text: String
-}
-
-protocol AddPeopleDelegate {
-    func addPeople(people:People, relativePeople:People, relationshipType:Int)
-}
-
-class AddPeopleViewController : UIViewController, NavigationControllerCustomDelegate {
+class EditPeopleViewController : UIViewController, NavigationControllerCustomDelegate {
 
     @IBOutlet weak var img_avatar: UIImageView!
     @IBOutlet weak var textfield_id: UITextField!
@@ -33,26 +23,22 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
     @IBOutlet weak var textfield_birthday: UITextField!
     @IBOutlet weak var textfield_gender: UITextField!
     @IBOutlet weak var textfield_relationship: UITextField!
-    @IBOutlet weak var textfield_relate: UITextField!
     
-    var delegate:AddPeopleDelegate?
+    var delegate:EditPeopleDelegate?
     
-    var relativePerson = People()
     let dropDownGender = DropDown()
     let dropDownRelationship = DropDown()
     var allGenderType: [GenderType] = [GenderType(id: 1, text: "Male"),
                                         GenderType(id: 0, text: "Female")]
-    
     var allRelationshipType: [RelationshipType] = [RelationshipType(id: 0, text: "Wife"),
                                                RelationshipType(id: 1, text: "Children")]
-    
     var genderSelected = 0
     var relationshipSelected = 0
+    
+    var people = People()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        textfield_relate.text = relativePerson.fullName
 
         dropDownGender.anchorView = textfield_gender
         dropDownRelationship.anchorView = textfield_relationship
@@ -65,6 +51,13 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
         DropDown.appearance().textFont = UIFont.systemFont(ofSize: 14)
         dropDownGender.selectRow(at: 0)
         dropDownRelationship.selectRow(at: 0)
+        
+        self.textfield_id.text = String(people.id)
+        self.textfield_name.text = people.fullName
+        self.textfield_birthday.text = people.birthday
+        self.textfield_gender.text = (people.gender == GENDER_ID.MALE.rawValue) ? "Male" : "Female"
+        self.genderSelected = people.gender
+        self.img_avatar.image = people.image
 
     }
     
@@ -72,7 +65,7 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
         super.viewWillAppear(animated)
         //custom navigation bar
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton:false, hideFilterButton:true, title: "ADD NODE")
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton:false, hideFilterButton:true, title: "EDIT NODE")
         self.navigationItem.hidesBackButton = true
         
     }
@@ -81,55 +74,20 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
         navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func btn_close(_ sender: Any) {
+    @IBAction func btn_confirm(_ sender: Any) {
+        
+        let people = People()
+        people.id = Int(textfield_id.text!)!
+        people.fullName = textfield_name.text!
+        people.birthday = textfield_birthday.text!
+        people.gender = genderSelected
+        people.image =  img_avatar.image!
+        
+        delegate?.editPeople(people: people)
         navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func btn_confirm(_ sender: Any) {
-        
-        if relationshipSelected == 0 {
-            if genderSelected == GENDER_ID.MALE.rawValue {
-                Loaf.init("Wife's gender must be female", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-            }
-            else {
-                if relativePerson.wifeId != 0 {
-                    Loaf.init("This person already has a wife", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-                }
-                else {
-                    let people = People()
-                    people.id = Int(textfield_id.text!)!
-                    people.fullName = textfield_name.text!
-                    people.birthday = textfield_birthday.text!
-                    people.gender = genderSelected
-                    people.image =  img_avatar.image!
-                    
-                    delegate?.addPeople(people: people, relativePeople: relativePerson, relationshipType: relationshipSelected)
-                    navigationController?.popViewController(animated: true)
-                }
-            }
-        }
-        else {
-            if relativePerson.wifeId == 0 {
-                Loaf.init("This person has not had wife yet", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-            }
-            else {
-                let people = People()
-                people.id = Int(textfield_id.text!)!
-                people.fullName = textfield_name.text!
-                people.birthday = textfield_birthday.text!
-                people.gender = genderSelected
-                people.image =  img_avatar.image!
-                
-                delegate?.addPeople(people: people, relativePeople: relativePerson, relationshipType: relationshipSelected)
-                navigationController?.popViewController(animated: true)
-            }
-        }
-        
-        
-    }
-    
     @IBAction func btn_choose_birthday(_ sender: Any) {
-        
         var dateComponents = DateComponents()
         dateComponents.year = -100
         
@@ -201,12 +159,12 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
                  case .photo(let photo):
                      let image = photo.originalImage.fixedOrientation()!.resizeImage(500, opaque: true)
                      let cropViewController = CropViewController(image: image)
-                     cropViewController.aspectRatioPreset = .presetSquare
-                     cropViewController.allowedAspectRatios = [.presetSquare]
-                     cropViewController.aspectRatioLockEnabled = true
-                     cropViewController.aspectRatioLockDimensionSwapEnabled = true
-                     cropViewController.resetAspectRatioEnabled = false
-                     cropViewController.delegate = self
+                    cropViewController.aspectRatioPreset = .presetSquare
+                    cropViewController.allowedAspectRatios = [.presetSquare]
+                    cropViewController.aspectRatioLockEnabled = true
+                    cropViewController.aspectRatioLockDimensionSwapEnabled = true
+                    cropViewController.resetAspectRatioEnabled = false
+                    cropViewController.delegate = self
                      self.navigationController?.pushViewController(cropViewController, animated: true)
                  case .video( _):
                      break
@@ -219,7 +177,7 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
     
 }
 
-extension AddPeopleViewController : CropViewControllerDelegate {
+extension EditPeopleViewController : CropViewControllerDelegate {
     
     func cropViewController(_ cropViewController: CropViewController, didCropToImage image: UIImage, withRect cropRect: CGRect, angle: Int) {
         self.img_avatar.image = image

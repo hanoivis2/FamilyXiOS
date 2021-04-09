@@ -49,4 +49,8 @@ extension UIStoryboard {
     class func addPeopleViewController() -> AddPeopleViewController? {
         return familyTreeStoryboard().instantiateViewController(withIdentifier: "AddPeopleViewController") as? AddPeopleViewController
     }
+    
+    class func editPeopleViewController() -> EditPeopleViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "EditPeopleViewController") as? EditPeopleViewController
+    }
 }

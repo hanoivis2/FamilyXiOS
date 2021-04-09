@@ -95,9 +95,9 @@ class SignUpViewController : UIViewController, NavigationControllerCustomDelegat
                         hud.dismiss()
                         
                         let account = Account()
-                        account.email = self.txt_email.text!
-                        account.firstName = self.txt_firstName.text!
-                        account.lastName = self.txt_lastName.text!
+//                        account.email = self.txt_email.text!
+//                        account.firstName = self.txt_firstName.text!
+//                        account.lastName = self.txt_lastName.text!
                         ManageCacheObject.saveCurrentAccount(account)
                         
                         let mainViewController:MainViewController?

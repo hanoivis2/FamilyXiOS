@@ -131,6 +131,8 @@
 		F5170E17260E4CBC0005700D /* DateExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5170E08260E4CBC0005700D /* DateExtension.swift */; };
 		F5170E18260E4CBC0005700D /* RoundedCornerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5170E09260E4CBC0005700D /* RoundedCornerView.swift */; };
 		F5170E19260E4CBC0005700D /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5170E0A260E4CBC0005700D /* UITextField+Extensions.swift */; };
+		F55F64C6261CD26600E2A256 /* EditPeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F64C5261CD26600E2A256 /* EditPeopleViewController.swift */; };
+		F55F64C9261CEBB700E2A256 /* People.swift in Sources */ = {isa = PBXBuildFile; fileRef = F55F64C8261CEBB700E2A256 /* People.swift */; };
 		F59F7DEF25F8C1A40068DEDA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F59F7DEE25F8C1A40068DEDA /* Assets.xcassets */; };
 		F59F7E1925F8C1CD0068DEDA /* ManageCacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59F7DFB25F8C1CD0068DEDA /* ManageCacheObject.swift */; };
 		F59F7E1B25F8C1CD0068DEDA /* Configs.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59F7DFE25F8C1CD0068DEDA /* Configs.swift */; };
@@ -160,6 +162,10 @@
 		F5AC41AE2604E0B8006CA84E /* ConnectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AC41AD2604E0B8006CA84E /* ConnectorView.swift */; };
 		F5AC41B12604E113006CA84E /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5AC41B02604E113006CA84E /* NodeView.swift */; };
 		F5AC41B52604E301006CA84E /* PeopleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5AC41B42604E301006CA84E /* PeopleView.xib */; };
+		F5B5D07F261C93C10025C1BF /* AlwaysShowPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B5D07D261C93C00025C1BF /* AlwaysShowPopup.swift */; };
+		F5B5D080261C93C10025C1BF /* ArrayChoiceReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B5D07E261C93C10025C1BF /* ArrayChoiceReportViewController.swift */; };
+		F5B5D083261C98320025C1BF /* CustomActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5B5D082261C98320025C1BF /* CustomActionTableViewCell.xib */; };
+		F5B5D086261C983E0025C1BF /* CustomActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B5D085261C983E0025C1BF /* CustomActionTableViewCell.swift */; };
 		F5D5715F260518610001743C /* AddPeopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D5715E260518610001743C /* AddPeopleViewController.swift */; };
 		F5FCD0E326050D1600DDDF44 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FCD0E226050D1600DDDF44 /* PeopleView.swift */; };
 /* End PBXBuildFile section */
@@ -310,6 +316,8 @@
 		F5170E08260E4CBC0005700D /* DateExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateExtension.swift; sourceTree = "<group>"; };
 		F5170E09260E4CBC0005700D /* RoundedCornerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundedCornerView.swift; sourceTree = "<group>"; };
 		F5170E0A260E4CBC0005700D /* UITextField+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
+		F55F64C5261CD26600E2A256 /* EditPeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditPeopleViewController.swift; sourceTree = "<group>"; };
+		F55F64C8261CEBB700E2A256 /* People.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = People.swift; sourceTree = "<group>"; };
 		F59F7DE225F8C1A00068DEDA /* FamilyX.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FamilyX.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F59F7DEE25F8C1A40068DEDA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F59F7DF325F8C1A40068DEDA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -342,6 +350,10 @@
 		F5AC41AD2604E0B8006CA84E /* ConnectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectorView.swift; sourceTree = "<group>"; };
 		F5AC41B02604E113006CA84E /* NodeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
 		F5AC41B42604E301006CA84E /* PeopleView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PeopleView.xib; sourceTree = "<group>"; };
+		F5B5D07D261C93C00025C1BF /* AlwaysShowPopup.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlwaysShowPopup.swift; sourceTree = "<group>"; };
+		F5B5D07E261C93C10025C1BF /* ArrayChoiceReportViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayChoiceReportViewController.swift; sourceTree = "<group>"; };
+		F5B5D082261C98320025C1BF /* CustomActionTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CustomActionTableViewCell.xib; sourceTree = "<group>"; };
+		F5B5D085261C983E0025C1BF /* CustomActionTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomActionTableViewCell.swift; sourceTree = "<group>"; };
 		F5D5715E260518610001743C /* AddPeopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddPeopleViewController.swift; sourceTree = "<group>"; };
 		F5FCD0E226050D1600DDDF44 /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -685,6 +697,8 @@
 		F59F7DFA25F8C1CD0068DEDA /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				F5B5D07D261C93C00025C1BF /* AlwaysShowPopup.swift */,
+				F5B5D07E261C93C10025C1BF /* ArrayChoiceReportViewController.swift */,
 				F5170CFB260E41560005700D /* SteviaLayout */,
 				F5170C7E260E41550005700D /* YPImagePicker */,
 				F59F7DFB25F8C1CD0068DEDA /* ManageCacheObject.swift */,
@@ -704,6 +718,7 @@
 			isa = PBXGroup;
 			children = (
 				F59F7E0425F8C1CD0068DEDA /* Account.swift */,
+				F55F64C8261CEBB700E2A256 /* People.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -743,6 +758,8 @@
 			children = (
 				F5AC41B42604E301006CA84E /* PeopleView.xib */,
 				F5FCD0E226050D1600DDDF44 /* PeopleView.swift */,
+				F5B5D082261C98320025C1BF /* CustomActionTableViewCell.xib */,
+				F5B5D085261C983E0025C1BF /* CustomActionTableViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -752,6 +769,7 @@
 			children = (
 				F59F7EBB25F8D7380068DEDA /* EditFamilyTreeViewController.swift */,
 				F5D5715E260518610001743C /* AddPeopleViewController.swift */,
+				F55F64C5261CD26600E2A256 /* EditPeopleViewController.swift */,
 			);
 			path = FamilyTree;
 			sourceTree = "<group>";
@@ -841,6 +859,7 @@
 				F5170D11260E41560005700D /* YPImagePickerLocalizable.strings in Resources */,
 				F59F7E7825F8C9930068DEDA /* ShareWithMe.storyboard in Resources */,
 				F5170D43260E41560005700D /* YPLibraryView.xib in Resources */,
+				F5B5D083261C98320025C1BF /* CustomActionTableViewCell.xib in Resources */,
 				F59F7E2F25F8C1CD0068DEDA /* Main.storyboard in Resources */,
 				F59F7E7B25F8C9A10068DEDA /* FamilyMembers.storyboard in Resources */,
 				F59F7E2E25F8C1CD0068DEDA /* LaunchScreen.storyboard in Resources */,
@@ -901,6 +920,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F5170D50260E41560005700D /* AVMutableComposition+Extensions.swift in Sources */,
+				F5B5D086261C983E0025C1BF /* CustomActionTableViewCell.swift in Sources */,
 				F59F7E3825F8C20B0068DEDA /* AppDelegate.swift in Sources */,
 				F5170E14260E4CBC0005700D /* UIFontExtension.swift in Sources */,
 				F5170D6F260E41560005700D /* Stevia+Position.swift in Sources */,
@@ -962,6 +982,7 @@
 				F5170D14260E41560005700D /* YPVideoFiltersVC.swift in Sources */,
 				F5170D42260E41560005700D /* YPLibraryViewCell.swift in Sources */,
 				F5170D38260E41560005700D /* YPLibrary+LibraryChange.swift in Sources */,
+				F5B5D07F261C93C10025C1BF /* AlwaysShowPopup.swift in Sources */,
 				F5170D48260E41560005700D /* PreiOS10PhotoCapture.swift in Sources */,
 				F5170D37260E41560005700D /* YPAlbumCell.swift in Sources */,
 				F5170D23260E41560005700D /* YPIcons.swift in Sources */,
@@ -1028,6 +1049,8 @@
 				F5170D41260E41560005700D /* YPAlbum.swift in Sources */,
 				F5170D56260E41560005700D /* PHCachingImageManager+Extensions.swift in Sources */,
 				F5170D27260E41560005700D /* YPDragDirection.swift in Sources */,
+				F5B5D080261C93C10025C1BF /* ArrayChoiceReportViewController.swift in Sources */,
+				F55F64C6261CD26600E2A256 /* EditPeopleViewController.swift in Sources */,
 				F5170D72260E41560005700D /* Stevia+Baselines.swift in Sources */,
 				F5170D76260E41560005700D /* Stevia+Stacks.swift in Sources */,
 				F5170D75260E41560005700D /* Stevia+Size.swift in Sources */,
@@ -1040,6 +1063,7 @@
 				F5170D6B260E41560005700D /* Stevia+GetConstraint.swift in Sources */,
 				F5170D46260E41560005700D /* YPCameraView.swift in Sources */,
 				F5170D30260E41560005700D /* YPAlbumsManager.swift in Sources */,
+				F55F64C9261CEBB700E2A256 /* People.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

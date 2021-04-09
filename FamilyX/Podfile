@@ -21,5 +21,6 @@ target 'FamilyX' do
   pod 'DropDown'
   pod 'DatePickerDialog'
   pod 'PryntTrimmerView'
+  pod 'Loaf'
 
 end

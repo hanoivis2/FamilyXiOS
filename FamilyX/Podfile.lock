@@ -341,6 +341,7 @@ PODS:
   - GTMSessionFetcher/Core (1.5.0)
   - JGProgressHUD (2.2)
   - leveldb-library (1.22)
+  - Loaf (0.7.0)
   - nanopb (2.30907.0):
     - nanopb/decode (= 2.30907.0)
     - nanopb/encode (= 2.30907.0)
@@ -363,6 +364,7 @@ DEPENDENCIES:
   - Firebase/Firestore
   - Firebase/Storage
   - JGProgressHUD
+  - Loaf
   - ObjectMapper
   - PryntTrimmerView
   - SCLAlertView (~> 0.8)
@@ -392,6 +394,7 @@ SPEC REPOS:
     - GTMSessionFetcher
     - JGProgressHUD
     - leveldb-library
+    - Loaf
     - nanopb
     - ObjectMapper
     - PromisesObjC
@@ -422,12 +425,13 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   JGProgressHUD: d83d7a981b85d11205e19ff8ad5bb9c40571c847
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  Loaf: d69937cd00649f3fa260beb8b7aef0a1feb861ef
   nanopb: 59221d7f958fb711001e6a449489542d92ae113e
   ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
 
-PODFILE CHECKSUM: 9aa26eacd2299db18eddf6766f3b49b5f8f2f49e
+PODFILE CHECKSUM: b54a0be76940f02514ac2680499680a0d1b474bb
 
 COCOAPODS: 1.10.0
