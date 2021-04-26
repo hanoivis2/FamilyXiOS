@@ -14,15 +14,25 @@ class People : Mappable {
     var fullName = ""
     var birthday = ""
     var gender = 0
+    var wifeId = 0
+    var fatherId = 0
     var image = UIImage()
     
-    
-    var wifeId = 0
-    var childrenId = [Int]()
+    var maxX:CGFloat = 0
     
     init() {}
     required init?(map: Map) {
         mapping(map: map)
+    }
+    
+    init(id:Int, fullName:String, birthday:String, gender:Int, image:UIImage, wifeId:Int, fatherId:Int) {
+        self.id = id
+        self.fullName = fullName
+        self.birthday = birthday
+        self.gender = gender
+        self.image = image
+        self.wifeId = wifeId
+        self.fatherId = fatherId
     }
     
     func mapping(map: Map){

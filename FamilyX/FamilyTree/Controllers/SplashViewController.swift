@@ -18,10 +18,6 @@ class SplashViewController: UIViewController ,NavigationControllerCustomDelegate
         loadMainScreen()
     }
 
-   
-    func getConfig(){
-        
-    }
     
     func loadMainScreen(){
         self.view.removeFromSuperview()
@@ -29,9 +25,12 @@ class SplashViewController: UIViewController ,NavigationControllerCustomDelegate
         self.window = UIWindow(frame: frame)
         self.window!.rootViewController = RootViewController()
         self.window!.makeKeyAndVisible()
+        self.window!.removeFromSuperview()
+ 
+        
     }
     
-    func registerDevice(){
+    func getConfig() {
         
     }
 }

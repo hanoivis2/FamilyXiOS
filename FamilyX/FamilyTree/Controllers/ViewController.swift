@@ -12,21 +12,12 @@ class ViewController:  UIViewController, NavigationControllerCustomDelegate {
 
     var window: UIWindow?
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
        
-        
-       
-
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
         let editFamilyTreeViewController:EditFamilyTreeViewController?
         editFamilyTreeViewController = UIStoryboard.editFamilyTreeViewController()
-        self.navigationController?.pushViewController(editFamilyTreeViewController!, animated: false)
+        self.navigationController!.pushViewController(editFamilyTreeViewController!, animated: false)
         
 //        if (ManageCacheObject.isLogin()) {
 //            let mainViewController:MainViewController?
@@ -39,6 +30,14 @@ class ViewController:  UIViewController, NavigationControllerCustomDelegate {
 //            loginViewController = UIStoryboard.loginViewController()
 //            self.navigationController!.pushViewController(loginViewController!, animated: false)
 //        }
+       
+
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        
     }
  
 }

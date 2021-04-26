@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="Px0-8m-mkE">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
@@ -12,7 +12,7 @@
         <!--Store data-->
         <scene sceneID="PO0-8v-74h">
             <objects>
-                <viewController storyboardIdentifier="StoreDataViewController" id="doK-bo-IC9" customClass="StoreDataViewController" customModule="FamilyX" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="StoreDataViewController" id="doK-bo-IC9" customClass="StoreDataViewController" customModule="FamilyTree" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="6SB-2H-vGp">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -33,7 +33,7 @@
                                         <rect key="frame" x="0.0" y="75" width="414" height="694"/>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <prototypes>
-                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="documentCell" rowHeight="110" id="RbV-5w-kGB" customClass="DocumentCell" customModule="FamilyX" customModuleProvider="target">
+                                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="documentCell" rowHeight="110" id="RbV-5w-kGB" customClass="DocumentCell" customModule="FamilyTree" customModuleProvider="target">
                                                 <rect key="frame" x="0.0" y="28" width="414" height="110"/>
                                                 <autoresizingMask key="autoresizingMask"/>
                                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RbV-5w-kGB" id="kc9-ju-dhs">
@@ -191,7 +191,7 @@
         <!--Profile-->
         <scene sceneID="2zu-J7-VSl">
             <objects>
-                <viewController storyboardIdentifier="ProfileViewController" id="FFj-se-imI" customClass="ProfileViewController" customModule="FamilyX" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ProfileViewController" id="FFj-se-imI" customClass="ProfileViewController" customModule="FamilyTree" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Sey-vn-Yyy">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -301,7 +301,7 @@
         <!--Dialog Confirm View Controller-->
         <scene sceneID="QX5-OP-mXv">
             <objects>
-                <viewController storyboardIdentifier="DialogConfirmViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="9l4-Or-cVW" customClass="DialogConfirmViewController" customModule="FamilyX" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DialogConfirmViewController" modalTransitionStyle="crossDissolve" modalPresentationStyle="overCurrentContext" id="9l4-Or-cVW" customClass="DialogConfirmViewController" customModule="FamilyTree" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ZVi-OI-L5U">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -445,25 +445,10 @@
             </objects>
             <point key="canvasLocation" x="2335" y="-471"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="3nX-mm-VEe">
-            <objects>
-                <viewController storyboardIdentifier="ViewController" id="Cng-Qh-Dix" customClass="ViewController" customModule="FamilyX" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="BTY-ke-Owx">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <viewLayoutGuide key="safeArea" id="XGV-ao-Fsl"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="S2l-Vs-4HU" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-2543" y="-106"/>
-        </scene>
         <!--Login View Controller-->
         <scene sceneID="4rR-yu-EWB">
             <objects>
-                <viewController storyboardIdentifier="LoginViewController" id="dee-1G-a98" customClass="LoginViewController" customModule="FamilyX" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="LoginViewController" id="dee-1G-a98" customClass="LoginViewController" customModule="FamilyTree" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="DjQ-pb-ypW">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -652,7 +637,7 @@
         <!--Sign Up View Controller-->
         <scene sceneID="gMc-Up-ZWY">
             <objects>
-                <viewController storyboardIdentifier="SignUpViewController" id="ApX-mN-64S" customClass="SignUpViewController" customModule="FamilyX" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SignUpViewController" id="ApX-mN-64S" customClass="SignUpViewController" customModule="FamilyTree" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="uh3-3V-dWh">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -896,7 +881,7 @@
         <!--Main View Controller-->
         <scene sceneID="W0C-ml-hls">
             <objects>
-                <tabBarController storyboardIdentifier="MainViewController" id="9vY-bf-zRK" customClass="MainViewController" customModule="FamilyX" customModuleProvider="target" sceneMemberID="viewController">
+                <tabBarController storyboardIdentifier="MainViewController" id="9vY-bf-zRK" customClass="MainViewController" customModule="FamilyTree" customModuleProvider="target" sceneMemberID="viewController">
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="MD4-dc-aUY">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -911,6 +896,50 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="zA4-0Z-rzL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-23" y="-106"/>
+        </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="qN6-zY-jLH">
+            <objects>
+                <viewController storyboardIdentifier="SplashViewController" id="Px0-8m-mkE" customClass="SplashViewController" customModule="FamilyTree" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ajM-MO-wpP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OuJ-ZY-tpb">
+                                <rect key="frame" x="57" y="298" width="300" height="300"/>
+                                <color key="backgroundColor" systemColor="systemOrangeColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="300" id="1Rj-zR-lkd"/>
+                                    <constraint firstAttribute="width" constant="300" id="5vh-4A-4oL"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="ME6-yM-eUT"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="OuJ-ZY-tpb" firstAttribute="centerX" secondItem="ajM-MO-wpP" secondAttribute="centerX" id="CYx-cP-yoK"/>
+                            <constraint firstItem="OuJ-ZY-tpb" firstAttribute="centerY" secondItem="ajM-MO-wpP" secondAttribute="centerY" id="n6y-Iu-CH0"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="tVb-ie-BUC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2042" y="-830"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="cdN-fz-YAX">
+            <objects>
+                <viewController storyboardIdentifier="ViewController" id="f7P-zO-tuy" customClass="ViewController" customModule="FamilyTree" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YLE-Wd-Y3w">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="nLw-7R-lrf"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0md-cs-rxZ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1238" y="-867"/>
         </scene>
     </scenes>
     <resources>
@@ -927,6 +956,9 @@
         </systemColor>
         <systemColor name="systemGray6Color">
             <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemOrangeColor">
+            <color red="1" green="0.58431372549019611" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

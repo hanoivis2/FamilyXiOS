@@ -89,6 +89,15 @@ extension UIView {
         mask.path = path.cgPath
         layer.mask = mask
     }
+    
+    
+    func centerX() -> CGFloat {
+        return (frame.maxX + frame.minX) / 2
+    }
+    
+    func centerY() -> CGFloat {
+        return (frame.maxY + frame.minY) / 2
+    }
 }
 
 extension UITableView {
