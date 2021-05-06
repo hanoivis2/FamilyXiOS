@@ -16,11 +16,12 @@ target 'FamilyTree' do
   pod 'ExpandingMenu'
   pod 'SCLAlertView', '~> 0.8'
   pod 'JGProgressHUD'
-  pod 'ObjectMapper'
   pod 'CropViewController'
   pod 'DropDown'
   pod 'DatePickerDialog'
   pod 'PryntTrimmerView'
   pod 'Loaf'
-
+  pod 'AlamofireObjectMapper', '~> 5.0'
+  pod 'ReachabilitySwift', '~> 3'
+  pod 'SideMenu'
 end

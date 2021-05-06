@@ -36,6 +36,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         constraint_view_canvas_height.constant = self.view.frame.height * 4
         view_canvas.backgroundColor = .clear
         
+        zoomLevel = 1
+        
         people.append(People(id: 1, fullName: "Trần Gia Huy", birthday: "17/09/1999", gender: GENDER_ID.MALE.rawValue, image: UIImage(), wifeId: 2, fatherId: 0))
         people.append(People(id: 2, fullName: "Nguyễn Phước Thanh Vy", birthday: "06/02/1998", gender: GENDER_ID.FEMALE.rawValue, image: UIImage(), wifeId: 0, fatherId: 0))
         people.append(People(id: 3, fullName: "Thi Quốc Hùng", birthday: "06/02/1998", gender: GENDER_ID.MALE.rawValue, image: UIImage(), wifeId: 4, fatherId: 1))
@@ -62,7 +64,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         super.viewWillAppear(animated)
         //custom navigation bar
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton:true, hideFilterButton:true, title: "EDIT TREE")
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, title: "EDIT TREE")
+        navigationControllerCustom.touchTarget = self
         self.navigationItem.hidesBackButton = true
     
         
@@ -74,6 +77,10 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         
         
         renderTree()
+    }
+    
+    func backTap() {
+        navigationController!.popViewController(animated: true)
     }
     
     func calcutlateSpaceToFirstPeople(people:People, firstPeople:People) -> Int {
@@ -267,6 +274,10 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 }
                 else {
                     view.frame.origin.x = maxX + _nodeHorizontalSpace
+                }
+                
+                if person.fatherId != currentFatherId && currentFatherId != 0 {
+                    view.frame.origin.x = maxX + _peopleNodeWidth + _nodeHorizontalSpace
                 }
                 
                 view.frame.origin.y = _defaultPaddingTop + CGFloat(i)*(_peopleNodeHeight + _nodeVerticalSpace)

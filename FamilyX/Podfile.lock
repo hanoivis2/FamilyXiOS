@@ -212,6 +212,10 @@ PODS:
     - abseil/base/base_internal
     - abseil/base/config
     - abseil/meta/type_traits
+  - Alamofire (4.9.1)
+  - AlamofireObjectMapper (5.2.1):
+    - Alamofire (~> 4.7)
+    - ObjectMapper (~> 3.4)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -349,12 +353,15 @@ PODS:
     - nanopb/encode (= 2.30908.0)
   - nanopb/decode (2.30908.0)
   - nanopb/encode (2.30908.0)
-  - ObjectMapper (4.2.0)
+  - ObjectMapper (3.5.3)
   - PromisesObjC (1.2.12)
   - PryntTrimmerView (4.0.2)
+  - ReachabilitySwift (3)
   - SCLAlertView (0.8)
+  - SideMenu (6.5.0)
 
 DEPENDENCIES:
+  - AlamofireObjectMapper (~> 5.0)
   - CropViewController
   - DatePickerDialog
   - DropDown
@@ -367,13 +374,16 @@ DEPENDENCIES:
   - Firebase/Storage
   - JGProgressHUD
   - Loaf
-  - ObjectMapper
   - PryntTrimmerView
+  - ReachabilitySwift (~> 3)
   - SCLAlertView (~> 0.8)
+  - SideMenu
 
 SPEC REPOS:
   trunk:
     - abseil
+    - Alamofire
+    - AlamofireObjectMapper
     - BoringSSL-GRPC
     - CropViewController
     - DatePickerDialog
@@ -401,10 +411,14 @@ SPEC REPOS:
     - ObjectMapper
     - PromisesObjC
     - PryntTrimmerView
+    - ReachabilitySwift
     - SCLAlertView
+    - SideMenu
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  AlamofireObjectMapper: 1989f690e982b71921b9253f53a4f33a9bc00d88
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   CropViewController: 7093b39ec3cb508531b22d35773e06cecd7378d8
   DatePickerDialog: ccff2f91ff7a018057a4d72fa5ad6de49c8cb0cd
@@ -429,11 +443,13 @@ SPEC CHECKSUMS:
   leveldb-library: 50c7b45cbd7bf543c81a468fe557a16ae3db8729
   Loaf: d69937cd00649f3fa260beb8b7aef0a1feb861ef
   nanopb: a0ba3315591a9ae0a16a309ee504766e90db0c96
-  ObjectMapper: 1eb41f610210777375fa806bf161dc39fb832b81
+  ObjectMapper: 97111c97e054a6ee25917662106689f0b4127b37
   PromisesObjC: 3113f7f76903778cf4a0586bd1ab89329a0b7b97
   PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
+  ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
+  SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
 
-PODFILE CHECKSUM: c83e7505946abbeeed3a76ad6f90ca1d4deaca2b
+PODFILE CHECKSUM: 8acb5e9cbbe63b0ca449ae26f01f238db095ff3f
 
 COCOAPODS: 1.10.0

@@ -8,7 +8,7 @@
 import UIKit
 
 
-class RootViewController: BaseViewController, NavigationControllerCustomDelegate {
+class RootViewController: BaseViewController {
 
     var baseNavigationController: NavigationControllerCustom!
     var mainViewController:ViewController?
@@ -23,11 +23,17 @@ class RootViewController: BaseViewController, NavigationControllerCustomDelegate
         
         view.addSubview(baseNavigationController.view)
         baseNavigationController.didMove(toParent: self)
-        baseNavigationController.touchTarget = self
       
 
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setNeedsStatusBarAppearanceUpdate()
+    }
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        .lightContent
+    }
     
 }
 

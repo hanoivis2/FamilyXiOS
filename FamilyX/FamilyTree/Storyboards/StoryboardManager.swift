@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import SideMenu
 
 extension UIStoryboard {
     
@@ -28,12 +29,16 @@ extension UIStoryboard {
         return mainStoryboard().instantiateViewController(withIdentifier: "ViewController") as? ViewController
     }
     
-    class func mainViewController() -> MainViewController? {
-        return mainStoryboard().instantiateViewController(withIdentifier: "MainViewController") as? MainViewController
-    }
-    
     class func dialogConfirmViewController() -> DialogConfirmViewController? {
         return mainStoryboard().instantiateViewController(withIdentifier: "DialogConfirmViewController") as? DialogConfirmViewController
+    }
+    
+    class func sideMenuNavigationController() -> SideMenuNavigationController? {
+        return mainStoryboard().instantiateViewController(withIdentifier: "SideMenuNavigationController") as? SideMenuNavigationController
+    }
+    
+    class func homeViewController() -> HomeViewController? {
+        return mainStoryboard().instantiateViewController(withIdentifier: "HomeViewController") as? HomeViewController
     }
     
 //    ============== define Family Tree Storyboard ===============
@@ -52,5 +57,9 @@ extension UIStoryboard {
     
     class func editPeopleViewController() -> EditPeopleViewController? {
         return familyTreeStoryboard().instantiateViewController(withIdentifier: "EditPeopleViewController") as? EditPeopleViewController
+    }
+    
+    class func listFamilyTreeViewController() -> ListFamilyTreeViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "ListFamilyTreeViewController") as? ListFamilyTreeViewController
     }
 }

@@ -65,7 +65,8 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
         super.viewWillAppear(animated)
         //custom navigation bar
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton:false, hideFilterButton:true, title: "EDIT NODE")
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, title: "EDIT NODE")
+        navigationControllerCustom.touchTarget = self
         self.navigationItem.hidesBackButton = true
         
     }

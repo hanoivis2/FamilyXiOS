@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		DE92A2B1A6FD98BA0C8E4C24 /* Pods_FamilyTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 607F83B0AFCCD53155E9509F /* Pods_FamilyTree.framework */; };
+		F530A3EB264167990096BAC2 /* ListFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */; };
+		F530A3EF264169000096BAC2 /* FamilyTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F530A3EE264169000096BAC2 /* FamilyTree.swift */; };
 		F545DE7F263343EF00015C9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DE7E263343EF00015C9D /* AppDelegate.swift */; };
 		F545DE88263343F200015C9D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F545DE87263343F200015C9D /* Assets.xcassets */; };
 		F545DF5C2633442900015C9D /* ManageCacheObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DE942633442800015C9D /* ManageCacheObject.swift */; };
@@ -142,7 +144,7 @@
 		F545DFDE2633442900015C9D /* EditFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF422633442800015C9D /* EditFamilyTreeViewController.swift */; };
 		F545DFDF2633442900015C9D /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF432633442800015C9D /* RootViewController.swift */; };
 		F545DFE02633442900015C9D /* DialogConfirmViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF442633442800015C9D /* DialogConfirmViewController.swift */; };
-		F545DFE12633442900015C9D /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF452633442800015C9D /* MainViewController.swift */; };
+		F545DFE12633442900015C9D /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF452633442800015C9D /* HomeViewController.swift */; };
 		F545DFE22633442900015C9D /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF462633442800015C9D /* SplashViewController.swift */; };
 		F545DFE32633442900015C9D /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF472633442800015C9D /* LoginViewController.swift */; };
 		F545DFE52633442900015C9D /* People.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF4A2633442900015C9D /* People.swift */; };
@@ -167,12 +169,18 @@
 		F545E0242633480600015C9D /* CustomActionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545E0202633480600015C9D /* CustomActionTableViewCell.swift */; };
 		F545E0252633480600015C9D /* CustomActionTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F545E0212633480600015C9D /* CustomActionTableViewCell.xib */; };
 		F545E02A2633538D00015C9D /* NavigationControllerCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545E0292633538D00015C9D /* NavigationControllerCustom.swift */; };
+		F54AFED72636A7000019A904 /* ResAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54AFED62636A6FF0019A904 /* ResAPI.swift */; };
+		F54AFF6B263737930019A904 /* ResResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54AFF6A263737930019A904 /* ResResponse.swift */; };
+		F561D1AB2643AA2800A5520D /* InformationPoopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */; };
+		F59844DF26426E2A009CE510 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59844DE26426E2A009CE510 /* SideMenuViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0741C6E5134E16C768E654F3 /* Pods-FamilyTree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTree.release.xcconfig"; path = "Target Support Files/Pods-FamilyTree/Pods-FamilyTree.release.xcconfig"; sourceTree = "<group>"; };
 		538D73AADD5656A764208B5B /* Pods-FamilyTree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTree.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTree/Pods-FamilyTree.debug.xcconfig"; sourceTree = "<group>"; };
 		607F83B0AFCCD53155E9509F /* Pods_FamilyTree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFamilyTreeViewController.swift; sourceTree = "<group>"; };
+		F530A3EE264169000096BAC2 /* FamilyTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTree.swift; sourceTree = "<group>"; };
 		F545DE7B263343EF00015C9D /* FamilyTree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FamilyTree.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F545DE7E263343EF00015C9D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F545DE87263343F200015C9D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -329,7 +337,7 @@
 		F545DF422633442800015C9D /* EditFamilyTreeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EditFamilyTreeViewController.swift; sourceTree = "<group>"; };
 		F545DF432633442800015C9D /* RootViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		F545DF442633442800015C9D /* DialogConfirmViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DialogConfirmViewController.swift; sourceTree = "<group>"; };
-		F545DF452633442800015C9D /* MainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		F545DF452633442800015C9D /* HomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		F545DF462633442800015C9D /* SplashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
 		F545DF472633442800015C9D /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		F545DF4A2633442900015C9D /* People.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = People.swift; sourceTree = "<group>"; };
@@ -354,6 +362,10 @@
 		F545E0202633480600015C9D /* CustomActionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CustomActionTableViewCell.swift; sourceTree = "<group>"; };
 		F545E0212633480600015C9D /* CustomActionTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomActionTableViewCell.xib; sourceTree = "<group>"; };
 		F545E0292633538D00015C9D /* NavigationControllerCustom.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NavigationControllerCustom.swift; sourceTree = "<group>"; };
+		F54AFED62636A6FF0019A904 /* ResAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResAPI.swift; sourceTree = "<group>"; };
+		F54AFF6A263737930019A904 /* ResResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResResponse.swift; sourceTree = "<group>"; };
+		F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPoopleViewController.swift; sourceTree = "<group>"; };
+		F59844DE26426E2A009CE510 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -406,6 +418,7 @@
 		F545DE7D263343EF00015C9D /* FamilyTree */ = {
 			isa = PBXGroup;
 			children = (
+				F54AFED52636A6AA0019A904 /* Network */,
 				F545E01D2633480600015C9D /* Views */,
 				F545DF3C2633442800015C9D /* Controllers */,
 				F545DF4C2633442900015C9D /* Extension */,
@@ -707,14 +720,9 @@
 		F545DF3C2633442800015C9D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				F545DF3D2633442800015C9D /* SignUpViewController.swift */,
-				F545DF3E2633442800015C9D /* ViewController.swift */,
+				F59844E626429878009CE510 /* Navigation */,
+				F59844E52642986E009CE510 /* Main */,
 				F545DF3F2633442800015C9D /* FamilyTree */,
-				F545DF432633442800015C9D /* RootViewController.swift */,
-				F545DF442633442800015C9D /* DialogConfirmViewController.swift */,
-				F545DF452633442800015C9D /* MainViewController.swift */,
-				F545DF462633442800015C9D /* SplashViewController.swift */,
-				F545DF472633442800015C9D /* LoginViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -722,9 +730,11 @@
 		F545DF3F2633442800015C9D /* FamilyTree */ = {
 			isa = PBXGroup;
 			children = (
+				F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */,
+				F545DF422633442800015C9D /* EditFamilyTreeViewController.swift */,
 				F545DF402633442800015C9D /* AddPeopleViewController.swift */,
 				F545DF412633442800015C9D /* EditPeopleViewController.swift */,
-				F545DF422633442800015C9D /* EditFamilyTreeViewController.swift */,
+				F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */,
 			);
 			path = FamilyTree;
 			sourceTree = "<group>";
@@ -734,6 +744,8 @@
 			children = (
 				F545DF4A2633442900015C9D /* People.swift */,
 				F545DF4B2633442900015C9D /* Account.swift */,
+				F54AFF6A263737930019A904 /* ResResponse.swift */,
+				F530A3EE264169000096BAC2 /* FamilyTree.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -769,6 +781,36 @@
 				F545E0212633480600015C9D /* CustomActionTableViewCell.xib */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		F54AFED52636A6AA0019A904 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				F54AFED62636A6FF0019A904 /* ResAPI.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
+		F59844E52642986E009CE510 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				F59844DE26426E2A009CE510 /* SideMenuViewController.swift */,
+				F545DF452633442800015C9D /* HomeViewController.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
+		F59844E626429878009CE510 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				F545DF462633442800015C9D /* SplashViewController.swift */,
+				F545DF432633442800015C9D /* RootViewController.swift */,
+				F545DF3E2633442800015C9D /* ViewController.swift */,
+				F545DF3D2633442800015C9D /* SignUpViewController.swift */,
+				F545DF472633442800015C9D /* LoginViewController.swift */,
+				F545DF442633442800015C9D /* DialogConfirmViewController.swift */,
+			);
+			path = Navigation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -918,6 +960,7 @@
 			files = (
 				F545DF712633442900015C9D /* Stevia+Equation.swift in Sources */,
 				F545DF822633442900015C9D /* YPPickerVC.swift in Sources */,
+				F530A3EB264167990096BAC2 /* ListFamilyTreeViewController.swift in Sources */,
 				F545DF742633442900015C9D /* Stevia+Content.swift in Sources */,
 				F545DF842633442900015C9D /* YPImageSize.swift in Sources */,
 				F545DF8C2633442900015C9D /* YPMediaItem.swift in Sources */,
@@ -936,6 +979,7 @@
 				F545DFB52633442900015C9D /* String+Extensions.swift in Sources */,
 				F545DFCD2633442900015C9D /* YPLoaders.swift in Sources */,
 				F545DF662633442900015C9D /* Stevia+Center.swift in Sources */,
+				F530A3EF264169000096BAC2 /* FamilyTree.swift in Sources */,
 				F545DFA42633442900015C9D /* LibraryMediaManager.swift in Sources */,
 				F545DFF12633442900015C9D /* localizedText.swift in Sources */,
 				F545DF792633442900015C9D /* YPVideoView.swift in Sources */,
@@ -980,6 +1024,7 @@
 				F545DFEA2633442900015C9D /* Gif.swift in Sources */,
 				F545DFE82633442900015C9D /* UITextView+Extensions.swift in Sources */,
 				F545DF9A2633442900015C9D /* YPAssetZoomableView.swift in Sources */,
+				F561D1AB2643AA2800A5520D /* InformationPoopleViewController.swift in Sources */,
 				F545DF882633442900015C9D /* YPPickerScreen.swift in Sources */,
 				F545DFAE2633442900015C9D /* PreiOS10PhotoCapture.swift in Sources */,
 				F545DFA82633442900015C9D /* YPLibraryViewCell.swift in Sources */,
@@ -1013,6 +1058,7 @@
 				F545DF872633442900015C9D /* YPColors.swift in Sources */,
 				F545DF912633442900015C9D /* YPSelectionsGalleryView.swift in Sources */,
 				F545DF7E2633442900015C9D /* YPPhotoFiltersVC.swift in Sources */,
+				F54AFF6B263737930019A904 /* ResResponse.swift in Sources */,
 				F545E0242633480600015C9D /* CustomActionTableViewCell.swift in Sources */,
 				F545DFB42633442900015C9D /* UIButton+Extensions.swift in Sources */,
 				F545DFCF2633442900015C9D /* Utils.swift in Sources */,
@@ -1027,6 +1073,7 @@
 				F545DFBD2633442900015C9D /* UIBarButtonItem+Extensions.swift in Sources */,
 				F545DFBE2633442900015C9D /* CIImage+Extensions.swift in Sources */,
 				F545DF732633442900015C9D /* Stevia+LayoutAnchors.swift in Sources */,
+				F54AFED72636A7000019A904 /* ResAPI.swift in Sources */,
 				F545DF982633442900015C9D /* YPLibraryViewDelegate.swift in Sources */,
 				F545DF992633442900015C9D /* YPGridView.swift in Sources */,
 				F545DFAB2633442900015C9D /* YPPhotoCapture.swift in Sources */,
@@ -1046,7 +1093,7 @@
 				F545DF932633442900015C9D /* YPVideoCaptureHelper.swift in Sources */,
 				F545DF6E2633442900015C9D /* Stevia+Size.swift in Sources */,
 				F545DFAF2633442900015C9D /* YPCameraVC.swift in Sources */,
-				F545DFE12633442900015C9D /* MainViewController.swift in Sources */,
+				F545DFE12633442900015C9D /* HomeViewController.swift in Sources */,
 				F545DFF52633442900015C9D /* UITextField+Extensions.swift in Sources */,
 				F545E02A2633538D00015C9D /* NavigationControllerCustom.swift in Sources */,
 				F545DFD12633442900015C9D /* EnumStatus.swift in Sources */,
@@ -1059,6 +1106,7 @@
 				F545DFB12633442900015C9D /* YPPermissionCheckable.swift in Sources */,
 				F545DFCC2633442900015C9D /* YPAlerts.swift in Sources */,
 				F545DFE52633442900015C9D /* People.swift in Sources */,
+				F59844DF26426E2A009CE510 /* SideMenuViewController.swift in Sources */,
 				F545DF5D2633442900015C9D /* ConnectorView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

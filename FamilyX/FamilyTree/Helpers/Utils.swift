@@ -10,7 +10,5 @@ import Foundation
 
 class Utils: NSObject {
     
-    static func isPasswordValid(_ password : String) -> Bool {
-        return (password.count<8) ? false : true
-    }
+    
 }

@@ -18,9 +18,14 @@ class DialogConfirmViewController : UIViewController {
     @IBOutlet weak var lbl_content:UILabel!
     
     var delegate:DialogConfirmDelegate?
+    var dialogTitle = ""
+    var content = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        lbl_title.text = dialogTitle
+        lbl_content.text = content
         
     }
     

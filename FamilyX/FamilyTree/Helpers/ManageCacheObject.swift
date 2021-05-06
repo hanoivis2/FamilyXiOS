@@ -28,6 +28,10 @@ class ManageCacheObject: NSObject {
         UserDefaults.standard.set(tabIndex, forKey:KEY_TAB_INDEX)
     }
     
+    static func setToken(_ token:String){
+        UserDefaults.standard.set(token, forKey:KEY_TOKEN)
+    }
+    
     static func getCurrentTabIndex()->Int{
         if let tabIndex : Int = UserDefaults.standard.object(forKey: KEY_TAB_INDEX) as? Int{
             return tabIndex
@@ -55,13 +59,27 @@ class ManageCacheObject: NSObject {
         }
     }
     
-//    static func isLogin()->Bool{
-//        let account = ManageCacheObject.getCurrentAccount()
-//        if(account.id == ""){
-//            return false
-//        }
-//        return true
-//    }
+    static func setVersion(_ version : String){
+        UserDefaults.standard.set(version, forKey:KEY_VERSION)
+    }
+    
+    static func getVersion() -> String{
+        if let version = UserDefaults.standard.object(forKey: KEY_VERSION) {
+            return version as! String
+        }else
+        {
+            return "1"
+        }
+    }
+    
+    static func isLogin()->Bool{
+        let account = ManageCacheObject.getCurrentAccount()
+        if(account.id == ""){
+            return false
+        }
+        return true
+    }
+    
     static func clearUser(){
         UserDefaults.standard.set(nil, forKey: KEY_ACCOUNT)
     }

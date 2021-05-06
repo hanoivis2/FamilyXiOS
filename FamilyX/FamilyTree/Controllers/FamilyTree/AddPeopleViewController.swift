@@ -72,7 +72,8 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
         super.viewWillAppear(animated)
         //custom navigation bar
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton:false, hideFilterButton:true, title: "ADD NODE")
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, title: "ADD NODE")
+        navigationControllerCustom.touchTarget = self
         self.navigationItem.hidesBackButton = true
         
     }
