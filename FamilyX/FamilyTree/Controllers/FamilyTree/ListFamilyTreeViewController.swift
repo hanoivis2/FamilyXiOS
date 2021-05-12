@@ -20,8 +20,8 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
         super.viewDidLoad()
 
         self.navigationItem.setHidesBackButton(true, animated: false)
-        
-//        getTreeList()
+        tbl_trees.separatorStyle = .none
+        getTreeList()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -51,12 +51,18 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
         
         ResAPI.sharedInstance.getListFamilyTree({ (data, Message) -> Void in
             if(data != nil){
-                
-//                Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
-                
-                self.trees = Mapper<FamilyTree>().mapArray(JSONObject: data) ?? [FamilyTree]()
-                
-                self.tbl_trees.reloadData()
+
+                let response:ResResponse = data as! ResResponse
+
+                if response.data != nil {
+                    self.trees = Mapper<FamilyTree>().mapArray(JSONObject: response.data) ?? [FamilyTree]()
+                    
+                    self.tbl_trees.reloadData()
+                    
+                }
+                else {
+                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                }
                 
                 
             }else{
@@ -88,7 +94,15 @@ extension ListFamilyTreeViewController : UITableViewDelegate, UITableViewDataSou
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return 80
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let editFamilyTreeViewController:EditFamilyTreeViewController?
+        editFamilyTreeViewController = UIStoryboard.editFamilyTreeViewController()
+        editFamilyTreeViewController?.treeId = trees[indexPath.row].id
+        navigationController?.pushViewController(editFamilyTreeViewController!, animated: true)
+        tableView.deselectRow(at: indexPath, animated: true)
     }
     
 }

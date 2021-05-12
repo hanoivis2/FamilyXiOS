@@ -7,6 +7,8 @@
 
 import UIKit
 import Loaf
+import JGProgressHUD
+import ObjectMapper
 
 class EditFamilyTreeViewController : UIViewController, NavigationControllerCustomDelegate {
     
@@ -28,6 +30,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     var rootPeople = People()
     var lines = [CAShapeLayer]()
     var firstView = true
+    var treeId = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,25 +40,6 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         view_canvas.backgroundColor = .clear
         
         zoomLevel = 1
-        
-        people.append(People(id: 1, fullName: "Trần Gia Huy", birthday: "17/09/1999", gender: GENDER_ID.MALE.rawValue, image: UIImage(), wifeId: 2, fatherId: 0))
-        people.append(People(id: 2, fullName: "Nguyễn Phước Thanh Vy", birthday: "06/02/1998", gender: GENDER_ID.FEMALE.rawValue, image: UIImage(), wifeId: 0, fatherId: 0))
-        people.append(People(id: 3, fullName: "Thi Quốc Hùng", birthday: "06/02/1998", gender: GENDER_ID.MALE.rawValue, image: UIImage(), wifeId: 4, fatherId: 1))
-        people.append(People(id: 4, fullName: "Nguyễn Thị A", birthday: "06/02/1998", gender: GENDER_ID.FEMALE.rawValue, image: UIImage(), wifeId: 0, fatherId: 0))
-        people.append(People(id: 5, fullName: "Huỳnh Đức Huy", birthday: "06/02/1998", gender: GENDER_ID.MALE.rawValue, image: UIImage(), wifeId: 9, fatherId: 1))
-        people.append(People(id: 9, fullName: "Vũ Thị Hải Yến", birthday: "06/02/1998", gender: GENDER_ID.FEMALE.rawValue, image: UIImage(), wifeId: 0, fatherId: 0))
-        people.append(People(id: 6, fullName: "Thi Quốc C", birthday: "06/02/1998", gender: GENDER_ID.MALE.rawValue, image: UIImage(), wifeId: 7, fatherId: 3))
-        people.append(People(id: 7, fullName: "Trương Thị E", birthday: "06/02/1998", gender: GENDER_ID.FEMALE.rawValue, image: UIImage(), wifeId: 0, fatherId: 0))
-        people.append(People(id: 8, fullName: "Thi Quốc D", birthday: "06/02/1998", gender: GENDER_ID.MALE.rawValue, image: UIImage(), wifeId: 0, fatherId: 3))
-        people.append(People(id: 10, fullName: "Huỳnh Đức Tuấn", birthday: "06/02/1998", gender: GENDER_ID.MALE.rawValue, image: UIImage(), wifeId: 0, fatherId: 5))
-        people.append(People(id: 11, fullName: "Huỳnh Đức Lợi", birthday: "06/02/1998", gender: GENDER_ID.FEMALE.rawValue, image: UIImage(), wifeId: 0, fatherId: 5))
-        
-        for person in people {
-            if person.fatherId == 0 && person.gender == GENDER_ID.MALE.rawValue {
-                self.rootPeople = person
-                break
-            }
-        }
         
         
     }
@@ -76,7 +60,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         super.viewDidAppear(animated)
         
         
-        renderTree()
+        getTreeInfo()
     }
     
     func backTap() {
@@ -119,8 +103,10 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     func getHusband(people:People) -> People {
         for item in self.people {
-            if item.wifeId == people.id {
-                return item
+            if item.spouse.count > 0 {
+                if item.spouse[0].id == people.id {
+                    return item
+                }
             }
         }
         return People()
@@ -128,8 +114,10 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     func getWife(people:People) -> People {
         for item in self.people {
-            if item.id == people.wifeId {
-                return item
+            if people.spouse.count > 0 {
+                if item.id == people.spouse[0].id {
+                    return item
+                }
             }
         }
         return People()
@@ -203,12 +191,11 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         view.people = newPeople
         view.delegate = self
 
-        view.lbl_name.text = newPeople.fullName
+        view.lbl_name.text = newPeople.firstName + " " + newPeople.lastName
         view.lbl_birthday.text = newPeople.birthday
         view.lbl_name.font = UIFont(name: "Helvetica-Bold", size: 4)
         view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
         view.constraint_height_avatar.constant = 25
-        view.img_avatar.image = newPeople.image
         view.setupView()
         if newPeople.gender == GENDER_ID.MALE.rawValue {
             view.backgroundColor = ColorUtils.male_color()
@@ -289,12 +276,11 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 view.people = person
                 view.delegate = self
 
-                view.lbl_name.text = person.fullName
+                view.lbl_name.text = person.firstName + " " + person.lastName
                 view.lbl_birthday.text = person.birthday
                 view.lbl_name.font = UIFont(name: "Helvetica-Bold", size: 4)
                 view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
                 view.constraint_height_avatar.constant = 25
-                view.img_avatar.image = person.image
                 view.setupView()
                 if person.gender == GENDER_ID.MALE.rawValue {
                     view.backgroundColor = ColorUtils.male_color()
@@ -308,7 +294,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 self.peopleViews.append(view)
 
                 
-                if person.wifeId != 0 {
+                if person.spouse.count > 0 {
                     addWife(rootPeople: person, newPeople: getWife(people: person))
                     maxX = view.frame.maxX + _peopleNodeWidth + _nodeHorizontalSpace
                 }
@@ -413,12 +399,48 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         }
     }
     
+    func getTreeInfo(){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        ResAPI.sharedInstance.getFamilyTreeInfo(treeId: treeId, { (data, Message) -> Void in
+            if(data != nil){
+                
+                let response:ResResponse = data as! ResResponse
+
+                if response.data != nil {
+                    let treeInfo = Mapper<FamilyTree>().map(JSONObject: response.data) ?? FamilyTree()
+                    self.people = treeInfo.people
+                    
+                    
+                    for person in self.people {
+                        if person.fatherId == 0 && person.gender == GENDER_ID.MALE.rawValue {
+                            self.rootPeople = person
+                            break
+                        }
+                    }
+                    
+                    self.renderTree()
+                }
+                else {
+                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                }
+                
+                
+            }else{
+                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            }
+            
+            hud.dismiss()
+        })
+    }
+    
 }
 
 extension EditFamilyTreeViewController : AddPeopleDelegate {
     func addPeople(people:People, relativePeople:People, relationshipType:Int) {
-        
-
         
     }
     
@@ -484,14 +506,7 @@ extension EditFamilyTreeViewController : EditPeopleDelegate {
                 
                 let item = peopleViews[i]
                 
-                item.people.fullName = people.fullName
-                item.people.birthday = people.birthday
-                item.people.gender = people.gender
-                item.people.image = people.image
-                
-                item.lbl_name.text = people.fullName
-                item.lbl_birthday.text = people.birthday
-                item.img_avatar.image = people.image
+                item.people = people
                 if people.gender == GENDER_ID.MALE.rawValue {
                     item.backgroundColor = ColorUtils.male_color()
                 }

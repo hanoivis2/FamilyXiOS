@@ -8,8 +8,8 @@
 import Foundation
 
 enum GENDER_ID : Int {
-    case FEMALE = 0
-    case MALE = 1
+    case FEMALE = 1
+    case MALE = 0
 }
 
 enum STATUS_REQUEST: Int{

@@ -79,7 +79,6 @@ class LoginViewController : UIViewController, NavigationControllerCustomDelegate
             if(data != nil){
                 let response:ResResponse = data as! ResResponse
 
-                
                 if response.data != nil {
                     let accountRes = Mapper<AccountRes>().map(JSONObject: response.data) ?? AccountRes()
                     

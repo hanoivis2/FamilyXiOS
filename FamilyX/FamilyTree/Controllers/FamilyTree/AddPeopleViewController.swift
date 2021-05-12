@@ -52,7 +52,7 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        textfield_relate.text = relativePerson.fullName
+        textfield_relate.text = relativePerson.firstName + " " + relativePerson.lastName
 
         dropDownGender.anchorView = textfield_gender
         dropDownRelationship.anchorView = textfield_relationship
@@ -93,37 +93,35 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
                 Loaf.init("Wife's gender must be female", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
             }
             else {
-                if relativePerson.wifeId != 0 {
-                    Loaf.init("This person already has a wife", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-                }
-                else {
+//                if relativePerson.spouse.id != 0 {
+//                    Loaf.init("This person already has a wife", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
+//                }
+//                else {
                     let people = People()
                     people.id = Int(textfield_id.text!)!
-                    people.fullName = textfield_name.text!
+                    people.firstName = textfield_name.text!
                     people.birthday = textfield_birthday.text!
                     people.gender = genderSelected
-                    people.image =  img_avatar.image!
                     
                     delegate?.addPeople(people: people, relativePeople: relativePerson, relationshipType: relationshipSelected)
                     navigationController?.popViewController(animated: true)
                 }
-            }
+//            }
         }
         else {
-            if relativePerson.wifeId == 0 {
-                Loaf.init("This person has not had wife yet", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-            }
-            else {
+//            if relativePerson.spouse.id == 0 {
+//                Loaf.init("This person has not had wife yet", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
+//            }
+//            else {
                 let people = People()
                 people.id = Int(textfield_id.text!)!
-                people.fullName = textfield_name.text!
+                people.firstName = textfield_name.text!
                 people.birthday = textfield_birthday.text!
                 people.gender = genderSelected
-                people.image =  img_avatar.image!
                 
                 delegate?.addPeople(people: people, relativePeople: relativePerson, relationshipType: relationshipSelected)
                 navigationController?.popViewController(animated: true)
-            }
+//            }
         }
         
         

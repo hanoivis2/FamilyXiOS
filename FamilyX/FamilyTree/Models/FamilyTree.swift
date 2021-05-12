@@ -13,6 +13,7 @@ class FamilyTree: Mappable {
     var id = 0
     var name = ""
     var description = ""
+    var people = [People]()
     
     init() {}
     
@@ -24,5 +25,6 @@ class FamilyTree: Mappable {
         id                                  <- map["id"]
         name                                <- map["name"]
         description                         <- map["description"]
+        people                              <- map["people"]
     }
 }

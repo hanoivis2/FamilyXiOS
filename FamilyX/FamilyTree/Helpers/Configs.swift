@@ -8,10 +8,11 @@
 import Foundation
 import UIKit
 
-var OAUTH_SERVER_URL = "http://family-tree.azurewebsites.net"
+var OAUTH_SERVER_URL = "https://family-tree.azurewebsites.net"
 var API_LOGIN = "/api/v%@/authentication/login"
 var API_SIGN_UP = "/api/v%@/authentication/register"
 var API_GET_LIST_FAMILY_TREE = "/api/v%@/tree-management/tree"
+var API_GET_FAMILY_TREE_INFO = "/api/v%@/tree-management/tree/%d"
 
 
 

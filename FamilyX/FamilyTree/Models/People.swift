@@ -11,12 +11,15 @@ import ObjectMapper
 class People : Mappable {
     
     var id = 0
-    var fullName = ""
+    var firstName = ""
+    var lastName = ""
     var birthday = ""
-    var gender = 0
-    var wifeId = 0
+    var deathday = ""
     var fatherId = 0
-    var image = UIImage()
+    var motherId = 0
+    var gender = GENDER_ID.MALE.rawValue
+    var note = ""
+    var spouse = [Spouse]()
     
     var maxX:CGFloat = 0
     
@@ -25,21 +28,48 @@ class People : Mappable {
         mapping(map: map)
     }
     
-    init(id:Int, fullName:String, birthday:String, gender:Int, image:UIImage, wifeId:Int, fatherId:Int) {
-        self.id = id
-        self.fullName = fullName
-        self.birthday = birthday
-        self.gender = gender
-        self.image = image
-        self.wifeId = wifeId
-        self.fatherId = fatherId
+    func mapping(map: Map){
+        id                                      <- map["id"]
+        firstName                               <- map["firstName"]
+        lastName                                <- map["lastName"]
+        birthday                                <- map["dateOfBirth"]
+        deathday                                <- map["dateOfDeath"]
+        fatherId                                <- map["parent1Id"]
+        motherId                                <- map["parent2Id"]
+        gender                                  <- map["gender"]
+        note                                    <- map["note"]
+        spouse                                  <- map["spouses"]
+    }
+    
+}
+
+class Spouse : Mappable {
+    var id = 0
+    var firstName = ""
+    var lastName = ""
+    var birthday = ""
+    var deathday = ""
+    var fatherId = 0
+    var motherId = 0
+    var gender = GENDER_ID.MALE.rawValue
+    var note = ""
+    
+    var maxX:CGFloat = 0
+    
+    init() {}
+    required init?(map: Map) {
+        mapping(map: map)
     }
     
     func mapping(map: Map){
-        id                          <- map["id"]
-        fullName                    <- map["fullName"]
-        birthday                    <- map["birthday"]
-        gender                      <- map["gender"]
+        id                                      <- map["id"]
+        firstName                               <- map["firstName"]
+        lastName                                <- map["lastName"]
+        birthday                                <- map["birthday"]
+        deathday                                <- map["deathday"]
+        fatherId                                <- map["fatherId"]
+        motherId                                <- map["motherId"]
+        gender                                  <- map["gender"]
+        note                                    <- map["note"]
     }
-    
 }

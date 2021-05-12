@@ -53,11 +53,10 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
         dropDownRelationship.selectRow(at: 0)
         
         self.textfield_id.text = String(people.id)
-        self.textfield_name.text = people.fullName
+        self.textfield_name.text = people.firstName + " " + people.lastName
         self.textfield_birthday.text = people.birthday
         self.textfield_gender.text = (people.gender == GENDER_ID.MALE.rawValue) ? "Male" : "Female"
         self.genderSelected = people.gender
-        self.img_avatar.image = people.image
 
     }
     
@@ -79,10 +78,9 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
         
         let people = People()
         people.id = Int(textfield_id.text!)!
-        people.fullName = textfield_name.text!
+        people.firstName = textfield_name.text!
         people.birthday = textfield_birthday.text!
         people.gender = genderSelected
-        people.image =  img_avatar.image!
         
         delegate?.editPeople(people: people)
         navigationController?.popViewController(animated: true)

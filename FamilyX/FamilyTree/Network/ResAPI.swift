@@ -213,8 +213,7 @@ class ResAPI: UIResponder {
     }
 
     func signUp(username:String, email:String, phone:String, password:String, firstName:String, midName:String, lastName:String, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
-        ManageCacheObject.setToken("")
-        ManageCacheObject.saveCurrentAccount(Account())
+  
         
         let url: String  = OAUTH_SERVER_URL + String(format: API_SIGN_UP, ManageCacheObject.getVersion())
 
@@ -239,10 +238,27 @@ class ResAPI: UIResponder {
     }
  
     func getListFamilyTree( _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
-        ManageCacheObject.setToken("")
-        ManageCacheObject.saveCurrentAccount(Account())
+
         
         let url: String  = OAUTH_SERVER_URL + String(format: API_GET_LIST_FAMILY_TREE, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : GET) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func getFamilyTreeInfo(treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_FAMILY_TREE_INFO, ManageCacheObject.getVersion(), treeId)
 
         debugPrint(url)
         

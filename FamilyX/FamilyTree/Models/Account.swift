@@ -43,6 +43,8 @@ class Account : Mappable {
         phone                               <- map["phone"]
         gender                              <- map["gender"]
         birthday                            <- map["dateOfBirth"]
+        accessToken                         <- map["accessToken"]
+        refreshToken                        <- map["refreshToken"]
     }
     
 }
