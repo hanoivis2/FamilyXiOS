@@ -15,6 +15,7 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
     @IBOutlet weak var tbl_trees: UITableView!
     
     var trees = [FamilyTree]()
+    var refreshControl = UIRefreshControl()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -22,6 +23,8 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
         self.navigationItem.setHidesBackButton(true, animated: false)
         tbl_trees.separatorStyle = .none
         getTreeList()
+        
+        setupRefreshControl()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -40,7 +43,27 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
     }
     
     func addTap() {
+        let addFamilyTreeViewController:AddFamilyTreeViewController?
+        addFamilyTreeViewController =  UIStoryboard.addFamilyTreeViewController()
+        addFamilyTreeViewController?.delegate = self
+        addFamilyTreeViewController?.modalTransitionStyle = .crossDissolve
+        self.present(addFamilyTreeViewController!, animated: true, completion: nil)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        refreshControl.didMoveToSuperview()
+    }
+    
+    func setupRefreshControl() {
+        refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
+        refreshControl.addTarget(self, action: #selector(self.refresh(_:)), for: .valueChanged)
+        self.tbl_trees.addSubview(refreshControl)
         
+    }
+    
+    @objc func refresh(_ sender: AnyObject) {
+        // Code to refresh table view
+        getTreeList()
     }
     
     func getTreeList(){
@@ -58,6 +81,38 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
                     self.trees = Mapper<FamilyTree>().mapArray(JSONObject: response.data) ?? [FamilyTree]()
                     
                     self.tbl_trees.reloadData()
+                    self.refreshControl.endRefreshing()
+                }
+                else {
+                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                }
+                
+                
+            }else{
+                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            }
+            
+            hud.dismiss()
+        })
+    }
+    
+    func addTree(name:String, des:String){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        ResAPI.sharedInstance.addFamilyTree(name: name, description: des, { (data, Message) -> Void in
+            if(data != nil){
+
+                let response:ResResponse = data as! ResResponse
+
+                if response.data != nil {
+                    let newTree = Mapper<FamilyTree>().map(JSONObject: response.data) ?? FamilyTree()
+                    
+                    self.trees.append(newTree)
+                    self.tbl_trees.reloadData()
+                    self.tbl_trees.scrollToRow(at: IndexPath(row: self.trees.count - 1, section: 0), at: .bottom, animated: true)
                     
                 }
                 else {
@@ -105,6 +160,12 @@ extension ListFamilyTreeViewController : UITableViewDelegate, UITableViewDataSou
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
+}
+
+extension ListFamilyTreeViewController : AddFamilyTreeViewDelegate {
+    func addTree(name: String, description: String) {
+        addTree(name: name, des: description)
+    }
 }
 
 class ListFamilyTreeTableViewCell : UITableViewCell {

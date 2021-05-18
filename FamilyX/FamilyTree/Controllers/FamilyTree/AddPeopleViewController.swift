@@ -22,29 +22,31 @@ struct RelationshipType {
 }
 
 protocol AddPeopleDelegate {
-    func addPeople(people:People, relativePeople:People, relationshipType:Int)
+    func addPeople(people:People, relationshipType:Int, relativePersonId:Int)
 }
 
 class AddPeopleViewController : UIViewController, NavigationControllerCustomDelegate {
 
     @IBOutlet weak var img_avatar: UIImageView!
-    @IBOutlet weak var textfield_id: UITextField!
-    @IBOutlet weak var textfield_name: UITextField!
+    @IBOutlet weak var textfield_firstName: UITextField!
+    @IBOutlet weak var textfield_lastName: UITextField!
     @IBOutlet weak var textfield_birthday: UITextField!
+    @IBOutlet weak var textfield_deathday: UITextField!
     @IBOutlet weak var textfield_gender: UITextField!
     @IBOutlet weak var textfield_relationship: UITextField!
     @IBOutlet weak var textfield_relate: UITextField!
+    @IBOutlet weak var textfield_note: UITextField!
     
     var delegate:AddPeopleDelegate?
     
     var relativePerson = People()
+    
     let dropDownGender = DropDown()
     let dropDownRelationship = DropDown()
-    var allGenderType: [GenderType] = [GenderType(id: 1, text: "Male"),
-                                        GenderType(id: 0, text: "Female")]
-    
-    var allRelationshipType: [RelationshipType] = [RelationshipType(id: 0, text: "Wife"),
-                                               RelationshipType(id: 1, text: "Children")]
+    var allGenderType: [GenderType] = [GenderType(id: GENDER_ID.MALE.rawValue, text: "Male"),
+                                        GenderType(id: GENDER_ID.FEMALE.rawValue, text: "Female")]
+    var allRelationshipType: [RelationshipType] = [RelationshipType(id: 0, text: "Spouse"),
+                                               RelationshipType(id: 1, text: "Child")]
     
     var genderSelected = 0
     var relationshipSelected = 0
@@ -70,7 +72,7 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //custom navigation bar
+        
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
         navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, title: "ADD NODE")
         navigationControllerCustom.touchTarget = self
@@ -88,42 +90,69 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
     
     @IBAction func btn_confirm(_ sender: Any) {
         
-        if relationshipSelected == 0 {
-            if genderSelected == GENDER_ID.MALE.rawValue {
-                Loaf.init("Wife's gender must be female", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
+        if relationshipSelected == 1 {              //Child
+            if textfield_firstName.text!.isEmpty || textfield_lastName.text!.isEmpty {
+                Loaf.init("Please fill out first name and last name!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else if textfield_birthday.text!.isEmpty {
+                Loaf.init("Please choose birthday!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else if relativePerson.spouse.count != 1 {
+                Loaf.init("This person has not have spouse yet!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
             }
             else {
-//                if relativePerson.spouse.id != 0 {
-//                    Loaf.init("This person already has a wife", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-//                }
-//                else {
-                    let people = People()
-                    people.id = Int(textfield_id.text!)!
-                    people.firstName = textfield_name.text!
-                    people.birthday = textfield_birthday.text!
-                    people.gender = genderSelected
-                    
-                    delegate?.addPeople(people: people, relativePeople: relativePerson, relationshipType: relationshipSelected)
-                    navigationController?.popViewController(animated: true)
-                }
-//            }
-        }
-        else {
-//            if relativePerson.spouse.id == 0 {
-//                Loaf.init("This person has not had wife yet", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-//            }
-//            else {
-                let people = People()
-                people.id = Int(textfield_id.text!)!
-                people.firstName = textfield_name.text!
-                people.birthday = textfield_birthday.text!
-                people.gender = genderSelected
+                let newPeople = People()
                 
-                delegate?.addPeople(people: people, relativePeople: relativePerson, relationshipType: relationshipSelected)
-                navigationController?.popViewController(animated: true)
-//            }
+                if relativePerson.gender == GENDER_ID.MALE.rawValue {
+                    newPeople.fatherId = relativePerson.id
+                    newPeople.motherId = relativePerson.spouse[0].id
+                }
+                else {
+                    newPeople.fatherId = relativePerson.spouse[0].id
+                    newPeople.motherId = relativePerson.id
+                }
+                
+                newPeople.gender = genderSelected
+                newPeople.firstName = textfield_firstName.text!
+                newPeople.lastName = textfield_lastName.text!
+                newPeople.birthday = textfield_birthday.text!
+                newPeople.deathday = textfield_deathday.text ?? ""
+                newPeople.note = textfield_note.text ?? ""
+                
+                delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id)
+                self.navigationController?.popViewController(animated: true)
+            }
         }
-        
+        else {                                      //Spouse
+            if textfield_firstName.text!.isEmpty || textfield_lastName.text!.isEmpty {
+                Loaf.init("Please fill out first name and last name!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else if textfield_birthday.text!.isEmpty {
+                Loaf.init("Please choose birthday!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else if relativePerson.spouse.count > 0 {
+                Loaf.init("This person has already had spouse!", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else if relativePerson.gender == genderSelected {
+                Loaf.init("Spouses has the same gender!", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else {
+                let newPeople = People()
+                
+                newPeople.fatherId = 0
+                newPeople.motherId = 0
+                
+                newPeople.gender = genderSelected
+                newPeople.firstName = textfield_firstName.text!
+                newPeople.lastName = textfield_lastName.text!
+                newPeople.birthday = textfield_birthday.text!
+                newPeople.deathday = textfield_deathday.text ?? ""
+                newPeople.note = textfield_note.text ?? ""
+                
+                delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id)
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
         
     }
     
@@ -146,11 +175,41 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
             currentDate = dateFormatter.date(from: self.textfield_birthday.text!)!
         }
 
-        datePicker.show("Choose your birthday", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: currentDate, minimumDate: Calendar.current.date(byAdding: dateComponents, to: Date()), maximumDate: Calendar.current.date(byAdding: dateComponentsFuture, to: Date()), datePickerMode: .date) { (date) in
+        datePicker.show("Choose birthday", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: currentDate, minimumDate: Calendar.current.date(byAdding: dateComponents, to: Date()), maximumDate: Calendar.current.date(byAdding: dateComponentsFuture, to: Date()), datePickerMode: .date) { (date) in
             if let dt = date {
                 let formatter = DateFormatter()
                 formatter.dateFormat = "dd/MM/yyyy"
                 self.textfield_birthday.text = formatter.string(from: dt)
+            }
+        }
+
+        self.view.addSubview(datePicker)
+    }
+    
+    @IBAction func btn_choose_deathday(_ sender: Any) {
+        
+        var dateComponents = DateComponents()
+        dateComponents.year = -100
+        
+        var dateComponentsFuture = DateComponents()
+        dateComponentsFuture.year = 100
+
+
+        let datePicker = DatePickerDialog(textColor: .black, buttonColor: .darkGray, font: UIFont(name: "Helvetica", size: 14.0)!, locale: Locale(identifier: "vi_VN"), showCancelButton: true)
+        self.view.addSubview(datePicker)
+        
+        var currentDate = Date()
+        if !self.textfield_deathday.text!.isEmpty {
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+            currentDate = dateFormatter.date(from: self.textfield_deathday.text!)!
+        }
+
+        datePicker.show("Choose deathday", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: currentDate, minimumDate: Calendar.current.date(byAdding: dateComponents, to: Date()), maximumDate: Calendar.current.date(byAdding: dateComponentsFuture, to: Date()), datePickerMode: .date) { (date) in
+            if let dt = date {
+                let formatter = DateFormatter()
+                formatter.dateFormat = "dd/MM/yyyy"
+                self.textfield_deathday.text = formatter.string(from: dt)
             }
         }
 

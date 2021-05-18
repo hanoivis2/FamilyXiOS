@@ -272,4 +272,67 @@ class ResAPI: UIResponder {
         }
         
     }
+    
+    func addFamilyTree(name:String, description:String, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_FAMILY_TREE, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            "name": name,
+            "description": description
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : POST) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func addChild(child:People, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_CHILD, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            "fatherId": child.fatherId,
+            "motherId": child.motherId,
+            "childInfo": Mapper().toJSON(child)
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : POST) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func addSpouse(spouse:People, relativePeopleId:Int, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_SPOUSE, ManageCacheObject.getVersion(), relativePeopleId)
+
+        debugPrint(url)
+        
+        let params = [
+            "gender": spouse.gender,
+            "firstName": spouse.firstName,
+            "lastName": spouse.lastName,
+            "dateOfBirth": spouse.birthday,
+            "dateOfDeath": spouse.deathday,
+            "userId": "",
+            "note": spouse.note
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : POST) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
 }

@@ -9,6 +9,7 @@ import UIKit
 import Loaf
 import JGProgressHUD
 import ObjectMapper
+import Alamofire
 
 class EditFamilyTreeViewController : UIViewController, NavigationControllerCustomDelegate {
     
@@ -41,7 +42,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         
         zoomLevel = 1
         
-        
+        getTreeInfo()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -60,7 +61,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         super.viewDidAppear(animated)
         
         
-        getTreeInfo()
+        
     }
     
     func backTap() {
@@ -157,11 +158,14 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         let firstSiblingMinY = firstSiblingView.frame.minY
         let lastSiblingMinX = lastSiblingView.frame.minX
         
-        let line1 = drawLineFromPoint(start: CGPoint(x: firstSiblingMinX + (_peopleNodeWidth / 2), y: firstSiblingMinY), toPoint: CGPoint(x: firstSiblingMinX + (_peopleNodeWidth / 2), y: firstSiblingMinY - _siblingsLineHeight), ofColor: .black, inView: view_canvas)
-        lines.append(line1)
-        
-        let line2 = drawLineFromPoint(start: CGPoint(x: lastSiblingMinX + (_peopleNodeWidth / 2), y: firstSiblingMinY), toPoint: CGPoint(x: lastSiblingMinX + (_peopleNodeWidth / 2), y: firstSiblingMinY - _siblingsLineHeight), ofColor: .black, inView: view_canvas)
-        lines.append(line2)
+        for item in siblings {
+            let firstSiblingView = getPeopleView(people: item)
+            
+            let firstSiblingMinX = firstSiblingView.frame.minX
+            let firstSiblingMinY = firstSiblingView.frame.minY
+            let line = drawLineFromPoint(start: CGPoint(x: firstSiblingMinX + (_peopleNodeWidth / 2), y: firstSiblingMinY), toPoint: CGPoint(x: firstSiblingMinX + (_peopleNodeWidth / 2), y: firstSiblingMinY - _siblingsLineHeight), ofColor: .black, inView: view_canvas)
+            lines.append(line)
+        }
         
         let line3 = drawLineFromPoint(start: CGPoint(x: firstSiblingMinX + (_peopleNodeWidth / 2), y: firstSiblingMinY - _siblingsLineHeight), toPoint: CGPoint(x: lastSiblingMinX + (_peopleNodeWidth / 2), y: firstSiblingMinY - _siblingsLineHeight), ofColor: .black, inView: view_canvas)
         lines.append(line3)
@@ -169,7 +173,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
 
     
-    func addWife(rootPeople:People, newPeople:People) {
+    func addWifeView(rootPeople:People, newPeople:People) {
         
         var relativePeopleNode = PeopleView()
         //find relative people node
@@ -294,8 +298,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 self.peopleViews.append(view)
 
                 
-                if person.spouse.count > 0 {
-                    addWife(rootPeople: person, newPeople: getWife(people: person))
+                if person.spouse.count > 0 && person.gender == GENDER_ID.MALE.rawValue {
+                    addWifeView(rootPeople: person, newPeople: getWife(people: person))
                     maxX = view.frame.maxX + _peopleNodeWidth + _nodeHorizontalSpace
                 }
                 else {
@@ -340,7 +344,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                     siblings.append(person)
                     currentFatherId = person.fatherId
                 }
-                else if peopleInSameLevel.last?.id == person.id {
+                
+                if peopleInSameLevel.last?.id == person.id && person.fatherId != 0 {
                     siblings.append(person)
                     
                     if siblings.count > 1 {
@@ -412,6 +417,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
 
                 if response.data != nil {
                     let treeInfo = Mapper<FamilyTree>().map(JSONObject: response.data) ?? FamilyTree()
+                    self.people.removeAll()
                     self.people = treeInfo.people
                     
                     
@@ -422,6 +428,14 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                         }
                     }
                     
+                    for item in self.peopleViews {
+                        item.removeFromSuperview()
+                    }
+                    for item in self.lines {
+                        item.removeFromSuperlayer()
+                    }
+                    self.peopleViews.removeAll()
+                    self.lines.removeAll()
                     self.renderTree()
                 }
                 else {
@@ -437,12 +451,115 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         })
     }
     
+    func addChild(child:People){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let date = dateFormatter.date(from: child.birthday)
+        dateFormatter.dateFormat = "yyyy-MM-ddThh:mm:ss.s+zzzzzz"
+        child.birthday = dateFormatter.string(from: date!)
+        
+        ResAPI.sharedInstance.addChild(child: child,  { (data, Message) -> Void in
+            if(data != nil){
+
+                let response:ResResponse = data as! ResResponse
+
+                if response.data != nil {
+                    self.getTreeInfo()
+                }
+                else {
+                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                }
+                
+                
+            }else{
+                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            }
+            
+            hud.dismiss()
+        })
+    }
+
+    func addSpouse(spouse:People, relativePeopleId:Int){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let date = dateFormatter.date(from: spouse.birthday)
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        spouse.birthday = dateFormatter.string(from: date!)
+        
+        ResAPI.sharedInstance.addSpouse(spouse: spouse, relativePeopleId: relativePeopleId, { (data, Message) -> Void in
+            if(data != nil){
+
+                let response:ResResponse = data as! ResResponse
+
+                if response.data != nil {
+                    self.getTreeInfo()
+                }
+                else {
+                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                }
+                
+                
+            }else{
+                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            }
+            
+            hud.dismiss()
+        })
+    }
+    
+    func uploadPhotoToServer(parameters: Dictionary<String, AnyObject>, filename:String, imageData: Data?,  code:String) {
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        let urlUploadFile = OAUTH_SERVER_URL  + String(format: API_UPLOAD_IMAGE, ManageCacheObject.getVersion())
+
+
+        let headers: HTTPHeaders = [
+            "Content-type": "multipart/form-data",
+            "Authorization":"\(ManageCacheObject.getCurrentAccount().accessToken)"
+        ]
+        
+        let processingClosure: ((Double) -> Void)? = {(percent: Double) in
+            
+        }
+        
+        let successClosure: ((DataResponse<Any>) -> Void)? = {response in
+            print("succeeded :)")
+            hud.dismiss()
+            self.navigationController?.popViewController(animated: true)
+        }
+        
+        let failClosure: ((Error) -> Void)? = { err in
+            print("failed :( \(err)")
+            Toast.show(message: err.localizedDescription, controller: self)
+        }
+        
+        ImageUploadClient.uploadWithData(serverUrl: URL(string: urlUploadFile)!, headers: headers, fileData: imageData!, filename: filename, progressing: processingClosure, success: successClosure, failure: failClosure)
+    }
 }
 
 extension EditFamilyTreeViewController : AddPeopleDelegate {
-    func addPeople(people:People, relativePeople:People, relationshipType:Int) {
-        
+    func addPeople(people:People, relationshipType:Int, relativePersonId:Int) {
+        if relationshipType == 1 {
+           addChild(child: people)
+        }
+        else {
+           addSpouse(spouse: people, relativePeopleId: relativePersonId)
+        }
     }
+    
     
     private func showPopup(_ controller: UIViewController, sourceView: UIView) {
       let presentationController = AlwaysPresentAsPopover.configurePresentation(forController: controller)

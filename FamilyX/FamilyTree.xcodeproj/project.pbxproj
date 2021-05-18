@@ -173,6 +173,8 @@
 		F54AFF6B263737930019A904 /* ResResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54AFF6A263737930019A904 /* ResResponse.swift */; };
 		F561D1AB2643AA2800A5520D /* InformationPoopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */; };
 		F59844DF26426E2A009CE510 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59844DE26426E2A009CE510 /* SideMenuViewController.swift */; };
+		F5B512712653983C00EB2184 /* UploadLargeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B512702653983C00EB2184 /* UploadLargeFile.swift */; };
+		F5F1AECE264E3316006C4203 /* AddFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -366,6 +368,8 @@
 		F54AFF6A263737930019A904 /* ResResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResResponse.swift; sourceTree = "<group>"; };
 		F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPoopleViewController.swift; sourceTree = "<group>"; };
 		F59844DE26426E2A009CE510 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
+		F5B512702653983C00EB2184 /* UploadLargeFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadLargeFile.swift; sourceTree = "<group>"; };
+		F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFamilyTreeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -435,6 +439,7 @@
 		F545DE932633442800015C9D /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
+				F5B512702653983C00EB2184 /* UploadLargeFile.swift */,
 				F545E0292633538D00015C9D /* NavigationControllerCustom.swift */,
 				F545DE942633442800015C9D /* ManageCacheObject.swift */,
 				F545DE952633442800015C9D /* ConnectorView.swift */,
@@ -735,6 +740,7 @@
 				F545DF402633442800015C9D /* AddPeopleViewController.swift */,
 				F545DF412633442800015C9D /* EditPeopleViewController.swift */,
 				F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */,
+				F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */,
 			);
 			path = FamilyTree;
 			sourceTree = "<group>";
@@ -973,6 +979,7 @@
 				F545E0222633480600015C9D /* PeopleView.swift in Sources */,
 				F545DF8F2633442900015C9D /* YPTrimError.swift in Sources */,
 				F545DF6A2633442900015C9D /* Stevia+FlexibleMargin.swift in Sources */,
+				F5F1AECE264E3316006C4203 /* AddFamilyTreeViewController.swift in Sources */,
 				F545DFDF2633442900015C9D /* RootViewController.swift in Sources */,
 				F545DF752633442900015C9D /* ArrayChoiceReportViewController.swift in Sources */,
 				F545DF692633442900015C9D /* Stevia+Notifications.swift in Sources */,
@@ -1101,6 +1108,7 @@
 				F545DF902633442900015C9D /* YPSelectionsGalleryVC.swift in Sources */,
 				F545DFD22633442900015C9D /* Toast.swift in Sources */,
 				F545DF8A2633442900015C9D /* YPImagePicker.swift in Sources */,
+				F5B512712653983C00EB2184 /* UploadLargeFile.swift in Sources */,
 				F545DF942633442900015C9D /* YPVideoCaptureVC.swift in Sources */,
 				F545DFCB2633442900015C9D /* YPPhotoSaver.swift in Sources */,
 				F545DFB12633442900015C9D /* YPPermissionCheckable.swift in Sources */,
