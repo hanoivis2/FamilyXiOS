@@ -16,6 +16,7 @@ class DialogConfirmViewController : UIViewController {
     
     @IBOutlet weak var lbl_title:UILabel!
     @IBOutlet weak var lbl_content:UILabel!
+    @IBOutlet weak var view_top: UIView!
     
     var delegate:DialogConfirmDelegate?
     var dialogTitle = ""
@@ -27,6 +28,7 @@ class DialogConfirmViewController : UIViewController {
         lbl_title.text = dialogTitle
         lbl_content.text = content
         
+        view_top.roundCorners(corners: [.topLeft, .topRight], radius: 20)
     }
     
     @IBAction func accept(_ sender:Any) {

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DE92A2B1A6FD98BA0C8E4C24 /* Pods_FamilyTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 607F83B0AFCCD53155E9509F /* Pods_FamilyTree.framework */; };
+		F506E9612664ECEC00345994 /* EditFamilyTreeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F506E9602664ECEC00345994 /* EditFamilyTreeInfoViewController.swift */; };
 		F530A3EB264167990096BAC2 /* ListFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */; };
 		F530A3EF264169000096BAC2 /* FamilyTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F530A3EE264169000096BAC2 /* FamilyTree.swift */; };
 		F545DE7F263343EF00015C9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DE7E263343EF00015C9D /* AppDelegate.swift */; };
@@ -181,6 +182,7 @@
 		0741C6E5134E16C768E654F3 /* Pods-FamilyTree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTree.release.xcconfig"; path = "Target Support Files/Pods-FamilyTree/Pods-FamilyTree.release.xcconfig"; sourceTree = "<group>"; };
 		538D73AADD5656A764208B5B /* Pods-FamilyTree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTree.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTree/Pods-FamilyTree.debug.xcconfig"; sourceTree = "<group>"; };
 		607F83B0AFCCD53155E9509F /* Pods_FamilyTree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F506E9602664ECEC00345994 /* EditFamilyTreeInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFamilyTreeInfoViewController.swift; sourceTree = "<group>"; };
 		F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFamilyTreeViewController.swift; sourceTree = "<group>"; };
 		F530A3EE264169000096BAC2 /* FamilyTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTree.swift; sourceTree = "<group>"; };
 		F545DE7B263343EF00015C9D /* FamilyTree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FamilyTree.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -741,6 +743,7 @@
 				F545DF412633442800015C9D /* EditPeopleViewController.swift */,
 				F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */,
 				F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */,
+				F506E9602664ECEC00345994 /* EditFamilyTreeInfoViewController.swift */,
 			);
 			path = FamilyTree;
 			sourceTree = "<group>";
@@ -977,6 +980,7 @@
 				F545DFAD2633442900015C9D /* PostiOS10PhotoCapture.swift in Sources */,
 				F545DF7C2633442900015C9D /* YPCropView.swift in Sources */,
 				F545E0222633480600015C9D /* PeopleView.swift in Sources */,
+				F506E9612664ECEC00345994 /* EditFamilyTreeInfoViewController.swift in Sources */,
 				F545DF8F2633442900015C9D /* YPTrimError.swift in Sources */,
 				F545DF6A2633442900015C9D /* Stevia+FlexibleMargin.swift in Sources */,
 				F5F1AECE264E3316006C4203 /* AddFamilyTreeViewController.swift in Sources */,

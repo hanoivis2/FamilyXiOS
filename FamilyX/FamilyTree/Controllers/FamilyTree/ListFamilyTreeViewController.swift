@@ -16,12 +16,14 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     var trees = [FamilyTree]()
     var refreshControl = UIRefreshControl()
+    var deleteTreeWithId = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         self.navigationItem.setHidesBackButton(true, animated: false)
         tbl_trees.separatorStyle = .none
+        tbl_trees.allowsSelection = false
         getTreeList()
         
         setupRefreshControl()
@@ -72,24 +74,54 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
         hud.textLabel.text = "Please wait..."
         hud.show(in: self.view)
         
-        ResAPI.sharedInstance.getListFamilyTree({ (data, Message) -> Void in
-            if(data != nil){
+        ResAPI.sharedInstance.getListFamilyTree({ (data, message) -> Void in
+            
+          switch message {
+            case "SUCCESS":
+                if(data != nil){
 
-                let response:ResResponse = data as! ResResponse
+                    let response:ResResponse = data as! ResResponse
 
-                if response.data != nil {
-                    self.trees = Mapper<FamilyTree>().mapArray(JSONObject: response.data) ?? [FamilyTree]()
+                    if let trees = Mapper<FamilyTree>().mapArray(JSONObject: response.data) {
+                        self.trees = trees
+                        
+                        self.tbl_trees.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                    else {
+                        Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
                     
-                    self.tbl_trees.reloadData()
-                    self.refreshControl.endRefreshing()
+                    
                 }
-                else {
-                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+          case "RECALL":
+              self.getTreeList()
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
                 }
                 
-                
-            }else{
-                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             }
             
             hud.dismiss()
@@ -102,32 +134,153 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
         hud.textLabel.text = "Please wait..."
         hud.show(in: self.view)
         
-        ResAPI.sharedInstance.addFamilyTree(name: name, description: des, { (data, Message) -> Void in
-            if(data != nil){
+        ResAPI.sharedInstance.addFamilyTree(name: name, description: des, { (data, message) -> Void in
+            
+            switch message {
+              case "SUCCESS":
+                if(data != nil){
 
-                let response:ResResponse = data as! ResResponse
+                    let response:ResResponse = data as! ResResponse
 
-                if response.data != nil {
-                    let newTree = Mapper<FamilyTree>().map(JSONObject: response.data) ?? FamilyTree()
+                    if let newTree = Mapper<FamilyTree>().map(JSONObject: response.data) {
+                        
+                        self.trees.append(newTree)
+                        self.tbl_trees.reloadData()
+                        self.tbl_trees.scrollToRow(at: IndexPath(row: self.trees.count - 1, section: 0), at: .bottom, animated: true)
+                        
+                    }
+                    else {
+                        Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
                     
-                    self.trees.append(newTree)
-                    self.tbl_trees.reloadData()
-                    self.tbl_trees.scrollToRow(at: IndexPath(row: self.trees.count - 1, section: 0), at: .bottom, animated: true)
                     
                 }
-                else {
-                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
-                }
-                
-                
-            }else{
-                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
-            }
+              case "UNAUTHORIZED":
+                  ManageCacheObject.saveCurrentAccount(Account())
+                  for controller in self.navigationController!.viewControllers as Array {
+                      if controller.isKind(of: LoginViewController.self) {
+                          self.navigationController!.popToViewController(controller, animated: true)
+                          return
+                      }
+                  }
+
+                  let loginViewController: LoginViewController?
+                  loginViewController = UIStoryboard.loginViewController()
+                  self.navigationController!.pushViewController(loginViewController!, animated: false)
+                  
+                  Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.addTree(name: name, des: des)
+              case "NOTFOUND":
+                  Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+              case "DATA":
+                  Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+              default:
+                  if data != nil {
+                      let response = data as! ResResponse
+                      if !response.message!.isEmpty {
+                          Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                      }
+                  }
+                  
+              }
             
             hud.dismiss()
         })
     }
     
+    
+    func deleteTree(id:Int){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        ResAPI.sharedInstance.deleteFamilyTree(treeId: id, { (data, message) -> Void in
+            
+            switch message {
+              case "SUCCESS":
+                self.getTreeList()
+                Loaf.init("Delete successfully", state: .success, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+              case "UNAUTHORIZED":
+                  ManageCacheObject.saveCurrentAccount(Account())
+                  for controller in self.navigationController!.viewControllers as Array {
+                      if controller.isKind(of: LoginViewController.self) {
+                          self.navigationController!.popToViewController(controller, animated: true)
+                          return
+                      }
+                  }
+
+                  let loginViewController: LoginViewController?
+                  loginViewController = UIStoryboard.loginViewController()
+                  self.navigationController!.pushViewController(loginViewController!, animated: false)
+                  
+                  Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.deleteTree(id: id)
+              case "NOTFOUND":
+                  Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+              case "DATA":
+                  Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+              default:
+                  if data != nil {
+                      let response = data as! ResResponse
+                      if !response.message!.isEmpty {
+                          Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                      }
+                  }
+                  
+              }
+            
+            hud.dismiss()
+        })
+    }
+    
+    func editTree(id:Int, name:String, description:String){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        ResAPI.sharedInstance.editFamilyTree(name:name, description:description, treeId: id, { (data, message) -> Void in
+            
+            switch message {
+              case "SUCCESS":
+                self.getTreeList()
+                Loaf.init("Edit successfully", state: .success, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+              case "UNAUTHORIZED":
+                  ManageCacheObject.saveCurrentAccount(Account())
+                  for controller in self.navigationController!.viewControllers as Array {
+                      if controller.isKind(of: LoginViewController.self) {
+                          self.navigationController!.popToViewController(controller, animated: true)
+                          return
+                      }
+                  }
+
+                  let loginViewController: LoginViewController?
+                  loginViewController = UIStoryboard.loginViewController()
+                  self.navigationController!.pushViewController(loginViewController!, animated: false)
+                  
+                  Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.editTreeInfo(id: id, name: name, description: description)
+              case "NOTFOUND":
+                  Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+              case "DATA":
+                  Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+              default:
+                  if data != nil {
+                      let response = data as! ResResponse
+                      if !response.message!.isEmpty {
+                          Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                      }
+                  }
+                  
+              }
+            
+            hud.dismiss()
+        })
+    }
 }
 
 extension ListFamilyTreeViewController : UITableViewDelegate, UITableViewDataSource {
@@ -143,21 +296,15 @@ extension ListFamilyTreeViewController : UITableViewDelegate, UITableViewDataSou
         
         cell.lbl_name.text = tree.name
         cell.lbl_description.text = tree.description
-        
+        cell.lbl_owner.text = "Owner: \(tree.owner.username)"
+        cell.pos = indexPath.row
+        cell.delegate = self
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 80
-    }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let editFamilyTreeViewController:EditFamilyTreeViewController?
-        editFamilyTreeViewController = UIStoryboard.editFamilyTreeViewController()
-        editFamilyTreeViewController?.treeId = trees[indexPath.row].id
-        navigationController?.pushViewController(editFamilyTreeViewController!, animated: true)
-        tableView.deselectRow(at: indexPath, animated: true)
+        return 90
     }
     
 }
@@ -168,10 +315,80 @@ extension ListFamilyTreeViewController : AddFamilyTreeViewDelegate {
     }
 }
 
+extension ListFamilyTreeViewController : ListFamilyTreeDelegate {
+    
+    func editTreeDetail(pos: Int) {
+        let editFamilyTreeViewController:EditFamilyTreeViewController?
+        editFamilyTreeViewController = UIStoryboard.editFamilyTreeViewController()
+        editFamilyTreeViewController?.treeId = trees[pos].id
+        navigationController?.pushViewController(editFamilyTreeViewController!, animated: true)
+    }
+    
+    func editTree(pos: Int) {
+        let editFamilyTreeInfoViewController:EditFamilyTreeInfoViewController?
+        editFamilyTreeInfoViewController =  UIStoryboard.editFamilyTreeInfoViewController()
+        editFamilyTreeInfoViewController?.treeInfo = trees[pos]
+        editFamilyTreeInfoViewController?.delegate = self
+        editFamilyTreeInfoViewController?.modalTransitionStyle = .crossDissolve
+        self.present(editFamilyTreeInfoViewController!, animated: true, completion: nil)
+    }
+    
+    func deleteTree(pos: Int) {
+        let dialogConfirmViewController:DialogConfirmViewController?
+        dialogConfirmViewController = UIStoryboard.dialogConfirmViewController()
+        dialogConfirmViewController?.delegate = self
+        dialogConfirmViewController?.dialogTitle = "Confirm"
+        dialogConfirmViewController?.content = "Are you sure to delete \(trees[pos].name)?"
+        deleteTreeWithId = trees[pos].id
+        self.present(dialogConfirmViewController!, animated: false, completion: nil)
+    }
+    
+    
+}
+
+extension ListFamilyTreeViewController : DialogConfirmDelegate {
+    func accept() {
+        deleteTree(id: deleteTreeWithId)
+    }
+    
+    func deny() {
+        
+    }
+    
+    
+}
+
+extension ListFamilyTreeViewController : EditFamilyTreeInfoViewDelegate {
+    func editTreeInfo(id:Int, name: String, description: String) {
+        editTree(id: id, name: name, description: description)
+    }
+}
+
+protocol ListFamilyTreeDelegate {
+    func editTree(pos:Int)
+    func deleteTree(pos:Int)
+    func editTreeDetail(pos:Int)
+}
+
 class ListFamilyTreeTableViewCell : UITableViewCell {
     
     @IBOutlet weak var lbl_name:UILabel!
     @IBOutlet weak var lbl_description:UILabel!
+    @IBOutlet weak var lbl_owner: UILabel!
     @IBOutlet weak var img_avatar:UIImageView!
     
+    var delegate:ListFamilyTreeDelegate?
+    var pos = 0
+    
+    @IBAction func btn_edit(_ sender: Any) {
+        delegate?.editTree(pos: pos)
+    }
+    
+    @IBAction func btn_delete(_ sender: Any) {
+        delegate?.deleteTree(pos: pos)
+    }
+    
+    @IBAction func btn_edit_details(_ sender: Any) {
+        delegate?.editTreeDetail(pos: pos)
+    }
 }

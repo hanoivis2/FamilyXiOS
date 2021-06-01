@@ -15,6 +15,14 @@ enum GENDER_ID : Int {
 enum STATUS_REQUEST: Int{
     case STATUS_SUCCESS = 200
     case STATUS_NOT_FOUND = 404
-    case STATUS_AUTH = 410
+    case STATUS_BAD_REQUEST = 400
+    case STATUS_UNAUTHORIZED = 401
     case STATUS_DATA = 500
+}
+
+enum REQUEST_METHOD: Int {
+    case POST
+    case GET
+    case PUT
+    case DELETE
 }

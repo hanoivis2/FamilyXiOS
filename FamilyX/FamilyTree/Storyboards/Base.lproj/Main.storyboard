@@ -17,19 +17,19 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nqw-AB-qwo">
-                                <rect key="frame" x="60" y="373" width="294" height="150"/>
+                                <rect key="frame" x="30" y="348" width="354" height="200"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ZRH-tv-0oL">
-                                        <rect key="frame" x="0.0" y="0.0" width="294" height="40"/>
+                                        <rect key="frame" x="-1" y="-1" width="356" height="40"/>
                                         <subviews>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Confirm" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0LJ-f9-lS8">
-                                                <rect key="frame" x="10" y="10" width="274" height="20"/>
+                                                <rect key="frame" x="10" y="10" width="336" height="20"/>
                                                 <fontDescription key="fontDescription" name="GillSans-Bold" family="Gill Sans" pointSize="17"/>
                                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="maL-Rw-Vaw">
-                                                <rect key="frame" x="259" y="5" width="30" height="30"/>
+                                                <rect key="frame" x="321" y="5" width="30" height="30"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="maL-Rw-Vaw" secondAttribute="height" multiplier="1:1" id="IB6-rb-dwX"/>
                                                 </constraints>
@@ -58,16 +58,13 @@
                                         </userDefinedRuntimeAttributes>
                                     </view>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Are you sure to log out?" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="26g-ak-u9c">
-                                        <rect key="frame" x="5" y="45" width="284" height="35"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="35" id="Efg-9g-eG6"/>
-                                        </constraints>
+                                        <rect key="frame" x="5" y="44" width="344" height="91"/>
                                         <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ma3-AT-NaI">
-                                        <rect key="frame" x="209" y="95" width="70" height="40"/>
+                                        <rect key="frame" x="269" y="145" width="70" height="40"/>
                                         <color key="backgroundColor" red="0.59445780520000002" green="0.44810974599999998" blue="0.38037723299999998" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="EoU-Tu-vCp"/>
@@ -91,7 +88,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8m6-in-3QM">
-                                        <rect key="frame" x="124" y="95" width="70" height="40"/>
+                                        <rect key="frame" x="184" y="145" width="70" height="40"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="5bq-1s-TIQ"/>
@@ -119,21 +116,22 @@
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="ZRH-tv-0oL" secondAttribute="trailing" id="0LA-I4-PXH"/>
-                                    <constraint firstItem="ZRH-tv-0oL" firstAttribute="top" secondItem="nqw-AB-qwo" secondAttribute="top" id="2up-EY-bN6"/>
+                                    <constraint firstAttribute="trailing" secondItem="ZRH-tv-0oL" secondAttribute="trailing" constant="-1" id="0LA-I4-PXH"/>
+                                    <constraint firstItem="ZRH-tv-0oL" firstAttribute="top" secondItem="nqw-AB-qwo" secondAttribute="top" constant="-1" id="2up-EY-bN6"/>
                                     <constraint firstAttribute="bottom" secondItem="8m6-in-3QM" secondAttribute="bottom" constant="15" id="3w3-Us-q3z"/>
-                                    <constraint firstAttribute="height" constant="150" id="5Qz-gZ-SHU"/>
+                                    <constraint firstAttribute="height" constant="200" id="5Qz-gZ-SHU"/>
                                     <constraint firstItem="26g-ak-u9c" firstAttribute="leading" secondItem="nqw-AB-qwo" secondAttribute="leading" constant="5" id="DKe-VW-cQW"/>
                                     <constraint firstAttribute="trailing" secondItem="26g-ak-u9c" secondAttribute="trailing" constant="5" id="GKW-3X-nYV"/>
                                     <constraint firstAttribute="bottom" secondItem="Ma3-AT-NaI" secondAttribute="bottom" constant="15" id="Qdv-EG-M5M"/>
                                     <constraint firstItem="Ma3-AT-NaI" firstAttribute="leading" secondItem="8m6-in-3QM" secondAttribute="trailing" constant="15" id="TIv-kU-qvw"/>
-                                    <constraint firstItem="ZRH-tv-0oL" firstAttribute="leading" secondItem="nqw-AB-qwo" secondAttribute="leading" id="lDf-Gc-Hkj"/>
+                                    <constraint firstItem="Ma3-AT-NaI" firstAttribute="top" secondItem="26g-ak-u9c" secondAttribute="bottom" constant="10" id="gVr-cp-nRo"/>
+                                    <constraint firstItem="ZRH-tv-0oL" firstAttribute="leading" secondItem="nqw-AB-qwo" secondAttribute="leading" constant="-1" id="lDf-Gc-Hkj"/>
                                     <constraint firstAttribute="trailing" secondItem="Ma3-AT-NaI" secondAttribute="trailing" constant="15" id="nm5-RJ-Rv4"/>
                                     <constraint firstItem="26g-ak-u9c" firstAttribute="top" secondItem="ZRH-tv-0oL" secondAttribute="bottom" constant="5" id="yA4-PL-eJs"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                                        <real key="value" value="0.0"/>
+                                        <real key="value" value="20"/>
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
@@ -142,13 +140,14 @@
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.5" colorSpace="custom" customColorSpace="calibratedRGB"/>
                         <constraints>
                             <constraint firstItem="nqw-AB-qwo" firstAttribute="centerY" secondItem="ZVi-OI-L5U" secondAttribute="centerY" id="KyZ-aM-06N"/>
-                            <constraint firstItem="nqw-AB-qwo" firstAttribute="leading" secondItem="ycS-QD-NOz" secondAttribute="leading" constant="60" id="Ogy-lo-T2A"/>
-                            <constraint firstItem="ycS-QD-NOz" firstAttribute="trailing" secondItem="nqw-AB-qwo" secondAttribute="trailing" constant="60" id="vAY-dE-Ymw"/>
+                            <constraint firstItem="nqw-AB-qwo" firstAttribute="leading" secondItem="ycS-QD-NOz" secondAttribute="leading" constant="30" id="Ogy-lo-T2A"/>
+                            <constraint firstItem="ycS-QD-NOz" firstAttribute="trailing" secondItem="nqw-AB-qwo" secondAttribute="trailing" constant="30" id="vAY-dE-Ymw"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="lbl_content" destination="26g-ak-u9c" id="9pG-8c-3Y9"/>
                         <outlet property="lbl_title" destination="0LJ-f9-lS8" id="fPa-uX-tR2"/>
+                        <outlet property="view_top" destination="ZRH-tv-0oL" id="nsZ-TR-dG4"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="kEz-Jp-wpA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

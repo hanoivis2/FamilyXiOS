@@ -11,12 +11,12 @@ import Alamofire
 import ObjectMapper
 import ReachabilitySwift
 import SystemConfiguration
+import Loaf
 
 class ResAPI: UIResponder {
-    let POST = true
-    let GET = false
     
-    var alamofireManager : SessionManager!
+    
+    var sessionManager : SessionManager!
     
     class var sharedInstance: ResAPI {
 
@@ -30,6 +30,7 @@ class ResAPI: UIResponder {
     
     override init() {
         super.init()
+        self.sessionManager = Alamofire.SessionManager.default
     }
     
     
@@ -57,19 +58,7 @@ class ResAPI: UIResponder {
         
         return (isReachable && !needsConnection)
     }
-    
-    //MARK: Check error service
-    func checkErrorService(data:AnyObject?,error : String?)->(data:AnyObject?, Message : String){
-        if(data == nil && error == nil){
-            return (nil,InternetError)
-        }else if (data == nil && error != nil){
-            return (data,ServerErrorText)
-        }else{
-            return (data, "")
-        }
-    }
-    
-    
+
     
     //MARK: POST METHOD CALL API
     func callServiceWithPOSTMethod(params : Dictionary<String, AnyObject>, url : String, postCompleted : @escaping (_ data:AnyObject?, _ statusCode: Int?) -> ()){
@@ -78,11 +67,16 @@ class ResAPI: UIResponder {
         
         auth_header = ManageCacheObject.isLogin() ? ["Authorization": "Bearer \(ManageCacheObject.getCurrentAccount().accessToken)"] : ["Authorization": "Basic \(ManageCacheObject.getCurrentAccount().accessToken)"]
         
+        
         debugPrint(url,params,auth_header)
-        Alamofire.request(url, method: .post, parameters: params,  encoding: JSONEncoding.default, headers: auth_header).responseJSON { response in
+        Alamofire.request(url, method: .post, parameters: params,  encoding: JSONEncoding.default, headers: auth_header).validate().responseJSON { response in
+            
+            debugPrint("REQUEST  \(String(describing: response.request))")
+            debugPrint("RESPONSE \(String(describing: response.result.value))")
+            
+            
             switch response.result {
             case .success:
-                debugPrint(response.result)
                 return postCompleted(response.result.value as AnyObject?, response.response?.statusCode)
             case .failure( _):
                 return postCompleted(nil, response.response?.statusCode)
@@ -97,14 +91,13 @@ class ResAPI: UIResponder {
         var auth_header = ["Authorization": "Bearer \(ManageCacheObject.getCurrentAccount().accessToken)"]
         
         auth_header = ManageCacheObject.isLogin() ? ["Authorization": "Bearer \(ManageCacheObject.getCurrentAccount().accessToken)"] : ["Authorization": "Basic \(ManageCacheObject.getCurrentAccount().accessToken)"]
+
         
         debugPrint(url,params,auth_header)
-        Alamofire.request(url, method:.get, parameters: params, encoding: URLEncoding.default, headers: auth_header).responseJSON { response in
+        Alamofire.request(url, method:.get, parameters: params, encoding: URLEncoding.default, headers: auth_header).validate().responseJSON { response in
             
             debugPrint("REQUEST  \(String(describing: response.request))")
-            
             debugPrint("RESPONSE \(String(describing: response.result.value))")
-            debugPrint(response.result)
             
             switch response.result {
             case .success:
@@ -117,8 +110,58 @@ class ResAPI: UIResponder {
         }
         
     }
+    
+    //MARK: DELETE METHOD CALL API
+    func callServiceWithDELETEMethod(params : Dictionary<String, AnyObject>, url : String, postCompleted : @escaping (_ data:AnyObject?, _ statusCode: Int?) -> ()){
+        
+        var auth_header = ["Authorization": "Bearer \(ManageCacheObject.getCurrentAccount().accessToken)"]
+        
+        auth_header = ManageCacheObject.isLogin() ? ["Authorization": "Bearer \(ManageCacheObject.getCurrentAccount().accessToken)"] : ["Authorization": "Basic \(ManageCacheObject.getCurrentAccount().accessToken)"]
+
+        
+        debugPrint(url,params,auth_header)
+        Alamofire.request(url, method:.delete, parameters: params, encoding: URLEncoding.default, headers: auth_header).validate().responseJSON { response in
+            
+            debugPrint("REQUEST  \(String(describing: response.request))")
+            debugPrint("RESPONSE \(String(describing: response.result.value))")
+            
+            switch response.result {
+            case .success:
+                
+                return postCompleted(response.result.value as AnyObject?, response.response?.statusCode)
+                
+            case .failure( _):
+                return postCompleted(nil, response.response?.statusCode)
+            }
+        }
+        
+    }
+    
+    //MARK: DELETE METHOD CALL API
+    func callServiceWithPUTMethod(params : Dictionary<String, AnyObject>, url : String, postCompleted : @escaping (_ data:AnyObject?, _ statusCode: Int?) -> ()){
+        
+        var auth_header = ["Authorization": "Bearer \(ManageCacheObject.getCurrentAccount().accessToken)"]
+        
+        auth_header = ManageCacheObject.isLogin() ? ["Authorization": "Bearer \(ManageCacheObject.getCurrentAccount().accessToken)"] : ["Authorization": "Basic \(ManageCacheObject.getCurrentAccount().accessToken)"]
+        
+        debugPrint(url,params,auth_header)
+        Alamofire.request(url, method: .put, parameters: params,  encoding: JSONEncoding.default, headers: auth_header).validate().responseJSON { response in
+            
+            debugPrint("REQUEST  \(String(describing: response.request))")
+            debugPrint("RESPONSE \(String(describing: response.result.value))")
+            
+            switch response.result {
+            case .success:
+                return postCompleted(response.result.value as AnyObject?, response.response?.statusCode)
+            case .failure( _):
+                return postCompleted(nil, response.response?.statusCode)
+            }
+        }
+        
+    }
+    
     //MARK:checkOnlineCallServiceWithMethod
-    func checkOnlineCallServiceWithMethod(params : NSDictionary?,files: NSDictionary? = nil, url : String, postMethod : Bool, postCompleted : @escaping (_ data:AnyObject?,_ error :String) -> ()){
+    func checkOnlineCallServiceWithMethod(params : NSDictionary?,files: NSDictionary? = nil, url : String, method : Int, postCompleted : @escaping (_ data:AnyObject?,_ error :String) -> ()){
         var parseParams : Dictionary<String, AnyObject>? = params as? Dictionary<String, AnyObject>
         if(parseParams == nil){
             parseParams = Dictionary<String, AnyObject>()
@@ -127,70 +170,232 @@ class ResAPI: UIResponder {
 
         
         if self.checkInternet() {
-            if(postMethod){
+            
+            switch method {
+            case REQUEST_METHOD.POST.rawValue:
                 self.callServiceWithPOSTMethod(params: parseParams!, url: url, postCompleted: { (data, statusCode) -> () in
-                    if(statusCode == STATUS_REQUEST.STATUS_SUCCESS.rawValue){// code successs
-                        if(data != nil){
-                            let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data)!
-                            if(response.status == 401){
-                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ERROR_UNAUTHORIZED"), object: nil)
-                            }else if(response.status == 411){
-                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ERROR_UNAUTHORIZED"), object: nil)
-                            }else{
-                                let completeData = self.checkErrorService(data: response, error: "")
-                                return postCompleted(completeData.0, completeData.1)
+                    
+                    switch statusCode {
+                    case STATUS_REQUEST.STATUS_UNAUTHORIZED.rawValue:
+                        
+                        self.refreshToken() { (message, newAccessToken) in
+                            if message == "LOGOUT" {
+                                return postCompleted(nil, "UNAUTHORIZED")
                             }
-                            
-                        }else{
-                            let completeData = self.checkErrorService(data: nil, error: "")
-                            return postCompleted(completeData.0, completeData.1)
+                            else {
+                                return postCompleted(nil, "RECALL")
+                            }
                         }
                         
-                    }else if(statusCode == 411){
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ERROR_UNAUTHORIZED"), object: nil)
-                    }else{
-                        let completeData = self.checkErrorService(data: nil, error: "")
-                        return postCompleted(completeData.0, completeData.1)
+                        
+                    case STATUS_REQUEST.STATUS_SUCCESS.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "SUCCESS")
+                        }
+                        else {
+                            return postCompleted(nil, "SUCCESS")
+                        }
+                    case STATUS_REQUEST.STATUS_NOT_FOUND.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "NOTFOUND")
+                        }
+                        else {
+                            return postCompleted(nil, "NOTFOUND")
+                        }
+                    case STATUS_REQUEST.STATUS_DATA.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "DATA")
+                        }
+                        else {
+                            return postCompleted(nil, "DATA")
+                        }
+                    default:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "")
+                            
+                        }else{
+                            return postCompleted(nil, "")
+                        }
                     }
+                    
                 })
-            }else{
+            case REQUEST_METHOD.GET.rawValue:
                 self.callServiceWithGETMethod(params: parseParams!, url: url,  postCompleted: { (data, statusCode) -> () in
                     
-                    if(statusCode == STATUS_REQUEST.STATUS_SUCCESS.rawValue){// code successs
-                        if(data != nil){
-                            let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data)!
-                            if(response.status == 401){
-                                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ERROR_UNAUTHORIZED"), object: nil)
-                            }else if(response.status == 411){
-                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ERROR_UNAUTHORIZED"), object: nil)
-                            }else{
-                                let completeData = self.checkErrorService(data: response, error: "")
-                                return postCompleted(completeData.0, completeData.1)
+                    switch statusCode {
+                    case STATUS_REQUEST.STATUS_UNAUTHORIZED.rawValue:
+                        self.refreshToken() { (message, newAccessToken) in
+                            if message == "LOGOUT" {
+                                return postCompleted(nil, "UNAUTHORIZED")
                             }
-                        }else{
-                            let completeData = self.checkErrorService(data: nil, error: "")
-                            return postCompleted(completeData.0, completeData.1)
+                            else {
+                                return postCompleted(nil, "RECALL")
+                            }
                         }
-                    }else if(statusCode == 411){
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "ERROR_UNAUTHORIZED"), object: nil)
-                    }
-                    else{
-                        let completeData = self.checkErrorService(data: nil, error: "")
-                        return postCompleted(completeData.0, completeData.1)
+                        
+                    case STATUS_REQUEST.STATUS_SUCCESS.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "SUCCESS")
+                        }
+                        else {
+                            return postCompleted(nil, "SUCCESS")
+                        }
+                    case STATUS_REQUEST.STATUS_NOT_FOUND.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "NOTFOUND")
+                        }
+                        else {
+                            return postCompleted(nil, "NOTFOUND")
+                        }
+                    case STATUS_REQUEST.STATUS_DATA.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "DATA")
+                        }
+                        else {
+                            return postCompleted(nil, "DATA")
+                        }
+                    default:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "")
+                            
+                        }else{
+                            return postCompleted(nil, "")
+                        }
                     }
                 })
+            case REQUEST_METHOD.DELETE.rawValue:
+                self.callServiceWithDELETEMethod(params: parseParams!, url: url, postCompleted: { (data, statusCode) -> () in
+                    
+                    switch statusCode {
+                    case STATUS_REQUEST.STATUS_UNAUTHORIZED.rawValue:
+                        self.refreshToken() { (message, newAccessToken) in
+                            if message == "LOGOUT" {
+                                return postCompleted(nil, "UNAUTHORIZED")
+                            }
+                            else {
+                                return postCompleted(nil, "RECALL")
+                            }
+                        }
+                    case STATUS_REQUEST.STATUS_SUCCESS.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "SUCCESS")
+                        }
+                        else {
+                            return postCompleted(nil, "SUCCESS")
+                        }
+                    case STATUS_REQUEST.STATUS_NOT_FOUND.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "NOTFOUND")
+                        }
+                        else {
+                            return postCompleted(nil, "NOTFOUND")
+                        }
+                    case STATUS_REQUEST.STATUS_DATA.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "DATA")
+                        }
+                        else {
+                            return postCompleted(nil, "DATA")
+                        }
+                    default:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "")
+                            
+                        }else{
+                            return postCompleted(nil, "")
+                        }
+                    }
+                    
+                                        
+                })
+            case REQUEST_METHOD.PUT.rawValue:
+                self.callServiceWithPUTMethod(params: parseParams!, url: url, postCompleted: { (data, statusCode) -> () in
+                    
+                    switch statusCode {
+                    case STATUS_REQUEST.STATUS_UNAUTHORIZED.rawValue:
+                        self.refreshToken() { (message, newAccessToken) in
+                            if message == "LOGOUT" {
+                                return postCompleted(nil, "UNAUTHORIZED")
+                            }
+                            else {
+                                return postCompleted(nil, "RECALL")
+                            }
+                        }
+                    case STATUS_REQUEST.STATUS_SUCCESS.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "SUCCESS")
+                        }
+                        else {
+                            return postCompleted(nil, "SUCCESS")
+                        }
+                    case STATUS_REQUEST.STATUS_NOT_FOUND.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "NOTFOUND")
+                        }
+                        else {
+                            return postCompleted(nil, "NOTFOUND")
+                        }
+                    case STATUS_REQUEST.STATUS_DATA.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "DATA")
+                        }
+                        else {
+                            return postCompleted(nil, "DATA")
+                        }
+                    default:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "")
+                            
+                        }else{
+                            return postCompleted(nil, "")
+                        }
+                    }
+                    
+                })
+            default:
+                return
             }
+
             
         }else{
-            let completeData = self.checkErrorService(data: nil, error: nil)
-            return postCompleted(completeData.0, completeData.1)
+            return postCompleted(nil, "INTERNET")
+        }
+        
+    }
+    
+    func checkOnlineCallServiceRefreshTokenWithMethod(params : NSDictionary?,files: NSDictionary? = nil, url : String, method : Int, postCompleted : @escaping (_ data:AnyObject?,_ error :String) -> ()){
+        var parseParams : Dictionary<String, AnyObject>? = params as? Dictionary<String, AnyObject>
+        if(parseParams == nil){
+            parseParams = Dictionary<String, AnyObject>()
+        }
+        parseParams?.updateValue("familyx_ios" as AnyObject, forKey: "os_name")
+
+        
+        if self.checkInternet() {
+            
+            self.callServiceWithPOSTMethod(params: parseParams!, url: url, postCompleted: { (data, statusCode) -> () in
+                
+                
+                if statusCode == STATUS_REQUEST.STATUS_SUCCESS.rawValue {
+                    if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                        return postCompleted(response, "RECALL")
+                    }
+                }
+                else if statusCode == STATUS_REQUEST.STATUS_BAD_REQUEST.rawValue {
+                    return postCompleted(nil, "LOGOUT")
+                }
+                
+            })
+            
+        }else{
+            return postCompleted(nil, "INTERNET")
         }
         
     }
     
     
     //=========================== API  Link  ======================
-    func login(username:String, password:String, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+    func login(username:String, password:String, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
         ManageCacheObject.setToken("")
         ManageCacheObject.saveCurrentAccount(Account())
         
@@ -206,13 +411,13 @@ class ResAPI: UIResponder {
         ] as [String : Any]
 
 
-        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : POST) { (data, error) -> () in
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         
     }
 
-    func signUp(username:String, email:String, phone:String, password:String, firstName:String, midName:String, lastName:String, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+    func signUp(username:String, email:String, phone:String, password:String, firstName:String, midName:String, lastName:String, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
   
         
         let url: String  = OAUTH_SERVER_URL + String(format: API_SIGN_UP, ManageCacheObject.getVersion())
@@ -231,13 +436,13 @@ class ResAPI: UIResponder {
         ] as [String : Any]
 
 
-        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : POST) { (data, error) -> () in
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         
     }
  
-    func getListFamilyTree( _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+    func getListFamilyTree( _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
 
         
         let url: String  = OAUTH_SERVER_URL + String(format: API_GET_LIST_FAMILY_TREE, ManageCacheObject.getVersion())
@@ -249,13 +454,13 @@ class ResAPI: UIResponder {
         ] as [String : Any]
 
 
-        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : GET) { (data, error) -> () in
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         
     }
     
-    func getFamilyTreeInfo(treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+    func getFamilyTreeInfo(treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
 
         
         let url: String  = OAUTH_SERVER_URL + String(format: API_GET_FAMILY_TREE_INFO, ManageCacheObject.getVersion(), treeId)
@@ -267,13 +472,13 @@ class ResAPI: UIResponder {
         ] as [String : Any]
 
 
-        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : GET) { (data, error) -> () in
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         
     }
     
-    func addFamilyTree(name:String, description:String, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+    func addFamilyTree(name:String, description:String, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
 
         
         let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_FAMILY_TREE, ManageCacheObject.getVersion())
@@ -286,13 +491,50 @@ class ResAPI: UIResponder {
         ] as [String : Any]
 
 
-        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : POST) { (data, error) -> () in
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         
     }
     
-    func addChild(child:People, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+    func deleteFamilyTree(treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_DELETE_FAMILY_TREE, ManageCacheObject.getVersion(), treeId)
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.DELETE.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func editFamilyTree(name:String, description:String, treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_EDIT_FAMILY_TREE, ManageCacheObject.getVersion(), treeId)
+
+        debugPrint(url)
+        
+        let params = [
+            "name": name,
+            "description": description
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.PUT.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func addChild(child:People, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
 
         
         let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_CHILD, ManageCacheObject.getVersion())
@@ -306,13 +548,13 @@ class ResAPI: UIResponder {
         ] as [String : Any]
 
 
-        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : POST) { (data, error) -> () in
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         
     }
     
-    func addSpouse(spouse:People, relativePeopleId:Int, _ callBack: @escaping (_ data : AnyObject? , _ Message : String?)->Void) ->Void{
+    func addSpouse(spouse:People, relativePeopleId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
 
         
         let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_SPOUSE, ManageCacheObject.getVersion(), relativePeopleId)
@@ -325,14 +567,131 @@ class ResAPI: UIResponder {
             "lastName": spouse.lastName,
             "dateOfBirth": spouse.birthday,
             "dateOfDeath": spouse.deathday,
-            "userId": "",
+            "userId": nil,
+            "imageUrl": spouse.imageUrl,
             "note": spouse.note
-        ] as [String : Any]
+        ] as [String : Any?]
 
 
-        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, postMethod : POST) { (data, error) -> () in
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         
+    }
+    
+    func addParent(parent:People, relativePeopleId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_PARENT, ManageCacheObject.getVersion(), relativePeopleId)
+
+        debugPrint(url)
+        
+        let params = [
+            "gender": parent.gender,
+            "firstName": parent.firstName,
+            "lastName": parent.lastName,
+            "dateOfBirth": parent.birthday,
+            "dateOfDeath": parent.deathday,
+            "userId": nil,
+            "imageUrl": parent.imageUrl,
+            "note": parent.note
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func updateNode(person:People, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_UPDATE_NODE, ManageCacheObject.getVersion(), person.id)
+
+        debugPrint(url)
+        
+        let params = [
+            "gender": person.gender,
+            "firstName": person.firstName,
+            "lastName": person.lastName,
+            "dateOfBirth": person.birthday,
+            "dateOfDeath": person.deathday,
+            "userId": nil,
+            "imageUrl": person.imageUrl,
+            "note": person.note
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.PUT.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func deleteNode(personId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_DELETE_NODE, ManageCacheObject.getVersion(), personId)
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.DELETE.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func postRefreshToken( _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_REFRESH_TOKEN, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            "refreshToken" : ManageCacheObject.getCurrentAccount().refreshToken
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceRefreshTokenWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func refreshToken(completion: ((String, String) -> Void)?) {
+        ResAPI.sharedInstance.postRefreshToken( { (data, message) -> Void in
+          
+            if message == "RECALL" {
+                if(data != nil){
+                    
+                    let response:ResResponse = data as! ResResponse
+
+                    if let accountRes = Mapper<AccountRefreshRes>().map(JSONObject: response.data) {
+                        
+                        let user = ManageCacheObject.getCurrentAccount()
+                        user.accessToken = accountRes.accessToken
+                        user.refreshToken = accountRes.newRefreshToken ?? ""
+                        ManageCacheObject.saveCurrentAccount(user)
+                        
+                        completion!("RECALL",accountRes.accessToken)
+                    }
+                    
+                }
+            }
+            else if message == "LOGOUT" {
+                completion!("LOGOUT", "")
+            }
+            else {
+                
+            }
+
+        })
     }
 }

@@ -59,7 +59,7 @@ class ImageUploadClient {
     class func  uploadWithData(serverUrl: URL, headers: HTTPHeaders, fileData: Data, filename: String, progressing: ((Double) -> Void)?, success: ((DataResponse<Any>) -> Void)?, failure: ((Error) -> Void)?) {
     
         Networking.sharedInstance.backgroundSessionManager.upload(multipartFormData: { (multipartData) in
-            multipartData.append(fileData, withName: "send_file", fileName: filename, mimeType: "image")
+            multipartData.append(fileData, withName: "file", fileName: filename, mimeType: "image")
         }, usingThreshold: SessionManager.multipartFormDataEncodingMemoryThreshold, to: serverUrl, method: .post, headers: headers, encodingCompletion: { encodingResult in
             
             switch (encodingResult) {

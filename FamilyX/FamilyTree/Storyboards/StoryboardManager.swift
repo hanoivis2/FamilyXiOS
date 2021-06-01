@@ -66,4 +66,8 @@ extension UIStoryboard {
     class func addFamilyTreeViewController() -> AddFamilyTreeViewController? {
         return familyTreeStoryboard().instantiateViewController(withIdentifier: "AddFamilyTreeViewController") as? AddFamilyTreeViewController
     }
+    
+    class func editFamilyTreeInfoViewController() -> EditFamilyTreeInfoViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "EditFamilyTreeInfoViewController") as? EditFamilyTreeInfoViewController
+    }
 }

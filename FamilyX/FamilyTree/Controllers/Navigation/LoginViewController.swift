@@ -75,29 +75,57 @@ class LoginViewController : UIViewController, NavigationControllerCustomDelegate
         hud.textLabel.text = "Please wait..."
         hud.show(in: self.view)
         
-        ResAPI.sharedInstance.login(username: username,password: password, { (data, Message) -> Void in
-            if(data != nil){
-                let response:ResResponse = data as! ResResponse
-
-                if response.data != nil {
-                    let accountRes = Mapper<AccountRes>().map(JSONObject: response.data) ?? AccountRes()
+        ResAPI.sharedInstance.login(username: username,password: password, { (data, message) -> Void in
+            
+            switch message {
+            case "SUCCESS":
+                if(data != nil){
                     
-                    let account = accountRes.user
-                    account.refreshToken = accountRes.refreshToken
-                    account.accessToken = accountRes.accessToken
+                    let response:ResResponse = data as! ResResponse
 
-                    ManageCacheObject.saveCurrentAccount(account)
-                    
-                    hud.dismiss()
-                    self.goToMainViewController()
+                    if let accountRes = Mapper<AccountRes>().map(JSONObject: response.data) {
+                        let account = accountRes.user
+                        account.refreshToken = accountRes.refreshToken
+                        account.accessToken = accountRes.accessToken
+
+                        ManageCacheObject.saveCurrentAccount(account)
+                        
+                        hud.dismiss()
+                        self.goToMainViewController()
+                    }
+                    else {
+                        Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
                     
                 }
-                else {
-                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.login(username: username, password: password)
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
                 }
                 
-            }else{
-                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             }
             
             hud.dismiss()

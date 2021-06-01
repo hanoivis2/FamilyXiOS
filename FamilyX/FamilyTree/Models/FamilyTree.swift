@@ -13,6 +13,8 @@ class FamilyTree: Mappable {
     var id = 0
     var name = ""
     var description = ""
+    var owner = FamilyTreeCollaborator()
+    var editors = [FamilyTreeCollaborator]()
     var people = [People]()
     
     init() {}
@@ -25,6 +27,27 @@ class FamilyTree: Mappable {
         id                                  <- map["id"]
         name                                <- map["name"]
         description                         <- map["description"]
+        owner                               <- map["owner"]
+        editors                             <- map["editors"]
         people                              <- map["people"]
+    }
+}
+
+class FamilyTreeCollaborator: Mappable {
+    
+    var id = ""
+    var username = ""
+    var avatarUrl = ""
+    
+    init() {}
+    
+    required  init?(map: Map) {
+        mapping(map: map)
+    }
+    
+    func  mapping(map: Map) {
+        id                                      <- map["id"]
+        username                                <- map["username"]
+        avatarUrl                               <- map["avatarUrl"]
     }
 }

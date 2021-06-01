@@ -15,6 +15,7 @@ class People : Mappable {
     var lastName = ""
     var birthday = ""
     var deathday = ""
+    var imageUrl = ""
     var fatherId = 0
     var motherId = 0
     var gender = GENDER_ID.MALE.rawValue
@@ -22,6 +23,7 @@ class People : Mappable {
     var spouse = [Spouse]()
     
     var maxX:CGFloat = 0
+    var firstChildMaxX:CGFloat = 0
     
     init() {}
     required init?(map: Map) {
@@ -34,6 +36,7 @@ class People : Mappable {
         lastName                                <- map["lastName"]
         birthday                                <- map["dateOfBirth"]
         deathday                                <- map["dateOfDeath"]
+        imageUrl                                <- map["imageUrl"]
         fatherId                                <- map["parent1Id"]
         motherId                                <- map["parent2Id"]
         gender                                  <- map["gender"]

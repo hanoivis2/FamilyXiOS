@@ -68,3 +68,23 @@ class AccountRes : Mappable {
     }
     
 }
+
+class AccountRefreshRes : Mappable {
+    
+    var user = Account()
+    var accessToken = ""
+    var newRefreshToken:String?
+    
+    
+    init() {}
+    required init?(map: Map) {
+        mapping(map: map)
+    }
+    
+    func mapping(map: Map){
+        user                                    <- map["user"]
+        accessToken                             <- map["accessToken"]
+        newRefreshToken                         <- map["newRefreshToken"]
+    }
+    
+}

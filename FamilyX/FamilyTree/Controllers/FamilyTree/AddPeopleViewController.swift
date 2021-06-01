@@ -22,7 +22,7 @@ struct RelationshipType {
 }
 
 protocol AddPeopleDelegate {
-    func addPeople(people:People, relationshipType:Int, relativePersonId:Int)
+    func addPeople(people:People, relationshipType:Int, relativePersonId:Int, image:UIImage)
 }
 
 class AddPeopleViewController : UIViewController, NavigationControllerCustomDelegate {
@@ -46,7 +46,8 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
     var allGenderType: [GenderType] = [GenderType(id: GENDER_ID.MALE.rawValue, text: "Male"),
                                         GenderType(id: GENDER_ID.FEMALE.rawValue, text: "Female")]
     var allRelationshipType: [RelationshipType] = [RelationshipType(id: 0, text: "Spouse"),
-                                               RelationshipType(id: 1, text: "Child")]
+                                               RelationshipType(id: 1, text: "Child"),
+                                               RelationshipType(id: 2, text: "Parent")]
     
     var genderSelected = 0
     var relationshipSelected = 0
@@ -119,11 +120,11 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
                 newPeople.deathday = textfield_deathday.text ?? ""
                 newPeople.note = textfield_note.text ?? ""
                 
-                delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id)
+                delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id, image: self.img_avatar.image ?? UIImage())
                 self.navigationController?.popViewController(animated: true)
             }
         }
-        else {                                      //Spouse
+        else if relationshipSelected == 0 {                                      //Spouse
             if textfield_firstName.text!.isEmpty || textfield_lastName.text!.isEmpty {
                 Loaf.init("Please fill out first name and last name!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
             }
@@ -149,7 +150,34 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
                 newPeople.deathday = textfield_deathday.text ?? ""
                 newPeople.note = textfield_note.text ?? ""
                 
-                delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id)
+                delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id, image: img_avatar.image ?? UIImage())
+                self.navigationController?.popViewController(animated: true)
+            }
+        }
+        else {
+            if textfield_firstName.text!.isEmpty || textfield_lastName.text!.isEmpty {
+                Loaf.init("Please fill out first name and last name!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else if textfield_birthday.text!.isEmpty {
+                Loaf.init("Please choose birthday!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else if relativePerson.fatherId > 0 || relativePerson.motherId > 0 {
+                Loaf.init("This person has already had parent!", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else {
+                let newPeople = People()
+                
+                newPeople.fatherId = 0
+                newPeople.motherId = 0
+                
+                newPeople.gender = genderSelected
+                newPeople.firstName = textfield_firstName.text!
+                newPeople.lastName = textfield_lastName.text!
+                newPeople.birthday = textfield_birthday.text!
+                newPeople.deathday = textfield_deathday.text ?? ""
+                newPeople.note = textfield_note.text ?? ""
+                
+                delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id, image: img_avatar.image ?? UIImage())
                 self.navigationController?.popViewController(animated: true)
             }
         }
@@ -171,6 +199,7 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
         var currentDate = Date()
         if !self.textfield_birthday.text!.isEmpty {
             let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
             dateFormatter.dateFormat = "dd/MM/yyyy"
             currentDate = dateFormatter.date(from: self.textfield_birthday.text!)!
         }
@@ -201,6 +230,7 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
         var currentDate = Date()
         if !self.textfield_deathday.text!.isEmpty {
             let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
             dateFormatter.dateFormat = "dd/MM/yyyy"
             currentDate = dateFormatter.date(from: self.textfield_deathday.text!)!
         }
@@ -257,6 +287,7 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
              for item in items {
                  switch item {
                  case .photo(let photo):
+                    
                      let image = photo.originalImage.fixedOrientation()!.resizeImage(500, opaque: true)
                      let cropViewController = CropViewController(image: image)
                      cropViewController.aspectRatioPreset = .presetSquare

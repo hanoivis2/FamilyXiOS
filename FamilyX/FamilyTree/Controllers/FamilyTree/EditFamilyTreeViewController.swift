@@ -10,6 +10,7 @@ import Loaf
 import JGProgressHUD
 import ObjectMapper
 import Alamofire
+import Kingfisher
 
 class EditFamilyTreeViewController : UIViewController, NavigationControllerCustomDelegate {
     
@@ -32,6 +33,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     var lines = [CAShapeLayer]()
     var firstView = true
     var treeId = 0
+    var selectedDeletePersonId = 0
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -49,7 +51,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         super.viewWillAppear(animated)
         //custom navigation bar
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, title: "EDIT TREE")
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideSearchButton: false, hideShareButton: false, title: "EDIT TREE")
         navigationControllerCustom.touchTarget = self
         self.navigationItem.hidesBackButton = true
     
@@ -66,6 +68,14 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     func backTap() {
         navigationController!.popViewController(animated: true)
+    }
+    
+    func searchTap() {
+        
+    }
+    
+    func shareTap() {
+        
     }
     
     func calcutlateSpaceToFirstPeople(people:People, firstPeople:People) -> Int {
@@ -194,6 +204,22 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
 
         view.people = newPeople
         view.delegate = self
+        
+        let imageView = UIImageView()
+        if let url = URL(string: newPeople.imageUrl) {
+            
+            
+            imageView.kf.setImage(with: url, placeholder: UIImage(named: "female"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            }, completionHandler: { result in
+                if let image = imageView.image {
+                    view.img_avatar.image = image
+                }
+            })
+            
+        } else {
+            view.img_avatar.image = UIImage(named: "male")!
+        }
 
         view.lbl_name.text = newPeople.firstName + " " + newPeople.lastName
         view.lbl_birthday.text = newPeople.birthday
@@ -240,7 +266,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         treeHeight += 1
         
         //draw people at same level
-        for i in  stride(from: treeHeight - 1, through: 0, by: -1) {
+        for i in stride(from: treeHeight - 1, through: 0, by: -1) {
             
             var peopleInSameLevel = [People]()
             
@@ -254,7 +280,29 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             var currentFatherId = 0
             var siblings = [People]()
             
+            peopleInSameLevel = peopleInSameLevel.sorted { (a, b) -> Bool in
+                
+                if a.firstChildMaxX == 0 && b.firstChildMaxX != 0 {
+                    return false
+                }
+                else {
+                    let dateFormatter = DateFormatter()
+                    dateFormatter.dateFormat = "dd/MM/yyyy"
+                    let aBirthday = dateFormatter.date(from: a.birthday)!
+                    let bBirthday = dateFormatter.date(from: b.birthday)!
+                    
+                    if aBirthday > bBirthday {
+                        return false
+                    }
+                    else {
+                        return true
+                    }
+                }
+
+            }
+            
             for person in peopleInSameLevel {
+                
                 let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
 
                 view.frame.size = CGSize(width: _peopleNodeWidth, height: _peopleNodeHeight)
@@ -268,7 +316,19 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 }
                 
                 if person.fatherId != currentFatherId && currentFatherId != 0 {
-                    view.frame.origin.x = maxX + _peopleNodeWidth + _nodeHorizontalSpace
+                    view.frame.origin.x = maxX + 2*_peopleNodeWidth
+                }
+                
+                if view.frame.origin.x < 0 {
+                    let space = (_defaultPaddingLeft - view.frame.origin.x)
+                    view.frame.origin.x += space
+                    for otherView in self.peopleViews {
+                        otherView.frame.origin.x += space
+                    }
+                    
+                    for line in self.lines {
+                        line.position = CGPoint(x:line.position.x + space, y:line.position.y)
+                    }
                 }
                 
                 view.frame.origin.y = _defaultPaddingTop + CGFloat(i)*(_peopleNodeHeight + _nodeVerticalSpace)
@@ -279,6 +339,22 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
 
                 view.people = person
                 view.delegate = self
+                
+                let imageView = UIImageView()
+                if let url = URL(string: person.imageUrl) {
+                    
+                    
+                    imageView.kf.setImage(with: url, placeholder: UIImage(named: "male"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                        // Progress updated
+                    }, completionHandler: { result in
+                        if let image = imageView.image {
+                            view.img_avatar.image = image
+                        }
+                    })
+                    
+                } else {
+                    view.img_avatar.image = UIImage(named: "male")!
+                }
 
                 view.lbl_name.text = person.firstName + " " + person.lastName
                 view.lbl_birthday.text = person.birthday
@@ -298,7 +374,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 self.peopleViews.append(view)
 
                 
-                if person.spouse.count > 0 && person.gender == GENDER_ID.MALE.rawValue {
+                if person.spouse.count > 0 {
                     addWifeView(rootPeople: person, newPeople: getWife(people: person))
                     maxX = view.frame.maxX + _peopleNodeWidth + _nodeHorizontalSpace
                 }
@@ -308,6 +384,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
               
                 if currentFatherId == 0 {
                     currentFatherId = person.fatherId
+                    getFather(people: person).firstChildMaxX = view.frame.maxX
                     siblings.append(person)
                 }
                 else if currentFatherId != person.fatherId {
@@ -342,6 +419,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                     
                     siblings.removeAll()
                     siblings.append(person)
+                    getFather(people: person).firstChildMaxX = view.frame.maxX
                     currentFatherId = person.fatherId
                 }
                 
@@ -410,41 +488,75 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         hud.textLabel.text = "Please wait..."
         hud.show(in: self.view)
         
-        ResAPI.sharedInstance.getFamilyTreeInfo(treeId: treeId, { (data, Message) -> Void in
-            if(data != nil){
-                
-                let response:ResResponse = data as! ResResponse
+        ResAPI.sharedInstance.getFamilyTreeInfo(treeId: treeId, { (data, message) -> Void in
+           
+            switch message {
+            case "SUCCESS":
+                if(data != nil){
+                    
+                    let response:ResResponse = data as! ResResponse
 
-                if response.data != nil {
-                    let treeInfo = Mapper<FamilyTree>().map(JSONObject: response.data) ?? FamilyTree()
-                    self.people.removeAll()
-                    self.people = treeInfo.people
-                    
-                    
-                    for person in self.people {
-                        if person.fatherId == 0 && person.gender == GENDER_ID.MALE.rawValue {
-                            self.rootPeople = person
-                            break
+                    if let treeInfo = Mapper<FamilyTree>().map(JSONObject: response.data) {
+                        self.people.removeAll()
+                        self.people = treeInfo.people
+                        
+                        
+                        for person in self.people {
+                            let dateFormatter = DateFormatter()
+                            dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+                            dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+                            let date = dateFormatter.date(from: person.birthday)
+                            dateFormatter.dateFormat = "dd/MM/yyyy"
+                            person.birthday = dateFormatter.string(from: date ?? Date())
                         }
+                        
+                        for person in self.people {
+                            if person.fatherId == 0 && person.gender == GENDER_ID.MALE.rawValue {
+                                self.rootPeople = person
+                                break
+                            }
+                        }
+                        
+                        for item in self.peopleViews {
+                            item.removeFromSuperview()
+                        }
+                        for item in self.lines {
+                            item.removeFromSuperlayer()
+                        }
+                        self.peopleViews.removeAll()
+                        self.lines.removeAll()
+                        self.renderTree()
                     }
                     
-                    for item in self.peopleViews {
-                        item.removeFromSuperview()
-                    }
-                    for item in self.lines {
-                        item.removeFromSuperlayer()
-                    }
-                    self.peopleViews.removeAll()
-                    self.lines.removeAll()
-                    self.renderTree()
                 }
-                else {
-                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.getTreeInfo()
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
                 }
                 
-                
-            }else{
-                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             }
             
             hud.dismiss()
@@ -458,26 +570,45 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         hud.show(in: self.view)
         
         let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let date = dateFormatter.date(from: child.birthday)
         dateFormatter.dateFormat = "yyyy-MM-ddThh:mm:ss.s+zzzzzz"
         child.birthday = dateFormatter.string(from: date!)
         
-        ResAPI.sharedInstance.addChild(child: child,  { (data, Message) -> Void in
-            if(data != nil){
-
-                let response:ResResponse = data as! ResResponse
-
-                if response.data != nil {
-                    self.getTreeInfo()
+        ResAPI.sharedInstance.addChild(child: child,  { (data, message) -> Void in
+            
+            switch message {
+            case "SUCCESS":
+                self.getTreeInfo()
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
                 }
-                else {
-                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.addChild(child: child)
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
                 }
                 
-                
-            }else{
-                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             }
             
             hud.dismiss()
@@ -491,33 +622,204 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         hud.show(in: self.view)
         
         let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
         dateFormatter.dateFormat = "dd/MM/yyyy"
         let date = dateFormatter.date(from: spouse.birthday)
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
         spouse.birthday = dateFormatter.string(from: date!)
         
-        ResAPI.sharedInstance.addSpouse(spouse: spouse, relativePeopleId: relativePeopleId, { (data, Message) -> Void in
-            if(data != nil){
-
-                let response:ResResponse = data as! ResResponse
-
-                if response.data != nil {
-                    self.getTreeInfo()
+        ResAPI.sharedInstance.addSpouse(spouse: spouse, relativePeopleId: relativePeopleId, { (data, message) -> Void in
+            
+            switch message {
+            case "SUCCESS":
+                self.getTreeInfo()
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
                 }
-                else {
-                    Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.addSpouse(spouse: spouse, relativePeopleId: relativePeopleId)
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
                 }
                 
-                
-            }else{
-                Loaf.init(SERVER_ERROR, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             }
             
             hud.dismiss()
         })
     }
     
-    func uploadPhotoToServer(parameters: Dictionary<String, AnyObject>, filename:String, imageData: Data?,  code:String) {
+    func addParent(parent:People, relativePeopleId:Int){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let date = dateFormatter.date(from: parent.birthday)
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        parent.birthday = dateFormatter.string(from: date!)
+        
+        ResAPI.sharedInstance.addParent(parent: parent, relativePeopleId: relativePeopleId, { (data, message) -> Void in
+            
+            switch message {
+            case "SUCCESS":
+                self.getTreeInfo()
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.addParent(parent: parent, relativePeopleId: relativePeopleId)
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
+                }
+                
+            }
+            
+            hud.dismiss()
+        })
+    }
+    
+    func editNode(person:People){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        let date = dateFormatter.date(from: person.birthday)
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        person.birthday = dateFormatter.string(from: date!)
+        
+        ResAPI.sharedInstance.updateNode(person: person, { (data, message) -> Void in
+           
+            switch message {
+            case "SUCCESS":
+                self.getTreeInfo()
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.editNode(person: person)
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
+                }
+                
+            }
+            
+            hud.dismiss()
+        })
+    }
+    
+    func deleteNode(personId:Int){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+
+        
+        ResAPI.sharedInstance.deleteNode(personId: personId, { (data, message) -> Void in
+          
+            switch message {
+            case "SUCCESS":
+                self.getTreeInfo()
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+            case "RECALL":
+                self.deleteNode(personId: personId)
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
+                }
+                
+            }
+
+            
+            hud.dismiss()
+        })
+    }
+    
+    func uploadPhotoToServer(parameters: Dictionary<String, AnyObject>, imageData: Data?, fileName:String, completion: ((String) -> Void)?) {
         
         let hud = JGProgressHUD(style: .dark)
         hud.textLabel.text = "Please wait..."
@@ -536,27 +838,55 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         }
         
         let successClosure: ((DataResponse<Any>) -> Void)? = {response in
-            print("succeeded :)")
+            print("SUCCEEDED :)")
+            if let res:ResResponse = Mapper<ResResponse>().map(JSONObject: response.result.value) {
+                completion!(res.data as! String)
+            }
+            else {
+                completion!("")
+                Loaf.init("Your image is too large to upload, please try another by edit your node!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(5), completionHandler: nil)
+            }
+            
             hud.dismiss()
-            self.navigationController?.popViewController(animated: true)
         }
         
         let failClosure: ((Error) -> Void)? = { err in
-            print("failed :( \(err)")
-            Toast.show(message: err.localizedDescription, controller: self)
+            print("FAILED :( \(err.localizedDescription)")
+            Loaf.init(err.localizedDescription, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            hud.dismiss()
         }
         
-        ImageUploadClient.uploadWithData(serverUrl: URL(string: urlUploadFile)!, headers: headers, fileData: imageData!, filename: filename, progressing: processingClosure, success: successClosure, failure: failClosure)
+        ImageUploadClient.uploadWithData(serverUrl: URL(string: urlUploadFile)!, headers: headers, fileData: imageData!, filename: fileName, progressing: processingClosure, success: successClosure, failure: failClosure)
     }
 }
 
 extension EditFamilyTreeViewController : AddPeopleDelegate {
-    func addPeople(people:People, relationshipType:Int, relativePersonId:Int) {
-        if relationshipType == 1 {
-           addChild(child: people)
-        }
-        else {
-           addSpouse(spouse: people, relativePeopleId: relativePersonId)
+    func addPeople(people:People, relationshipType:Int, relativePersonId:Int, image:UIImage) {
+        
+        let item = image
+        let parameters = [String:AnyObject]()
+        let imageData: Data = item.jpegData(compressionQuality: 0.5)!
+        let date = Date()
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-ddHH:mm:ss"
+        let result = formatter.string(from: date)
+        let randomString = String((0..<15).map{ _ in result.randomElement()! })
+        let file_name = String(format: "avatar_%@.%@", randomString, "jpg")
+        
+        
+        uploadPhotoToServer(parameters: parameters, imageData: imageData, fileName: file_name) { (url) in
+            if relationshipType == 1 {
+                people.imageUrl = url
+                self.addChild(child: people)
+            }
+            else if relationshipType == 0 {
+                people.imageUrl = url
+                self.addSpouse(spouse: people, relativePeopleId: relativePersonId)
+            }
+            else {
+                people.imageUrl = url
+                self.addParent(parent: people, relativePeopleId: relativePersonId)
+            }
         }
     }
     
@@ -574,15 +904,15 @@ extension EditFamilyTreeViewController : PeopleViewDelegate {
     
     func nodeTapped(people: People, sourceView: UIView) {
         
-        let listName = ["Edit node", "Add node"]
-        let listIcon = ["editNode", "addNode"]
+        let listName = ["Edit node", "Add node", "Delete node"]
+        let listIcon = ["editNode", "addNode", "close"]
        
         let controller = ArrayChoiceReportViewController(Direction.allValues)
        
         controller.people = people
         controller.list_icons = listIcon
         controller.listString = listName
-        controller.preferredContentSize = CGSize(width: 120, height: 90)
+        controller.preferredContentSize = CGSize(width: 120, height: 135)
         controller.delegate = self
        
         showPopup(controller, sourceView: sourceView)
@@ -597,41 +927,65 @@ extension EditFamilyTreeViewController : ArrayChoiceReportViewControllerDelegate
             let editPeopleViewController:EditPeopleViewController?
             editPeopleViewController = UIStoryboard.editPeopleViewController()
             editPeopleViewController?.delegate = self
-            editPeopleViewController?.people = people
+            editPeopleViewController?.person = people
             navigationController?.pushViewController(editPeopleViewController!, animated: true)
         }
-        else {
+        else if pos == 1 {
             
-            if people.gender == GENDER_ID.FEMALE.rawValue {
-                Loaf.init("You can only add node from male node", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-            }
-            else {
+//            if people.gender == GENDER_ID.FEMALE.rawValue {
+//                Loaf.init("You can only add node from male node", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
+//            }
+//            else {
                 let addPeopleViewController:AddPeopleViewController?
                 addPeopleViewController = UIStoryboard.addPeopleViewController()
                 addPeopleViewController?.relativePerson = people
                 addPeopleViewController?.delegate = self
                 navigationController?.pushViewController(addPeopleViewController!, animated: true)
-            }
+//            }
+        }
+        else {
+            self.selectedDeletePersonId = people.id
+            let dialogConfirmViewController:DialogConfirmViewController?
+            dialogConfirmViewController = UIStoryboard.dialogConfirmViewController()
+            dialogConfirmViewController?.delegate = self
+            dialogConfirmViewController?.dialogTitle = "Confirm"
+            dialogConfirmViewController?.content = "Are you sure to delete this node?"
+            self.present(dialogConfirmViewController!, animated: false, completion: nil)
         }
     }
 }
 
+extension EditFamilyTreeViewController : DialogConfirmDelegate {
+    func accept() {
+        deleteNode(personId: selectedDeletePersonId)
+    }
+    
+    func deny() {
+        
+    }
+}
+
 extension EditFamilyTreeViewController : EditPeopleDelegate {
-    func editPeople(people:People) {
-        for i in 0..<self.peopleViews.count {
-            if peopleViews[i].people.id == people.id {
-                
-                let item = peopleViews[i]
-                
-                item.people = people
-                if people.gender == GENDER_ID.MALE.rawValue {
-                    item.backgroundColor = ColorUtils.male_color()
-                }
-                else {
-                    item.backgroundColor = ColorUtils.female_color()
-                }
-                
-                break
+    func editPeople(people: People, image: UIImage, hasChangeAvatar:Bool) {
+        
+        if hasChangeAvatar == false {
+            self.editNode(person: people)
+        }
+        else {
+            let item = image
+            let parameters = [String:AnyObject]()
+            let imageData: Data = item.jpegData(compressionQuality: 0.5)!
+            let date = Date()
+            let formatter = DateFormatter()
+            formatter.dateFormat = "yyyy-MM-ddHH:mm:ss"
+            let result = formatter.string(from: date)
+            let randomString = String((0..<15).map{ _ in result.randomElement()! })
+            let file_name = String(format: "avatar_%@.%@", randomString, "jpg")
+            
+            
+            uploadPhotoToServer(parameters: parameters, imageData: imageData, fileName: file_name) { (url) in
+                people.imageUrl = url
+                self.editNode(person: people)
             }
         }
     }

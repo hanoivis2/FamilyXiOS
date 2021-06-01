@@ -13,14 +13,18 @@ import Foundation
 @objc protocol NavigationControllerCustomDelegate {
     @objc optional func menuTap()
     @objc optional func backTap()
+    @objc optional func searchTap()
     @objc optional func addTap()
+    @objc optional func shareTap()
 }
 
 class NavigationControllerCustom: UINavigationController {
 
     var backButton : UIButton!
     var menuButton : UIButton!
+    var searchButton : UIButton!
     var addButton : UIButton!
+    var shareButton : UIButton!
     var touchTarget : NavigationControllerCustomDelegate?
     var textTitle : UILabel!
     var numberLabel : UILabel!
@@ -40,7 +44,7 @@ class NavigationControllerCustom: UINavigationController {
         textTitle.frame.origin.y = centerY
         backButton.frame.origin.y = centerY
         menuButton.frame.origin.y = centerY
-        addButton.frame.origin.y = centerY
+        searchButton.frame.origin.y = centerY
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -101,6 +105,32 @@ class NavigationControllerCustom: UINavigationController {
         menuButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
         self.navigationBar.addSubview(menuButton)
         
+        searchButton = UIButton(frame: CGRect(x: widthNavi - 50, y: 0, width: 40, height: 40))
+        searchButton?.showsTouchWhenHighlighted = true
+        
+        if let image = UIImage(named: "icon_search") {
+            searchButton.setImage(image, for: .normal)
+            searchButton.tintColor = .white
+        }
+        searchButton.setTitleColor(UIColor.white, for: UIControl.State())
+        searchButton.setTitleColor(UIColor.COLOR_ICON_TOUCH(), for: UIControl.State.highlighted)
+        searchButton.addTarget(self, action:#selector(NavigationControllerCustom.shareTap), for: UIControl.Event.touchUpInside)
+        searchButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+        self.navigationBar.addSubview(searchButton)
+        
+        shareButton = UIButton(frame: CGRect(x: widthNavi - 100, y: 0, width: 40, height: 40))
+        shareButton.showsTouchWhenHighlighted = true
+        
+        if let image = UIImage(named: "icon_share") {
+            shareButton.setImage(image, for: .normal)
+            shareButton.tintColor = .white
+        }
+        shareButton.setTitleColor(UIColor.white, for: UIControl.State())
+        shareButton.setTitleColor(UIColor.COLOR_ICON_TOUCH(), for: UIControl.State.highlighted)
+        shareButton.addTarget(self, action:#selector(NavigationControllerCustom.searchTap), for: UIControl.Event.touchUpInside)
+        shareButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
+        self.navigationBar.addSubview(shareButton)
+        
         addButton = UIButton(frame: CGRect(x: widthNavi - 50, y: 0, width: 40, height: 40))
         addButton?.showsTouchWhenHighlighted = true
         
@@ -127,7 +157,7 @@ class NavigationControllerCustom: UINavigationController {
         numberLabel.isUserInteractionEnabled = false
         backButton.isHidden = true
         menuButton.isHidden = true
-        addButton.isHidden = true
+        searchButton.isHidden = true
         textTitle.isHidden = true
         navigationController?.navigationItem.hidesBackButton = true
     }
@@ -137,7 +167,9 @@ class NavigationControllerCustom: UINavigationController {
     func setUpNavigationBar(_ target:NavigationControllerCustomDelegate, hideBackButton:Bool, title:String){
         self.backButton.isHidden = hideBackButton
         self.menuButton.isHidden = true
+        self.searchButton.isHidden = true
         self.addButton.isHidden = true
+        self.shareButton.isHidden = true
         
         if(title != ""){
             self.textTitle.isHidden = false
@@ -152,7 +184,9 @@ class NavigationControllerCustom: UINavigationController {
   
         self.backButton.isHidden = true
         self.menuButton.isHidden = hideMenuButton
+        self.searchButton.isHidden = true
         self.addButton.isHidden = true
+        self.shareButton.isHidden = true
         
         if(title != ""){
             self.textTitle.isHidden = false
@@ -163,10 +197,28 @@ class NavigationControllerCustom: UINavigationController {
        
     }
     
-    func setUpNavigationBar(_ target:NavigationControllerCustomDelegate, hideAddButton:Bool, title:String){
+    func setUpNavigationBar(_ target:NavigationControllerCustomDelegate, hideSearchButton:Bool, title:String){
         self.backButton.isHidden = true
         self.menuButton.isHidden = true
-        self.addButton.isHidden = hideAddButton
+        self.searchButton.isHidden = hideSearchButton
+        self.addButton.isHidden = true
+        self.shareButton.isHidden = true
+        
+        if(title != ""){
+            self.textTitle.isHidden = false
+            self.textTitle.text = title
+        }else{
+            self.textTitle.isHidden = true
+        }
+        
+    }
+    
+    func setUpNavigationBar(_ target:NavigationControllerCustomDelegate, hideBackButton:Bool, hideSearchButton:Bool, title:String){
+        self.backButton.isHidden = hideBackButton
+        self.menuButton.isHidden = true
+        self.searchButton.isHidden = hideSearchButton
+        self.addButton.isHidden = true
+        self.shareButton.isHidden = true
         
         if(title != ""){
             self.textTitle.isHidden = false
@@ -179,8 +231,10 @@ class NavigationControllerCustom: UINavigationController {
     
     func setUpNavigationBar(_ target:NavigationControllerCustomDelegate, hideBackButton:Bool, hideAddButton:Bool, title:String){
         self.backButton.isHidden = hideBackButton
-        self.menuButton.isHidden = true
         self.addButton.isHidden = hideAddButton
+        self.menuButton.isHidden = true
+        self.searchButton.isHidden = true
+        self.shareButton.isHidden = true
         
         if(title != ""){
             self.textTitle.isHidden = false
@@ -191,6 +245,21 @@ class NavigationControllerCustom: UINavigationController {
         
     }
     
+    func setUpNavigationBar(_ target:NavigationControllerCustomDelegate, hideBackButton:Bool, hideSearchButton:Bool, hideShareButton:Bool, title:String){
+        self.backButton.isHidden = hideBackButton
+        self.addButton.isHidden = true
+        self.menuButton.isHidden = true
+        self.searchButton.isHidden = hideSearchButton
+        self.shareButton.isHidden = hideShareButton
+        
+        if(title != ""){
+            self.textTitle.isHidden = false
+            self.textTitle.text = title
+        }else{
+            self.textTitle.isHidden = true
+        }
+        
+    }
     
     func setTitleHeader(_ title : String){
         if(title != ""){
@@ -222,9 +291,9 @@ class NavigationControllerCustom: UINavigationController {
         touchTarget?.backTap!()
     }
     
-    @objc func addTap(){
-        debugPrint("add Tap")
-        touchTarget?.addTap!()
+    @objc func searchTap(){
+        debugPrint("search Tap")
+        touchTarget?.searchTap!()
     }
     
     @objc func menuTap(){
@@ -232,4 +301,13 @@ class NavigationControllerCustom: UINavigationController {
         touchTarget?.menuTap!()
     }
     
+    @objc func addTap(){
+        debugPrint("add Tap")
+        touchTarget?.addTap!()
+    }
+    
+    @objc func shareTap(){
+        debugPrint("share Tap")
+        touchTarget?.shareTap!()
+    }
 }
