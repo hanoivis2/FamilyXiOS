@@ -216,6 +216,7 @@ PODS:
   - AlamofireObjectMapper (5.2.1):
     - Alamofire (~> 4.7)
     - ObjectMapper (~> 3.4)
+  - BmoViewPager (5.1.0)
   - BoringSSL-GRPC (0.0.7):
     - BoringSSL-GRPC/Implementation (= 0.0.7)
     - BoringSSL-GRPC/Interface (= 0.0.7)
@@ -363,6 +364,7 @@ PODS:
 
 DEPENDENCIES:
   - AlamofireObjectMapper (~> 5.0)
+  - BmoViewPager (~> 5.1.0)
   - CropViewController
   - DatePickerDialog
   - DropDown
@@ -386,6 +388,7 @@ SPEC REPOS:
     - abseil
     - Alamofire
     - AlamofireObjectMapper
+    - BmoViewPager
     - BoringSSL-GRPC
     - CropViewController
     - DatePickerDialog
@@ -422,6 +425,7 @@ SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlamofireObjectMapper: 1989f690e982b71921b9253f53a4f33a9bc00d88
+  BmoViewPager: 49c83f4f8e9d0a6363f319453b8770572730f758
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   CropViewController: 7093b39ec3cb508531b22d35773e06cecd7378d8
   DatePickerDialog: ccff2f91ff7a018057a4d72fa5ad6de49c8cb0cd
@@ -454,6 +458,6 @@ SPEC CHECKSUMS:
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
 
-PODFILE CHECKSUM: 6ffc448d5979a59be682e0c3d4503cd57f85184c
+PODFILE CHECKSUM: 15c8323cd919bbc426a491d5e1a1de7293f7d3f1
 
 COCOAPODS: 1.10.0

@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		DE92A2B1A6FD98BA0C8E4C24 /* Pods_FamilyTree.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 607F83B0AFCCD53155E9509F /* Pods_FamilyTree.framework */; };
+		F501172326677B8A00E5AB47 /* ListUserToShareTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F501172226677B8A00E5AB47 /* ListUserToShareTreeViewController.swift */; };
 		F506E9612664ECEC00345994 /* EditFamilyTreeInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F506E9602664ECEC00345994 /* EditFamilyTreeInfoViewController.swift */; };
+		F506E98C2666B82A00345994 /* TreeSeperatorViewBmo.xib in Resources */ = {isa = PBXBuildFile; fileRef = F506E98B2666B82A00345994 /* TreeSeperatorViewBmo.xib */; };
+		F506E98F2666B8D700345994 /* TreeSeperatorViewBmo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F506E98E2666B8D700345994 /* TreeSeperatorViewBmo.swift */; };
 		F530A3EB264167990096BAC2 /* ListFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */; };
 		F530A3EF264169000096BAC2 /* FamilyTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F530A3EE264169000096BAC2 /* FamilyTree.swift */; };
 		F545DE7F263343EF00015C9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DE7E263343EF00015C9D /* AppDelegate.swift */; };
@@ -131,9 +134,7 @@
 		F545DFD02633442900015C9D /* NodeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF2F2633442800015C9D /* NodeView.swift */; };
 		F545DFD12633442900015C9D /* EnumStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF302633442800015C9D /* EnumStatus.swift */; };
 		F545DFD22633442900015C9D /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF312633442800015C9D /* Toast.swift */; };
-		F545DFD32633442900015C9D /* FamilyMembers.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F545DF332633442800015C9D /* FamilyMembers.storyboard */; };
 		F545DFD42633442900015C9D /* StoryboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DF342633442800015C9D /* StoryboardManager.swift */; };
-		F545DFD52633442900015C9D /* ShareWithMe.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F545DF352633442800015C9D /* ShareWithMe.storyboard */; };
 		F545DFD62633442900015C9D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F545DF362633442800015C9D /* LaunchScreen.storyboard */; };
 		F545DFD72633442900015C9D /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F545DF382633442800015C9D /* Main.storyboard */; };
 		F545DFD82633442900015C9D /* FamilyTree.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F545DF3A2633442800015C9D /* FamilyTree.storyboard */; };
@@ -173,6 +174,8 @@
 		F54AFED72636A7000019A904 /* ResAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54AFED62636A6FF0019A904 /* ResAPI.swift */; };
 		F54AFF6B263737930019A904 /* ResResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54AFF6A263737930019A904 /* ResResponse.swift */; };
 		F561D1AB2643AA2800A5520D /* InformationPoopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */; };
+		F57C3FF426673F88004FCC80 /* FamilyTreeManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C3FF326673F88004FCC80 /* FamilyTreeManageViewController.swift */; };
+		F57C3FF726675943004FCC80 /* ListAllFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C3FF626675943004FCC80 /* ListAllFamilyTreeViewController.swift */; };
 		F59844DF26426E2A009CE510 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59844DE26426E2A009CE510 /* SideMenuViewController.swift */; };
 		F5B512712653983C00EB2184 /* UploadLargeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B512702653983C00EB2184 /* UploadLargeFile.swift */; };
 		F5F1AECE264E3316006C4203 /* AddFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */; };
@@ -182,7 +185,10 @@
 		0741C6E5134E16C768E654F3 /* Pods-FamilyTree.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTree.release.xcconfig"; path = "Target Support Files/Pods-FamilyTree/Pods-FamilyTree.release.xcconfig"; sourceTree = "<group>"; };
 		538D73AADD5656A764208B5B /* Pods-FamilyTree.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FamilyTree.debug.xcconfig"; path = "Target Support Files/Pods-FamilyTree/Pods-FamilyTree.debug.xcconfig"; sourceTree = "<group>"; };
 		607F83B0AFCCD53155E9509F /* Pods_FamilyTree.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FamilyTree.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		F501172226677B8A00E5AB47 /* ListUserToShareTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUserToShareTreeViewController.swift; sourceTree = "<group>"; };
 		F506E9602664ECEC00345994 /* EditFamilyTreeInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFamilyTreeInfoViewController.swift; sourceTree = "<group>"; };
+		F506E98B2666B82A00345994 /* TreeSeperatorViewBmo.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TreeSeperatorViewBmo.xib; sourceTree = "<group>"; };
+		F506E98E2666B8D700345994 /* TreeSeperatorViewBmo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TreeSeperatorViewBmo.swift; sourceTree = "<group>"; };
 		F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFamilyTreeViewController.swift; sourceTree = "<group>"; };
 		F530A3EE264169000096BAC2 /* FamilyTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTree.swift; sourceTree = "<group>"; };
 		F545DE7B263343EF00015C9D /* FamilyTree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FamilyTree.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -327,9 +333,7 @@
 		F545DF2F2633442800015C9D /* NodeView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NodeView.swift; sourceTree = "<group>"; };
 		F545DF302633442800015C9D /* EnumStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EnumStatus.swift; sourceTree = "<group>"; };
 		F545DF312633442800015C9D /* Toast.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
-		F545DF332633442800015C9D /* FamilyMembers.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FamilyMembers.storyboard; sourceTree = "<group>"; };
 		F545DF342633442800015C9D /* StoryboardManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StoryboardManager.swift; sourceTree = "<group>"; };
-		F545DF352633442800015C9D /* ShareWithMe.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShareWithMe.storyboard; sourceTree = "<group>"; };
 		F545DF372633442800015C9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F545DF392633442800015C9D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		F545DF3A2633442800015C9D /* FamilyTree.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = FamilyTree.storyboard; sourceTree = "<group>"; };
@@ -369,6 +373,8 @@
 		F54AFED62636A6FF0019A904 /* ResAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResAPI.swift; sourceTree = "<group>"; };
 		F54AFF6A263737930019A904 /* ResResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResResponse.swift; sourceTree = "<group>"; };
 		F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPoopleViewController.swift; sourceTree = "<group>"; };
+		F57C3FF326673F88004FCC80 /* FamilyTreeManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTreeManageViewController.swift; sourceTree = "<group>"; };
+		F57C3FF626675943004FCC80 /* ListAllFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllFamilyTreeViewController.swift; sourceTree = "<group>"; };
 		F59844DE26426E2A009CE510 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		F5B512702653983C00EB2184 /* UploadLargeFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadLargeFile.swift; sourceTree = "<group>"; };
 		F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFamilyTreeViewController.swift; sourceTree = "<group>"; };
@@ -713,9 +719,7 @@
 		F545DF322633442800015C9D /* Storyboards */ = {
 			isa = PBXGroup;
 			children = (
-				F545DF332633442800015C9D /* FamilyMembers.storyboard */,
 				F545DF342633442800015C9D /* StoryboardManager.swift */,
-				F545DF352633442800015C9D /* ShareWithMe.storyboard */,
 				F545DF362633442800015C9D /* LaunchScreen.storyboard */,
 				F545DF382633442800015C9D /* Main.storyboard */,
 				F545DF3A2633442800015C9D /* FamilyTree.storyboard */,
@@ -738,12 +742,15 @@
 			isa = PBXGroup;
 			children = (
 				F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */,
+				F57C3FF626675943004FCC80 /* ListAllFamilyTreeViewController.swift */,
+				F57C3FF326673F88004FCC80 /* FamilyTreeManageViewController.swift */,
 				F545DF422633442800015C9D /* EditFamilyTreeViewController.swift */,
 				F545DF402633442800015C9D /* AddPeopleViewController.swift */,
 				F545DF412633442800015C9D /* EditPeopleViewController.swift */,
 				F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */,
 				F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */,
 				F506E9602664ECEC00345994 /* EditFamilyTreeInfoViewController.swift */,
+				F501172226677B8A00E5AB47 /* ListUserToShareTreeViewController.swift */,
 			);
 			path = FamilyTree;
 			sourceTree = "<group>";
@@ -788,6 +795,8 @@
 				F545E01F2633480600015C9D /* PeopleView.xib */,
 				F545E0202633480600015C9D /* CustomActionTableViewCell.swift */,
 				F545E0212633480600015C9D /* CustomActionTableViewCell.xib */,
+				F506E98B2666B82A00345994 /* TreeSeperatorViewBmo.xib */,
+				F506E98E2666B8D700345994 /* TreeSeperatorViewBmo.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -900,13 +909,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F545DFD32633442900015C9D /* FamilyMembers.storyboard in Resources */,
 				F545DE88263343F200015C9D /* Assets.xcassets in Resources */,
 				F545DF772633442900015C9D /* YPImagePickerLocalizable.strings in Resources */,
 				F545DFA92633442900015C9D /* YPLibraryView.xib in Resources */,
 				F545DF762633442900015C9D /* LICENSE in Resources */,
 				F545E0232633480600015C9D /* PeopleView.xib in Resources */,
-				F545DFD52633442900015C9D /* ShareWithMe.storyboard in Resources */,
+				F506E98C2666B82A00345994 /* TreeSeperatorViewBmo.xib in Resources */,
 				F545E0252633480600015C9D /* CustomActionTableViewCell.xib in Resources */,
 				F545DFD72633442900015C9D /* Main.storyboard in Resources */,
 				F545DF782633442900015C9D /* Assets.xcassets in Resources */,
@@ -1088,6 +1096,7 @@
 				F545DF982633442900015C9D /* YPLibraryViewDelegate.swift in Sources */,
 				F545DF992633442900015C9D /* YPGridView.swift in Sources */,
 				F545DFAB2633442900015C9D /* YPPhotoCapture.swift in Sources */,
+				F506E98F2666B8D700345994 /* TreeSeperatorViewBmo.swift in Sources */,
 				F545DFC22633442900015C9D /* PHFetchResult+Extensions.swift in Sources */,
 				F545DF5C2633442900015C9D /* ManageCacheObject.swift in Sources */,
 				F545DFA32633442900015C9D /* YPLibraryVC.swift in Sources */,
@@ -1096,6 +1105,7 @@
 				F545DF682633442900015C9D /* Stevia+Position.swift in Sources */,
 				F545DF9B2633442900015C9D /* YPAlbumView.swift in Sources */,
 				F545DFB72633442900015C9D /* AVAsset+Extensions.swift in Sources */,
+				F57C3FF726675943004FCC80 /* ListAllFamilyTreeViewController.swift in Sources */,
 				F545DFE72633442900015C9D /* UIColorExtension.swift in Sources */,
 				F545DF7A2633442900015C9D /* YPVideoFiltersVC.swift in Sources */,
 				F545DFBC2633442900015C9D /* PHCachingImageManager+Extensions.swift in Sources */,
@@ -1105,8 +1115,10 @@
 				F545DF6E2633442900015C9D /* Stevia+Size.swift in Sources */,
 				F545DFAF2633442900015C9D /* YPCameraVC.swift in Sources */,
 				F545DFE12633442900015C9D /* HomeViewController.swift in Sources */,
+				F57C3FF426673F88004FCC80 /* FamilyTreeManageViewController.swift in Sources */,
 				F545DFF52633442900015C9D /* UITextField+Extensions.swift in Sources */,
 				F545E02A2633538D00015C9D /* NavigationControllerCustom.swift in Sources */,
+				F501172326677B8A00E5AB47 /* ListUserToShareTreeViewController.swift in Sources */,
 				F545DFD12633442900015C9D /* EnumStatus.swift in Sources */,
 				F545DF922633442900015C9D /* YPSelectionsGalleryCell.swift in Sources */,
 				F545DF902633442900015C9D /* YPSelectionsGalleryVC.swift in Sources */,

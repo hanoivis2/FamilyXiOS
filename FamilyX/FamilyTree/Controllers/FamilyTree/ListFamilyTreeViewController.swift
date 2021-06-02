@@ -13,8 +13,10 @@ import ObjectMapper
 class ListFamilyTreeViewController : UIViewController, NavigationControllerCustomDelegate {
     
     @IBOutlet weak var tbl_trees: UITableView!
+    @IBOutlet weak var searchBar: UISearchBar!
     
     var trees = [FamilyTree]()
+    var treesSearched = [FamilyTree]()
     var refreshControl = UIRefreshControl()
     var deleteTreeWithId = 0
     
@@ -24,6 +26,8 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
         self.navigationItem.setHidesBackButton(true, animated: false)
         tbl_trees.separatorStyle = .none
         tbl_trees.allowsSelection = false
+        searchBar.backgroundImage = UIImage()
+        searchBar.placeholder = "Enter some keywords to search..."
         getTreeList()
         
         setupRefreshControl()
@@ -31,20 +35,12 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //custom navigation bar
-        let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideAddButton: false, title: "FAMILY TREES LIST")
-        navigationControllerCustom.touchTarget = self
-        navigationControllerCustom.navigationBar.barTintColor = ColorUtils.toolbar()
-        navigationControllerCustom.navigationBar.isHidden = false
-        
+       
+        self.navigationItem.setHidesBackButton(true, animated: false)
+        self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
     }
     
-    func backTap() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    func addTap() {
+    @IBAction func btn_addTree(_ sender: Any) {
         let addFamilyTreeViewController:AddFamilyTreeViewController?
         addFamilyTreeViewController =  UIStoryboard.addFamilyTreeViewController()
         addFamilyTreeViewController?.delegate = self
@@ -66,6 +62,12 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
     @objc func refresh(_ sender: AnyObject) {
         // Code to refresh table view
         getTreeList()
+    }
+    
+    @IBAction func btn_search(_ sender: Any) {
+        if !searchBar.text!.isEmpty {
+            self.getTreeListWithKeyword(keyword: searchBar.text!)
+        }
     }
     
     func getTreeList(){
@@ -110,6 +112,66 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
           case "RECALL":
               self.getTreeList()
+            case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
+                }
+                
+            }
+            
+            hud.dismiss()
+        })
+    }
+    
+    func getTreeListWithKeyword(keyword:String){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        ResAPI.sharedInstance.getListFamilyTreeWithKeyword(keyword: keyword, { (data, message) -> Void in
+            
+          switch message {
+            case "SUCCESS":
+                if(data != nil){
+
+                    let response:ResResponse = data as! ResResponse
+
+                    if let trees = Mapper<FamilyTree>().mapArray(JSONObject: response.data) {
+                        self.treesSearched = trees
+                        
+                        self.tbl_trees.reloadData()
+                        self.refreshControl.endRefreshing()
+                    }
+                    else {
+                        Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
+                    
+                    
+                }
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+          case "RECALL":
+              self.getTreeListWithKeyword(keyword: keyword)
             case "NOTFOUND":
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
@@ -286,13 +348,13 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
 extension ListFamilyTreeViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return trees.count
+        return (treesSearched.count > 0) ? (treesSearched.count) : (trees.count)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ListFamilyTreeTableViewCell") as! ListFamilyTreeTableViewCell
         
-        let tree = trees[indexPath.row]
+        let tree = (treesSearched.count > 0) ? (treesSearched[indexPath.row]) : (trees[indexPath.row])
         
         cell.lbl_name.text = tree.name
         cell.lbl_description.text = tree.description
@@ -344,6 +406,19 @@ extension ListFamilyTreeViewController : ListFamilyTreeDelegate {
     }
     
     
+}
+
+extension ListFamilyTreeViewController : UISearchBarDelegate {
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        if searchBar.text!.isEmpty {
+            treesSearched.removeAll()
+            tbl_trees.reloadData()
+        }
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        self.view.endEditing(true)
+    }
 }
 
 extension ListFamilyTreeViewController : DialogConfirmDelegate {

@@ -460,6 +460,60 @@ class ResAPI: UIResponder {
         
     }
     
+    func getListFamilyTreeWithKeyword(keyword:String, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_LIST_FAMILY_TREE_WITH_KEYWORD, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            "q":keyword
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func getListAllFamilyTree( _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_LIST_ALL_FAMILY_TREE, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func getListAllFamilyTreeWithKeyword(keyword:String, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_LIST_ALL_FAMILY_TREE_WITH_KEYWORD, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            "q":keyword
+        ] as [String : Any]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
     func getFamilyTreeInfo(treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
 
         
@@ -642,6 +696,24 @@ class ResAPI: UIResponder {
 
 
         checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.DELETE.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func getAllUsers( _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_ALL_USERS, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         

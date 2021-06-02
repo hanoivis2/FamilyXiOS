@@ -19,7 +19,6 @@ class HomeViewController: UIViewController, NavigationControllerCustomDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.navigationItem.setHidesBackButton(true, animated: false)
         
         let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(handleGesture))
         swipeRight.direction = .right
@@ -46,6 +45,9 @@ class HomeViewController: UIViewController, NavigationControllerCustomDelegate {
         navigationControllerCustom.touchTarget = self
         navigationControllerCustom.navigationBar.barTintColor = ColorUtils.toolbar()
         navigationControllerCustom.navigationBar.isHidden = false
+        
+        self.navigationItem.setHidesBackButton(true, animated: false)
+        self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
         
     }
   
@@ -115,9 +117,9 @@ extension HomeViewController : SideMenuDelegate {
     
     func familyTreesList() {
         self.dismiss(animated: true, completion: nil)
-        let listFamilyTreeViewController:ListFamilyTreeViewController?
-        listFamilyTreeViewController = UIStoryboard.listFamilyTreeViewController()
-        navigationController!.pushViewController(listFamilyTreeViewController!, animated:true)
+        let familyTreeManageViewController:FamilyTreeManageViewController?
+        familyTreeManageViewController = UIStoryboard.familyTreeManageViewController()
+        navigationController!.pushViewController(familyTreeManageViewController!, animated:true)
     }
 }
 

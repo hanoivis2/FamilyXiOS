@@ -12,7 +12,10 @@ var OAUTH_SERVER_URL = "https://family-tree.azurewebsites.net"
 var API_LOGIN = "/api/v%@/authentication/login"
 var API_SIGN_UP = "/api/v%@/authentication/register"
 var API_GET_REFRESH_TOKEN = "/api/v%@/authentication/refresh-access-token"
+var API_GET_LIST_ALL_FAMILY_TREE = "/api/v%@/tree-management/trees"
+var API_GET_LIST_ALL_FAMILY_TREE_WITH_KEYWORD = "/api/v%@/tree-management/trees-from-keyword"
 var API_GET_LIST_FAMILY_TREE = "/api/v%@/tree-management/trees/list"
+var API_GET_LIST_FAMILY_TREE_WITH_KEYWORD = "/api/v%@/tree-management/trees-from-keyword/list"
 var API_GET_FAMILY_TREE_INFO = "/api/v%@/tree-management/tree/%d"
 var API_ADD_FAMILY_TREE = "/api/v%@/tree-management/tree"
 var API_DELETE_FAMILY_TREE = "/api/v%@/tree-management/tree/%d"
@@ -23,6 +26,7 @@ var API_ADD_PARENT = "/api/v%@/person-management/person/%d/parent"
 var API_DELETE_NODE = "/api/v%@/person-management/person/%d"
 var API_UPDATE_NODE = "/api/v%@/person-management/person/%d"
 var API_UPLOAD_IMAGE = "/api/v%@/file-upload/image"
+var API_GET_ALL_USERS = "/api/v1/user-management/users"
 
 
 

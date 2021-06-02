@@ -25,4 +25,5 @@ target 'FamilyTree' do
   pod 'ReachabilitySwift', '~> 3'
   pod 'SideMenu'
   pod 'Kingfisher'
+  pod 'BmoViewPager', '~> 5.1.0'
 end

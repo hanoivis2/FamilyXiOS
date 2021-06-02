@@ -56,7 +56,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         self.navigationItem.hidesBackButton = true
     
         
-        
+        self.navigationItem.setHidesBackButton(true, animated: false)
+        self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -75,7 +76,10 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     }
     
     func shareTap() {
-        
+        let listUserToShareTreeViewController:ListUserToShareTreeViewController?
+        listUserToShareTreeViewController = UIStoryboard.listUserToShareTreeViewController()
+        listUserToShareTreeViewController?.treeId = self.treeId
+        navigationController?.pushViewController(listUserToShareTreeViewController!, animated: true)
     }
     
     func calcutlateSpaceToFirstPeople(people:People, firstPeople:People) -> Int {
@@ -84,7 +88,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         if people.gender == GENDER_ID.FEMALE.rawValue {
             
             if people.fatherId == 0 {
-                return calcutlateSpaceToFirstPeople(people: getHusband(people: people), firstPeople: firstPeople)
+                return calcutlateSpaceToFirstPeople(people: getSpouse(people: people), firstPeople: firstPeople)
             }
 
         }
@@ -95,7 +99,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             result += 1
             postMan = getFather(people: postMan)
             if postMan.fatherId == 0 {
-                
+                break
             }
         }
         
@@ -112,18 +116,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         return People()
     }
     
-    func getHusband(people:People) -> People {
-        for item in self.people {
-            if item.spouse.count > 0 {
-                if item.spouse[0].id == people.id {
-                    return item
-                }
-            }
-        }
-        return People()
-    }
-    
-    func getWife(people:People) -> People {
+    func getSpouse(people:People) -> People {
         for item in self.people {
             if people.spouse.count > 0 {
                 if item.id == people.spouse[0].id {
@@ -132,6 +125,18 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             }
         }
         return People()
+    }
+    
+    func getChildren(people:People) -> [People] {
+        
+        var results = [People]()
+        
+        for item in self.people {
+            if item.fatherId == people.id || item.motherId == people.id {
+                results.append(item)
+            }
+        }
+        return results
     }
     
     func getPeopleView(people:People) -> PeopleView {
@@ -183,7 +188,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
 
     
-    func addWifeView(rootPeople:People, newPeople:People) {
+    func addSpouseView(rootPeople:People, newPeople:People) {
         
         var relativePeopleNode = PeopleView()
         //find relative people node
@@ -375,7 +380,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
 
                 
                 if person.spouse.count > 0 {
-                    addWifeView(rootPeople: person, newPeople: getWife(people: person))
+                    addSpouseView(rootPeople: person, newPeople: getSpouse(people: person))
                     maxX = view.frame.maxX + _peopleNodeWidth + _nodeHorizontalSpace
                 }
                 else {
@@ -932,25 +937,32 @@ extension EditFamilyTreeViewController : ArrayChoiceReportViewControllerDelegate
         }
         else if pos == 1 {
             
-//            if people.gender == GENDER_ID.FEMALE.rawValue {
-//                Loaf.init("You can only add node from male node", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .right, sender: self).show(.custom(2), completionHandler: nil)
-//            }
-//            else {
+
                 let addPeopleViewController:AddPeopleViewController?
                 addPeopleViewController = UIStoryboard.addPeopleViewController()
                 addPeopleViewController?.relativePerson = people
                 addPeopleViewController?.delegate = self
                 navigationController?.pushViewController(addPeopleViewController!, animated: true)
-//            }
+
         }
         else {
-            self.selectedDeletePersonId = people.id
-            let dialogConfirmViewController:DialogConfirmViewController?
-            dialogConfirmViewController = UIStoryboard.dialogConfirmViewController()
-            dialogConfirmViewController?.delegate = self
-            dialogConfirmViewController?.dialogTitle = "Confirm"
-            dialogConfirmViewController?.content = "Are you sure to delete this node?"
-            self.present(dialogConfirmViewController!, animated: false, completion: nil)
+            
+            if people.spouse.count == 0 && getChildren(people: people).count == 0
+                || people.spouse.count == 0 && people.fatherId == 0 && people.motherId == 0 && getChildren(people: people).count <= 1
+                || people.spouse.count == 1 && people.fatherId == 0 && people.motherId == 0
+            {
+                self.selectedDeletePersonId = people.id
+                let dialogConfirmViewController:DialogConfirmViewController?
+                dialogConfirmViewController = UIStoryboard.dialogConfirmViewController()
+                dialogConfirmViewController?.delegate = self
+                dialogConfirmViewController?.dialogTitle = "Confirm"
+                dialogConfirmViewController?.content = "Are you sure to delete this node?"
+                self.present(dialogConfirmViewController!, animated: false, completion: nil)
+            }
+            else {
+                Loaf.init("You cannot delete this node!", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+           
         }
     }
 }

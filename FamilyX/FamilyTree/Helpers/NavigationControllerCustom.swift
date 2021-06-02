@@ -114,7 +114,7 @@ class NavigationControllerCustom: UINavigationController {
         }
         searchButton.setTitleColor(UIColor.white, for: UIControl.State())
         searchButton.setTitleColor(UIColor.COLOR_ICON_TOUCH(), for: UIControl.State.highlighted)
-        searchButton.addTarget(self, action:#selector(NavigationControllerCustom.shareTap), for: UIControl.Event.touchUpInside)
+        searchButton.addTarget(self, action:#selector(NavigationControllerCustom.searchTap), for: UIControl.Event.touchUpInside)
         searchButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
         self.navigationBar.addSubview(searchButton)
         
@@ -127,7 +127,7 @@ class NavigationControllerCustom: UINavigationController {
         }
         shareButton.setTitleColor(UIColor.white, for: UIControl.State())
         shareButton.setTitleColor(UIColor.COLOR_ICON_TOUCH(), for: UIControl.State.highlighted)
-        shareButton.addTarget(self, action:#selector(NavigationControllerCustom.searchTap), for: UIControl.Event.touchUpInside)
+        shareButton.addTarget(self, action:#selector(NavigationControllerCustom.shareTap), for: UIControl.Event.touchUpInside)
         shareButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: -20, bottom: 0, right: 0)
         self.navigationBar.addSubview(shareButton)
         
