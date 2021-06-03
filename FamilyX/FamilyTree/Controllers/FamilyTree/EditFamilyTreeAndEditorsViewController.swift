@@ -8,7 +8,7 @@
 import UIKit
 import BmoViewPager
 
-class ListUserShareTreeManageViewController : UIViewController, NavigationControllerCustomDelegate {
+class EditFamilyTreeAndEditorsViewController : UIViewController, NavigationControllerCustomDelegate {
     
     @IBOutlet weak var bmo_view_pager_nav_bar: BmoViewPagerNavigationBar!
     @IBOutlet weak var bmo_view_pager: BmoViewPager!
@@ -29,13 +29,15 @@ class ListUserShareTreeManageViewController : UIViewController, NavigationContro
         super.viewWillAppear(animated)
         //custom navigation bar
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideAddButton: true, title: "USERS")
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideAddButton: true, title: "FAMILY TREE")
         navigationControllerCustom.touchTarget = self
         navigationControllerCustom.navigationBar.barTintColor = ColorUtils.toolbar()
         navigationControllerCustom.navigationBar.isHidden = false
         
         self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
+        
+        self.bmo_view_pager.reloadData()
     }
     
     func backTap() {
@@ -44,7 +46,7 @@ class ListUserShareTreeManageViewController : UIViewController, NavigationContro
     
 }
 
-extension ListUserShareTreeManageViewController : BmoViewPagerDelegate, BmoViewPagerDataSource {
+extension EditFamilyTreeAndEditorsViewController : BmoViewPagerDelegate, BmoViewPagerDataSource {
     
     func bmoViewPagerDataSourceNumberOfPage(in viewPager: BmoViewPager) -> Int {
         return 2
@@ -53,14 +55,15 @@ extension ListUserShareTreeManageViewController : BmoViewPagerDelegate, BmoViewP
     func bmoViewPagerDataSource(_ viewPager: BmoViewPager, viewControllerForPageAt page: Int) -> UIViewController {
         switch page {
         case 0 :
-            let listUserToShareTreeViewController:ListUserToShareTreeViewController?
-            listUserToShareTreeViewController = UIStoryboard.listUserToShareTreeViewController()
-            listUserToShareTreeViewController?.treeId = self.treeId
-            return listUserToShareTreeViewController!
+            let editFamilyTreeViewController:EditFamilyTreeViewController?
+            editFamilyTreeViewController = UIStoryboard.editFamilyTreeViewController()
+            editFamilyTreeViewController?.treeId = self.treeId
+            return editFamilyTreeViewController!
         default:
             let listUserSharedTreeViewController:ListUserSharedTreeViewController?
             listUserSharedTreeViewController = UIStoryboard.listUserSharedTreeViewController()
             listUserSharedTreeViewController?.treeId = self.treeId
+            listUserSharedTreeViewController?.delegate = self
             return listUserSharedTreeViewController!
         }
     }
@@ -69,7 +72,7 @@ extension ListUserShareTreeManageViewController : BmoViewPagerDelegate, BmoViewP
         switch page {
         case 0:
             let view = Bundle.main.loadNibNamed("TreeSeperatorViewBmo", owner: self, options: nil)?.first as! TreeSeperatorViewBmo
-            view.lbl_title.text = "Users"
+            view.lbl_title.text = "Family trees"
             view.lbl_title.textColor = .black
             view.view_container.backgroundColor = .systemGray5
             view.view_container.clipsToBounds = true
@@ -77,7 +80,7 @@ extension ListUserShareTreeManageViewController : BmoViewPagerDelegate, BmoViewP
             return view
         default:
             let view = Bundle.main.loadNibNamed("TreeSeperatorViewBmo", owner: self, options: nil)?.first as! TreeSeperatorViewBmo
-            view.lbl_title.text = "Shared"
+            view.lbl_title.text = "Contributors"
             view.lbl_title.textColor = .black
             view.view_container.backgroundColor = .systemGray5
             view.view_container.clipsToBounds = true
@@ -91,7 +94,7 @@ extension ListUserShareTreeManageViewController : BmoViewPagerDelegate, BmoViewP
         switch page {
         case 0:
             let view = Bundle.main.loadNibNamed("TreeSeperatorViewBmo", owner: self, options: nil)?.first as! TreeSeperatorViewBmo
-            view.lbl_title.text = "Users"
+            view.lbl_title.text = "Family trees"
             view.lbl_title.textColor = .white
             view.view_container.backgroundColor = ColorUtils.main_color()
             view.view_container.clipsToBounds = true
@@ -99,7 +102,7 @@ extension ListUserShareTreeManageViewController : BmoViewPagerDelegate, BmoViewP
             return view
         default:
             let view = Bundle.main.loadNibNamed("TreeSeperatorViewBmo", owner: self, options: nil)?.first as! TreeSeperatorViewBmo
-            view.lbl_title.text = "Shared"
+            view.lbl_title.text = "Contributors"
             view.lbl_title.textColor = .white
             view.view_container.backgroundColor = ColorUtils.main_color()
             view.view_container.clipsToBounds = true
@@ -116,5 +119,14 @@ extension ListUserShareTreeManageViewController : BmoViewPagerDelegate, BmoViewP
     
     func bmoViewPagerDataSourceNaviagtionBarItemSpace(_ viewPager: BmoViewPager, navigationBar: BmoViewPagerNavigationBar, forPageListAt page: Int) -> CGFloat {
         return 0
+    }
+}
+
+extension EditFamilyTreeAndEditorsViewController : ListUserSharedTreeDelegate {
+    func addContributor() {
+        let listUserToShareTreeViewController:ListUserToShareTreeViewController?
+        listUserToShareTreeViewController = UIStoryboard.listUserToShareTreeViewController()
+        listUserToShareTreeViewController?.treeId = self.treeId
+        navigationController?.pushViewController(listUserToShareTreeViewController!, animated: true)
     }
 }

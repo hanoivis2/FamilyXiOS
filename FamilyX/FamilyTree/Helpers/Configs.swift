@@ -26,7 +26,10 @@ var API_ADD_PARENT = "/api/v%@/person-management/person/%d/parent"
 var API_DELETE_NODE = "/api/v%@/person-management/person/%d"
 var API_UPDATE_NODE = "/api/v%@/person-management/person/%d"
 var API_UPLOAD_IMAGE = "/api/v%@/file-upload/image"
-var API_GET_ALL_USERS = "/api/v1/user-management/users"
+var API_GET_ALL_USERS = "/api/v%@/user-management/users"
+var API_GET_ALL_EDITORS = "/api/v%@/tree-management/tree/%d/editors"
+var API_ADD_EDITOR_TO_TREE = "/api/v%@/tree-management/tree/%d/add-users-to-editor"
+var API_REMOVE_EDITOR_FROM_TREE = "/api/v%@/tree-management/tree/%d/remove-users-from-editor"
 
 
 

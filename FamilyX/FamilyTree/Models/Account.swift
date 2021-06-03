@@ -26,6 +26,10 @@ class Account : Mappable {
     var accessToken = ""
     var refreshToken = ""
     
+    
+    //local
+    var isShared = false
+    
     init() {}
     required init?(map: Map) {
         mapping(map: map)
@@ -33,7 +37,7 @@ class Account : Mappable {
     
     func mapping(map: Map){
         id                                  <- map["id"]
-        username                            <- map["username"]
+        username                            <- map["userName"]
         email                               <- map["email"]
         firstName                           <- map["firstName"]
         midName                             <- map["midName"]

@@ -719,6 +719,60 @@ class ResAPI: UIResponder {
         
     }
     
+    func getAllEditors(treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_ALL_EDITORS, ManageCacheObject.getVersion(), treeId)
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func addEditorToTree(treeId:Int, editorsUsername:[String], _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_EDITOR_TO_TREE, ManageCacheObject.getVersion(), treeId)
+
+        debugPrint(url)
+        
+        let params = [
+            "usernames":editorsUsername
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func removeEditorFromTree(treeId:Int, editorsUsername:[String], _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_REMOVE_EDITOR_FROM_TREE, ManageCacheObject.getVersion(), treeId)
+
+        debugPrint(url)
+        
+        let params = [
+            "usernames":editorsUsername
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
     func postRefreshToken( _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
 
         

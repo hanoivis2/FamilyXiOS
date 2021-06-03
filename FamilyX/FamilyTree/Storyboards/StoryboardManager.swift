@@ -82,4 +82,12 @@ extension UIStoryboard {
     class func listUserToShareTreeViewController() -> ListUserToShareTreeViewController? {
         return familyTreeStoryboard().instantiateViewController(withIdentifier: "ListUserToShareTreeViewController") as? ListUserToShareTreeViewController
     }
+    
+    class func listUserSharedTreeViewController() -> ListUserSharedTreeViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "ListUserSharedTreeViewController") as? ListUserSharedTreeViewController
+    }
+    
+    class func editFamilyTreeAndEditorsViewController() -> EditFamilyTreeAndEditorsViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "EditFamilyTreeAndEditorsViewController") as? EditFamilyTreeAndEditorsViewController
+    }
 }

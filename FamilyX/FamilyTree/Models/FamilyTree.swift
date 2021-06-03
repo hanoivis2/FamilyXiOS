@@ -51,3 +51,20 @@ class FamilyTreeCollaborator: Mappable {
         avatarUrl                               <- map["avatarUrl"]
     }
 }
+
+class FamilyTreeEditor: Mappable {
+    
+    var owner = Account()
+    var editors = [Account]()
+    
+    init() {}
+    
+    required  init?(map: Map) {
+        mapping(map: map)
+    }
+    
+    func  mapping(map: Map) {
+        owner                                       <- map["owner"]
+        editors                                     <- map["editors"]
+    }
+}

@@ -49,15 +49,9 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        //custom navigation bar
-        let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideSearchButton: false, hideShareButton: false, title: "EDIT TREE")
-        navigationControllerCustom.touchTarget = self
-        self.navigationItem.hidesBackButton = true
     
         
-        self.navigationItem.setHidesBackButton(true, animated: false)
-        self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -65,21 +59,6 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         
         
         
-    }
-    
-    func backTap() {
-        navigationController!.popViewController(animated: true)
-    }
-    
-    func searchTap() {
-        
-    }
-    
-    func shareTap() {
-        let listUserToShareTreeViewController:ListUserToShareTreeViewController?
-        listUserToShareTreeViewController = UIStoryboard.listUserToShareTreeViewController()
-        listUserToShareTreeViewController?.treeId = self.treeId
-        navigationController?.pushViewController(listUserToShareTreeViewController!, animated: true)
     }
     
     func calcutlateSpaceToFirstPeople(people:People, firstPeople:People) -> Int {

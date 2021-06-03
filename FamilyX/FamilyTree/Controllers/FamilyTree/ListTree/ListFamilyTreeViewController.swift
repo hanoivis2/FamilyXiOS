@@ -325,7 +325,7 @@ class ListFamilyTreeViewController : UIViewController, NavigationControllerCusto
                   
                   Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
             case "RECALL":
-                self.editTreeInfo(id: id, name: name, description: description)
+                self.editTree(id: id, name: name, description: description)
               case "NOTFOUND":
                   Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
               case "DATA":
@@ -380,10 +380,10 @@ extension ListFamilyTreeViewController : AddFamilyTreeViewDelegate {
 extension ListFamilyTreeViewController : ListFamilyTreeDelegate {
     
     func editTreeDetail(pos: Int) {
-        let editFamilyTreeViewController:EditFamilyTreeViewController?
-        editFamilyTreeViewController = UIStoryboard.editFamilyTreeViewController()
-        editFamilyTreeViewController?.treeId = trees[pos].id
-        navigationController?.pushViewController(editFamilyTreeViewController!, animated: true)
+        let editFamilyTreeAndEditorsViewController:EditFamilyTreeAndEditorsViewController?
+        editFamilyTreeAndEditorsViewController = UIStoryboard.editFamilyTreeAndEditorsViewController()
+        editFamilyTreeAndEditorsViewController?.treeId = trees[pos].id
+        navigationController?.pushViewController(editFamilyTreeAndEditorsViewController!, animated: true)
     }
     
     func editTree(pos: Int) {
