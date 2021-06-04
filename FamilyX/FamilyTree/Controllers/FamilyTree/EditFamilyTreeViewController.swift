@@ -63,22 +63,26 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     func calcutlateSpaceToFirstPeople(people:People, firstPeople:People) -> Int {
         var result = 0
-        
-        if people.gender == GENDER_ID.FEMALE.rawValue {
-            
-            if people.fatherId == 0 {
-                return calcutlateSpaceToFirstPeople(people: getSpouse(people: people), firstPeople: firstPeople)
-            }
 
-        }
         
         var postMan = people
         
         while (postMan.id != firstPeople.id) {
             result += 1
-            postMan = getFather(people: postMan)
-            if postMan.fatherId == 0 {
+            
+            let father = getFather(people: postMan)
+            let mother = getMother(people: postMan)
+            
+            if father.fatherId == 0 && father.motherId == 0
+                && mother.fatherId == 0 && mother.motherId == 0 {
                 break
+            }
+            else if father.fatherId == 0 && father.motherId == 0
+                        && mother.fatherId != 0 && mother.motherId != 0 {
+                postMan = mother
+            }
+            else {
+                postMan = father
             }
         }
         
@@ -89,6 +93,15 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     func getFather(people:People) -> People {
         for item in self.people {
             if item.id == people.fatherId {
+                return item
+            }
+        }
+        return People()
+    }
+    
+    func getMother(people:People) -> People {
+        for item in self.people {
+            if item.id == people.motherId {
                 return item
             }
         }
@@ -145,8 +158,23 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     }
     
     func drawSiblingsLine(siblings:[People]) {
-        let firstSiblingView = getPeopleView(people: siblings.first!)
-        let lastSiblingView = getPeopleView(people: siblings.last!)
+        var firstSiblingView = getPeopleView(people: siblings.first!)
+        var lastSiblingView = getPeopleView(people: siblings.last!)
+        
+        var minMaxX = firstSiblingView.frame.maxX
+        var maxMaxX = firstSiblingView.frame.maxX
+        
+        for item in siblings {
+            let tempView = getPeopleView(people: item)
+            if tempView.frame.maxX < minMaxX {
+                firstSiblingView = tempView
+                minMaxX = tempView.frame.maxX
+            }
+            if tempView.frame.maxX > maxMaxX {
+                lastSiblingView = tempView
+                maxMaxX = tempView.frame.maxX
+            }
+        }
         
         let firstSiblingMinX = firstSiblingView.frame.minX
         let firstSiblingMinY = firstSiblingView.frame.minY
@@ -169,14 +197,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     func addSpouseView(rootPeople:People, newPeople:People) {
         
-        var relativePeopleNode = PeopleView()
-        //find relative people node
-        for item in self.peopleViews {
-            if item.people.id == rootPeople.id {
-                relativePeopleNode = item
-                break
-            }
-        }
+        let relativePeopleNode = getPeopleView(people: rootPeople)
 
         let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
 
@@ -266,22 +287,18 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             
             peopleInSameLevel = peopleInSameLevel.sorted { (a, b) -> Bool in
                 
-                if a.firstChildMaxX == 0 && b.firstChildMaxX != 0 {
+                if a.fatherId < b.fatherId {
                     return false
                 }
                 else {
-                    let dateFormatter = DateFormatter()
-                    dateFormatter.dateFormat = "dd/MM/yyyy"
-                    let aBirthday = dateFormatter.date(from: a.birthday)!
-                    let bBirthday = dateFormatter.date(from: b.birthday)!
-                    
-                    if aBirthday > bBirthday {
-                        return false
-                    }
-                    else {
-                        return true
-                    }
+                    return true
                 }
+
+            }
+            
+            peopleInSameLevel = peopleInSameLevel.sorted { (a, b) -> Bool in
+                
+                return a.firstChildMaxX < b.firstChildMaxX
 
             }
             
@@ -368,7 +385,14 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
               
                 if currentFatherId == 0 {
                     currentFatherId = person.fatherId
-                    getFather(people: person).firstChildMaxX = view.frame.maxX
+                    
+                    if getFather(people: person).fatherId == 0 && getFather(people: person).motherId == 0
+                                && getMother(people: person).fatherId != 0 && getMother(people: person).motherId != 0 {
+                        getMother(people: person).firstChildMaxX = view.frame.maxX
+                    }
+                    else {
+                        getFather(people: person).firstChildMaxX = view.frame.maxX
+                    }
                     siblings.append(person)
                 }
                 else if currentFatherId != person.fatherId {
@@ -386,7 +410,15 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                         
                         let centerX = (firstSiblingMinX + (_peopleNodeWidth / 2) + lastSiblingMinX + (_peopleNodeWidth / 2)) / 2
                         
-                        getFather(people: siblings[0]).maxX = centerX
+                        if getFather(people: siblings[0]).fatherId == 0 && getFather(people: siblings[0]).motherId == 0
+                                    && getMother(people: siblings[0]).fatherId != 0 && getMother(people: siblings[0]).motherId != 0 {
+                            getMother(people: siblings[0]).maxX = centerX
+                        }
+                        else {
+                            getFather(people: siblings[0]).maxX = centerX
+                        }
+                        
+                        
                         
                         let line = drawLineFromPoint(start: CGPoint(x: centerX, y: firstSiblingMinY - _siblingsLineHeight), toPoint: CGPoint(x: centerX, y: firstSiblingMinY - _nodeVerticalSpace - _peopleNodeHeight/2), ofColor: .black, inView: view_canvas)
                         lines.append(line)
@@ -394,7 +426,14 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                     }
                     else {
                         let childView = getPeopleView(people: siblings[0])
-                        getFather(people: siblings[0]).maxX = childView.frame.maxX
+                        
+                        if getFather(people: siblings[0]).fatherId == 0 && getFather(people: siblings[0]).motherId == 0
+                                    && getMother(people: siblings[0]).fatherId != 0 && getMother(people: siblings[0]).motherId != 0 {
+                            getMother(people: siblings[0]).maxX = childView.frame.maxX
+                        }
+                        else {
+                            getFather(people: siblings[0]).maxX = childView.frame.maxX
+                        }
                         
                         let line = drawLineFromPoint(start: CGPoint(x: childView.centerX(), y: childView.frame.minY), toPoint: CGPoint(x: childView.centerX(), y: childView.frame.minY - _nodeVerticalSpace - _peopleNodeHeight/2), ofColor: .black, inView: view_canvas)
                         lines.append(line)
@@ -403,7 +442,13 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                     
                     siblings.removeAll()
                     siblings.append(person)
-                    getFather(people: person).firstChildMaxX = view.frame.maxX
+                    if getFather(people: person).fatherId == 0 && getFather(people: person).motherId == 0
+                                && getMother(people: person).fatherId != 0 && getMother(people: person).motherId != 0 {
+                        getMother(people: person).firstChildMaxX = view.frame.maxX
+                    }
+                    else {
+                        getFather(people: person).firstChildMaxX = view.frame.maxX
+                    }
                     currentFatherId = person.fatherId
                 }
                 
@@ -423,7 +468,13 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                         
                         let centerX = (firstSiblingMinX + (_peopleNodeWidth / 2) + lastSiblingMinX + (_peopleNodeWidth / 2)) / 2
                         
-                        getFather(people: siblings[0]).maxX = centerX
+                        if getFather(people: siblings[0]).fatherId == 0 && getFather(people: siblings[0]).motherId == 0
+                                    && getMother(people: siblings[0]).fatherId != 0 && getMother(people: siblings[0]).motherId != 0 {
+                            getMother(people: siblings[0]).maxX = centerX
+                        }
+                        else {
+                            getFather(people: siblings[0]).maxX = centerX
+                        }
                         
                         let line = drawLineFromPoint(start: CGPoint(x: centerX, y: firstSiblingMinY - _siblingsLineHeight), toPoint: CGPoint(x: centerX, y: firstSiblingMinY - _nodeVerticalSpace - _peopleNodeHeight/2), ofColor: .black, inView: view_canvas)
                         lines.append(line)
@@ -431,7 +482,15 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                     }
                     else {
                         let childView = getPeopleView(people: siblings[0])
-                        getFather(people: siblings[0]).maxX = childView.frame.maxX
+                        
+                        
+                        if getFather(people: siblings[0]).fatherId == 0 && getFather(people: siblings[0]).motherId == 0
+                                    && getMother(people: siblings[0]).fatherId != 0 && getMother(people: siblings[0]).motherId != 0 {
+                            getMother(people: siblings[0]).maxX = childView.frame.maxX
+                        }
+                        else {
+                            getFather(people: siblings[0]).maxX = childView.frame.maxX
+                        }
                         
                         let line = drawLineFromPoint(start: CGPoint(x: childView.centerX(), y: childView.frame.minY), toPoint: CGPoint(x: childView.centerX(), y: childView.frame.minY - _nodeVerticalSpace - _peopleNodeHeight/2), ofColor: .black, inView: view_canvas)
                         lines.append(line)
@@ -449,7 +508,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         view_canvas.frame.origin.x = 0
         view_canvas.frame.origin.y = 0
         
-        
+
     }
 
 

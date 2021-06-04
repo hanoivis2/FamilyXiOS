@@ -23,7 +23,7 @@ class People : Mappable {
     var spouse = [Spouse]()
     
     var maxX:CGFloat = 0
-    var firstChildMaxX:CGFloat = 0
+    var firstChildMaxX:CGFloat = CGFloat.greatestFiniteMagnitude
     
     init() {}
     required init?(map: Map) {
