@@ -383,6 +383,7 @@ extension ListFamilyTreeViewController : ListFamilyTreeDelegate {
         let editFamilyTreeAndEditorsViewController:EditFamilyTreeAndEditorsViewController?
         editFamilyTreeAndEditorsViewController = UIStoryboard.editFamilyTreeAndEditorsViewController()
         editFamilyTreeAndEditorsViewController?.treeId = trees[pos].id
+        editFamilyTreeAndEditorsViewController?.ownerId = trees[pos].owner.id
         navigationController?.pushViewController(editFamilyTreeAndEditorsViewController!, animated: true)
     }
     

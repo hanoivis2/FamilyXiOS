@@ -21,9 +21,11 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     var zoomLevel = 1 {
         didSet {
+            let point = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
             view_canvas.transform = CGAffineTransform(scaleX: zoomScale[zoomLevel - 1], y: zoomScale[zoomLevel - 1])
             view_canvas.frame.origin.x = 0
             view_canvas.frame.origin.y = 0
+            scrollView.setContentOffset(point, animated: true)
         }
     }
     var zoomScale:[CGFloat] = [1,2,3,4]
@@ -508,9 +510,40 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         view_canvas.frame.origin.x = 0
         view_canvas.frame.origin.y = 0
         
+        
+        
 
     }
 
+    func focusView(view:PeopleView) {
+        let centerPointX = view.centerX()
+        let centerPointY = view.centerY()
+        var scrollPoint = CGPoint()
+        
+        if centerPointX < UIScreen.main.bounds.width / 2 {
+            scrollPoint.x = 0
+        }
+        else if centerPointX > view_canvas.frame.width - (UIScreen.main.bounds.width / 2){
+            scrollPoint.x = view_canvas.frame.width - UIScreen.main.bounds.width
+        }
+        else {
+            scrollPoint.x = centerPointX - (UIScreen.main.bounds.width / 2)
+        }
+        
+        if centerPointY < UIScreen.main.bounds.height / 2 {
+            scrollPoint.y = 0
+        }
+        else if centerPointY > view_canvas.frame.height - (UIScreen.main.bounds.height / 2){
+            scrollPoint.y = view_canvas.frame.height - UIScreen.main.bounds.height
+        }
+        else {
+            scrollPoint.y = centerPointY - (UIScreen.main.bounds.height / 2)
+        }
+        
+        scrollView.setContentOffset(scrollPoint, animated: true)
+        view.borderWidth = 1.5
+        view.borderColor = .black
+    }
 
     
     @IBAction func btn_zoom_in(_ sender: Any) {

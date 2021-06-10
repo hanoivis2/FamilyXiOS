@@ -211,8 +211,16 @@ extension ListUserSharedTreeViewController : UITableViewDelegate, UITableViewDat
         else {
             user = users[indexPath.row]
             cell.view_separator.isHidden = false
-            cell.btn_delete.isEnabled = true
-            cell.img_delete.isHidden = false
+            
+            if owner.id == ManageCacheObject.getCurrentAccount().id {
+                cell.btn_delete.isEnabled = true
+                cell.img_delete.isHidden = false
+            }
+            else {
+                cell.btn_delete.isEnabled = false
+                cell.img_delete.isHidden = true
+            }
+            
         }
 
         
