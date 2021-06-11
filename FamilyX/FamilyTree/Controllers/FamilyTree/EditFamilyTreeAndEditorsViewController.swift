@@ -68,11 +68,9 @@ extension EditFamilyTreeAndEditorsViewController : BmoViewPagerDelegate, BmoView
             listUserSharedTreeViewController?.delegate = self
             return listUserSharedTreeViewController!
         default:
-            let listUserSharedTreeViewController:ListUserSharedTreeViewController?
-            listUserSharedTreeViewController = UIStoryboard.listUserSharedTreeViewController()
-            listUserSharedTreeViewController?.treeId = self.treeId
-            listUserSharedTreeViewController?.delegate = self
-            return listUserSharedTreeViewController!
+            let familyMemoriesViewController:FamilyMemoriesViewController?
+            familyMemoriesViewController = UIStoryboard.familyMemoriesViewController()
+            return familyMemoriesViewController!
         }
     }
     

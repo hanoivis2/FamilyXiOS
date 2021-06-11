@@ -90,4 +90,8 @@ extension UIStoryboard {
     class func editFamilyTreeAndEditorsViewController() -> EditFamilyTreeAndEditorsViewController? {
         return familyTreeStoryboard().instantiateViewController(withIdentifier: "EditFamilyTreeAndEditorsViewController") as? EditFamilyTreeAndEditorsViewController
     }
+    
+    class func familyMemoriesViewController() -> FamilyMemoriesViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "FamilyMemoriesViewController") as? FamilyMemoriesViewController
+    }
 }

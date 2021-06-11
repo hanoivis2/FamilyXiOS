@@ -18,6 +18,11 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     @IBOutlet weak var view_canvas: UIView!
     @IBOutlet weak var constraint_view_canvas_height: NSLayoutConstraint!
     @IBOutlet weak var constraint_view_canvas_width: NSLayoutConstraint!
+    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var view_search: UIView!
+    @IBOutlet weak var tbl_searchResult: UITableView!
+    @IBOutlet weak var btn_close_search: UIButton!
+    @IBOutlet weak var constraint_left_searchbar: NSLayoutConstraint!
     
     var zoomLevel = 1 {
         didSet {
@@ -30,6 +35,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     }
     var zoomScale:[CGFloat] = [1,2,3,4]
     var peopleViews = [PeopleView]()
+    var peopleViewsFilter = [PeopleView]()
+    var focusView = PeopleView()
     var people = [People]()
     var rootPeople = People()
     var lines = [CAShapeLayer]()
@@ -46,6 +53,13 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         
         zoomLevel = 1
         
+        view_search.isHidden = true
+        btn_close_search.isHidden = true
+        constraint_left_searchbar.constant = 0
+        searchBar.backgroundImage = UIImage()
+        searchBar.addDoneButtonOnKeyboard()
+        tbl_searchResult.separatorStyle = .none
+        
         getTreeInfo()
     }
     
@@ -61,6 +75,17 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         
         
         
+    }
+    
+    @IBAction func btn_closeSearch(_ sender: Any) {
+        self.dismissKeyboard()
+        self.searchBar.text = ""
+        self.view_search.isHidden = true
+        constraint_left_searchbar.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+            self.btn_close_search.isHidden = true
+        }
     }
     
     func calcutlateSpaceToFirstPeople(people:People, firstPeople:People) -> Int {
@@ -255,6 +280,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
 
         view_canvas.frame.origin.x = 0
         view_canvas.frame.origin.y = 0
+        
+        tbl_searchResult.reloadData()
     }
     
     
@@ -509,7 +536,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         
         view_canvas.frame.origin.x = 0
         view_canvas.frame.origin.y = 0
-        
+        self.peopleViewsFilter = self.peopleViews
+        tbl_searchResult.reloadData()
         
         
 
@@ -1074,3 +1102,116 @@ extension EditFamilyTreeViewController : EditPeopleDelegate {
     }
 }
 
+extension EditFamilyTreeViewController : UISearchBarDelegate {
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        self.view_search.isHidden = false
+        constraint_left_searchbar.constant = 50
+        UIView.animate(withDuration: 0.3, delay: 0, options: .transitionCrossDissolve, animations: {
+            self.view.layoutIfNeeded()
+            
+        },
+        completion: {res in
+            self.btn_close_search.isHidden = false
+        })
+        
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+       
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+
+        self.searchBar.text = searchText
+        self.peopleViewsFilter = self.searchBar.text!.lowercased().isEmpty ? peopleViews : peopleViews.filter { (item: PeopleView) -> Bool in
+
+            return item.people.firstName.lowercased().range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+                || item.people.lastName.lowercased().range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+                || item.people.birthday.lowercased().range(of: searchText, options: .caseInsensitive, range: nil, locale: nil) != nil
+        }
+        
+        tbl_searchResult.reloadData()
+    }
+}
+
+extension EditFamilyTreeViewController : UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return peopleViewsFilter.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "UserNodeInfoTableViewCell") as! UserNodeInfoTableViewCell
+        
+        let item = peopleViewsFilter[indexPath.row].people
+        
+        cell.lbl_name.text = item.firstName + " " + item.lastName
+        cell.lbl_username.text = item.birthday
+        cell.pos = indexPath.row
+        cell.delegate = self
+        
+        let imageView = UIImageView()
+        if let url = URL(string: item.imageUrl) {
+            
+            
+            imageView.kf.setImage(with: url, placeholder: UIImage(named: "female"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            }, completionHandler: { result in
+                if let image = imageView.image {
+                    cell.img_avatar.image = image
+                }
+            })
+            
+        } else {
+            cell.img_avatar.image = UIImage(named: "male")!
+        }
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 80
+    }
+    
+}
+
+extension EditFamilyTreeViewController : UserNodeInfoDelegate {
+    func selectRow(at: Int) {
+        focusView.borderWidth = 0
+        focusView(view: peopleViewsFilter[at])
+        self.dismissKeyboard()
+        self.searchBar.text = ""
+        self.view_search.isHidden = true
+        self.btn_close_search.isHidden = true
+        constraint_left_searchbar.constant = 0
+        UIView.animate(withDuration: 0.3) {
+            self.view.layoutIfNeeded()
+            
+        }
+        focusView = peopleViewsFilter[at]
+    }
+}
+
+protocol UserNodeInfoDelegate {
+    func selectRow(at:Int)
+}
+
+class UserNodeInfoTableViewCell : UITableViewCell {
+    
+    @IBOutlet weak var img_avatar:UIImageView!
+    @IBOutlet weak var lbl_name:UILabel!
+    @IBOutlet weak var lbl_username:UILabel!
+    
+    var delegate:UserNodeInfoDelegate?
+    var pos = 0
+    
+    @IBAction func btn_selectRow(_ sender:Any) {
+        delegate?.selectRow(at: pos)
+    }
+    
+}
