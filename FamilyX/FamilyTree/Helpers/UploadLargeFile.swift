@@ -66,7 +66,6 @@ class ImageUploadClient {
             case .success(let request, _, _):
                 
                 request.uploadProgress(closure: { (progress) in
-                    print("upload progress: \(progress.fractionCompleted)")
                     progressing!(progress.fractionCompleted)
                 })
         
@@ -86,5 +85,42 @@ class ImageUploadClient {
             
           }
         }) 
+    }
+    
+    class func  uploadWithDataArray(serverUrl: URL, headers: HTTPHeaders, fileData: [Data], filename: [String], progressing: ((Double) -> Void)?, success: ((DataResponse<Any>) -> Void)?, failure: ((Error) -> Void)?) {
+    
+        Networking.sharedInstance.backgroundSessionManager.upload(multipartFormData: { (multipartData) in
+            
+            for i in 0..<fileData.count {
+                multipartData.append(fileData[i], withName: "file", fileName: filename[i], mimeType: "image")
+            }
+            
+            
+        }, usingThreshold: SessionManager.multipartFormDataEncodingMemoryThreshold, to: serverUrl, method: .post, headers: headers, encodingCompletion: { encodingResult in
+            
+            switch (encodingResult) {
+            case .success(let request, _, _):
+                
+                request.uploadProgress(closure: { (progress) in
+                    print("upload progress: \(progress.fractionCompleted)")
+                    progressing!(progress.fractionCompleted)
+                })
+        
+                request.responseJSON(completionHandler: { response in
+                    switch response.result {
+                    case .success( _):
+                        
+                        success?(response)
+                        
+                      case .failure(let error):
+                        failure?(error)
+                    }
+                })
+            
+            case .failure(let error):
+              failure?(error)
+            
+          }
+        })
     }
 }

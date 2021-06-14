@@ -70,6 +70,8 @@ extension EditFamilyTreeAndEditorsViewController : BmoViewPagerDelegate, BmoView
         default:
             let familyMemoriesViewController:FamilyMemoriesViewController?
             familyMemoriesViewController = UIStoryboard.familyMemoriesViewController()
+            familyMemoriesViewController?.treeId = self.treeId
+            familyMemoriesViewController?.delegate = self
             return familyMemoriesViewController!
         }
     }
@@ -158,5 +160,14 @@ extension EditFamilyTreeAndEditorsViewController : ListUserSharedTreeDelegate {
         }
         
         
+    }
+}
+
+extension EditFamilyTreeAndEditorsViewController : FamilyMemoriesViewControllerDelegate {
+    func createMemory() {
+        let addFamilyTreeMemoryViewController:AddFamilyTreeMemoryViewController?
+        addFamilyTreeMemoryViewController = UIStoryboard.addFamilyTreeMemoryViewController()
+        addFamilyTreeMemoryViewController?.treeId = self.treeId
+        navigationController?.pushViewController(addFamilyTreeMemoryViewController!, animated: true)
     }
 }

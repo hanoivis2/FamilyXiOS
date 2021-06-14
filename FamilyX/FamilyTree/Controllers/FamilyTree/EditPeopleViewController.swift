@@ -68,7 +68,7 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
         if let url = URL(string: person.imageUrl) {
             
             
-            imageView.kf.setImage(with: url, placeholder: UIImage(named: "male"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+            imageView.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
                 // Progress updated
             }, completionHandler: { result in
                 if let image = imageView.image {
@@ -77,7 +77,7 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
             })
             
         } else {
-            self.img_avatar.image = UIImage(named: "male")!
+            self.img_avatar.image = UIImage(named: "no_image")!
         }
 
         textfield_firstName.text = person.firstName

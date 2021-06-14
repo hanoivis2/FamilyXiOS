@@ -119,6 +119,8 @@ class ListUserToShareTreeViewController : UIViewController, NavigationController
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+          case "FORBIDEN":
+              Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -128,9 +130,11 @@ class ListUserToShareTreeViewController : UIViewController, NavigationController
                 }
                 
             }
-            self.refreshControl.endRefreshing()
-            hud.dismiss()
+            
         })
+        
+        self.refreshControl.endRefreshing()
+        hud.dismiss()
     }
     
     func getSharedUserList(){
@@ -178,6 +182,8 @@ class ListUserToShareTreeViewController : UIViewController, NavigationController
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+          case "FORBIDEN":
+              Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -187,9 +193,10 @@ class ListUserToShareTreeViewController : UIViewController, NavigationController
                 }
                 
             }
-            self.refreshControl.endRefreshing()
-            hud.dismiss()
+            
         })
+        self.refreshControl.endRefreshing()
+        hud.dismiss()
     }
     
     func addEditor(username:String){
@@ -224,6 +231,8 @@ class ListUserToShareTreeViewController : UIViewController, NavigationController
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+          case "FORBIDEN":
+              Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -233,9 +242,10 @@ class ListUserToShareTreeViewController : UIViewController, NavigationController
                 }
                 
             }
-            self.refreshControl.endRefreshing()
-            hud.dismiss()
+            
         })
+        self.refreshControl.endRefreshing()
+        hud.dismiss()
     }
 }
 
@@ -263,7 +273,7 @@ extension ListUserToShareTreeViewController : UITableViewDelegate, UITableViewDa
             if let url = URL(string: user.avatarUrl) {
                 
                 
-                imageView.kf.setImage(with: url, placeholder: UIImage(named: "male"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                imageView.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
                     // Progress updated
                 }, completionHandler: { result in
                     if let image = imageView.image {

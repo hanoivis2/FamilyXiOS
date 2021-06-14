@@ -83,7 +83,7 @@ class ListAllFamilyTreeViewController : UIViewController, NavigationControllerCu
                         self.trees = trees
                         
                         self.tbl_trees.reloadData()
-                        self.refreshControl.endRefreshing()
+                        
                     }
                     else {
                         Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
@@ -111,6 +111,8 @@ class ListAllFamilyTreeViewController : UIViewController, NavigationControllerCu
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+          case "FORBIDEN":
+              Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -121,8 +123,10 @@ class ListAllFamilyTreeViewController : UIViewController, NavigationControllerCu
                 
             }
             
-            hud.dismiss()
+            
         })
+        hud.dismiss()
+        self.refreshControl.endRefreshing()
     }
     
     func getTreeListWithKeyword(keyword:String){
@@ -143,7 +147,7 @@ class ListAllFamilyTreeViewController : UIViewController, NavigationControllerCu
                         self.treesSearched = trees
                         
                         self.tbl_trees.reloadData()
-                        self.refreshControl.endRefreshing()
+                        
                     }
                     else {
                         Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
@@ -171,6 +175,8 @@ class ListAllFamilyTreeViewController : UIViewController, NavigationControllerCu
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+          case "FORBIDEN":
+              Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -181,8 +187,10 @@ class ListAllFamilyTreeViewController : UIViewController, NavigationControllerCu
                 
             }
             
-            hud.dismiss()
+            
         })
+        hud.dismiss()
+        self.refreshControl.endRefreshing()
     }
 }
 

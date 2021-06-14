@@ -209,6 +209,13 @@ class ResAPI: UIResponder {
                         else {
                             return postCompleted(nil, "DATA")
                         }
+                    case STATUS_REQUEST.STATUS_FORBIDEN.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "FORBIDEN")
+                        }
+                        else {
+                            return postCompleted(nil, "FORBIDEN")
+                        }
                     default:
                         if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
                             return postCompleted(response, "")
@@ -254,6 +261,13 @@ class ResAPI: UIResponder {
                         else {
                             return postCompleted(nil, "DATA")
                         }
+                    case STATUS_REQUEST.STATUS_FORBIDEN.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "FORBIDEN")
+                        }
+                        else {
+                            return postCompleted(nil, "FORBIDEN")
+                        }
                     default:
                         if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
                             return postCompleted(response, "")
@@ -296,6 +310,13 @@ class ResAPI: UIResponder {
                         }
                         else {
                             return postCompleted(nil, "DATA")
+                        }
+                    case STATUS_REQUEST.STATUS_FORBIDEN.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "FORBIDEN")
+                        }
+                        else {
+                            return postCompleted(nil, "FORBIDEN")
                         }
                     default:
                         if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
@@ -341,6 +362,13 @@ class ResAPI: UIResponder {
                         }
                         else {
                             return postCompleted(nil, "DATA")
+                        }
+                    case STATUS_REQUEST.STATUS_FORBIDEN.rawValue:
+                        if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
+                            return postCompleted(response, "FORBIDEN")
+                        }
+                        else {
+                            return postCompleted(nil, "FORBIDEN")
                         }
                     default:
                         if let response:ResResponse = Mapper<ResResponse>().map(JSONObject: data) {
@@ -768,6 +796,63 @@ class ResAPI: UIResponder {
 
 
         checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func getFamilyTreeMemories(treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_FAMILY_TREE_MEMORIES, ManageCacheObject.getVersion(), treeId)
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func addFamilyTreeMemory(treeId:Int, description:String, memoryDate:String, imageUrls:[String], _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_ADD_FAMILY_TREE_MEMORY, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            "familyTreeId": treeId,
+            "description": description,
+            "memoryDate": memoryDate,
+            "imageUrls": imageUrls
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func deleteFamilyTreeMemory(memoryId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_DELETE_FAMILY_TREE_MEMORY, ManageCacheObject.getVersion(), memoryId)
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.DELETE.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         

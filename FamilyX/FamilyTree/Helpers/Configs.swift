@@ -30,6 +30,9 @@ var API_GET_ALL_USERS = "/api/v%@/user-management/users"
 var API_GET_ALL_EDITORS = "/api/v%@/tree-management/tree/%d/editors"
 var API_ADD_EDITOR_TO_TREE = "/api/v%@/tree-management/tree/%d/add-users-to-editor"
 var API_REMOVE_EDITOR_FROM_TREE = "/api/v%@/tree-management/tree/%d/remove-users-from-editor"
+var API_GET_FAMILY_TREE_MEMORIES = "/api/v%@/memory-management/memories/tree/%d"
+var API_ADD_FAMILY_TREE_MEMORY = "/api/v%@/memory-management/memory"
+var API_DELETE_FAMILY_TREE_MEMORY = "/api/v%@/memory-management/memory/%d"
 
 
 
@@ -50,3 +53,7 @@ var _defaultPaddingLeft:CGFloat = 30
 var _nodeHorizontalSpace:CGFloat = 15
 var _nodeVerticalSpace:CGFloat = 20
 var _siblingsLineHeight:CGFloat = 8
+
+var maxSizeInBytesUploadImage = 2097152 //About 1200 x 800
+var _maxImageUploadBigSize:CGFloat = 1000
+var _maxImageUpLoadSmallSize:CGFloat = 700

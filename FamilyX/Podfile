@@ -26,4 +26,6 @@ target 'FamilyTree' do
   pod 'SideMenu'
   pod 'Kingfisher'
   pod 'BmoViewPager', '~> 5.1.0'
+  pod 'SKPhotoBrowser'
+  pod 'DKImagePickerController'
 end

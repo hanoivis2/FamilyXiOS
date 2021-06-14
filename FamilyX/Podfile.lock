@@ -225,6 +225,55 @@ PODS:
   - BoringSSL-GRPC/Interface (0.0.7)
   - CropViewController (2.6.0)
   - DatePickerDialog (4.0)
+  - DKCamera (1.6.7)
+  - DKImagePickerController (4.3.2):
+    - DKImagePickerController/Camera (= 4.3.2)
+    - DKImagePickerController/Core (= 4.3.2)
+    - DKImagePickerController/ImageDataManager (= 4.3.2)
+    - DKImagePickerController/InlineCamera (= 4.3.2)
+    - DKImagePickerController/PhotoEditor (= 4.3.2)
+    - DKImagePickerController/PhotoGallery (= 4.3.2)
+    - DKImagePickerController/Resource (= 4.3.2)
+  - DKImagePickerController/Camera (4.3.2):
+    - DKCamera
+    - DKImagePickerController/Core
+  - DKImagePickerController/Core (4.3.2):
+    - DKImagePickerController/ImageDataManager
+    - DKImagePickerController/Resource
+  - DKImagePickerController/ImageDataManager (4.3.2)
+  - DKImagePickerController/InlineCamera (4.3.2):
+    - DKCamera
+    - DKImagePickerController/Core
+  - DKImagePickerController/PhotoEditor (4.3.2):
+    - CropViewController (~> 2.5)
+    - DKImagePickerController/Core
+  - DKImagePickerController/PhotoGallery (4.3.2):
+    - DKImagePickerController/Core
+    - DKPhotoGallery
+  - DKImagePickerController/Resource (4.3.2)
+  - DKPhotoGallery (0.0.17):
+    - DKPhotoGallery/Core (= 0.0.17)
+    - DKPhotoGallery/Model (= 0.0.17)
+    - DKPhotoGallery/Preview (= 0.0.17)
+    - DKPhotoGallery/Resource (= 0.0.17)
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Core (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Preview
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Model (0.0.17):
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Preview (0.0.17):
+    - DKPhotoGallery/Model
+    - DKPhotoGallery/Resource
+    - SDWebImage
+    - SwiftyGif
+  - DKPhotoGallery/Resource (0.0.17):
+    - SDWebImage
+    - SwiftyGif
   - DropDown (2.3.13)
   - ExpandingMenu (0.4.0)
   - Firebase/Analytics (7.10.0):
@@ -360,13 +409,19 @@ PODS:
   - PryntTrimmerView (4.0.2)
   - ReachabilitySwift (3)
   - SCLAlertView (0.8)
+  - SDWebImage (5.11.0):
+    - SDWebImage/Core (= 5.11.0)
+  - SDWebImage/Core (5.11.0)
   - SideMenu (6.5.0)
+  - SKPhotoBrowser (6.1.0)
+  - SwiftyGif (5.4.0)
 
 DEPENDENCIES:
   - AlamofireObjectMapper (~> 5.0)
   - BmoViewPager (~> 5.1.0)
   - CropViewController
   - DatePickerDialog
+  - DKImagePickerController
   - DropDown
   - ExpandingMenu
   - Firebase/Analytics
@@ -382,6 +437,7 @@ DEPENDENCIES:
   - ReachabilitySwift (~> 3)
   - SCLAlertView (~> 0.8)
   - SideMenu
+  - SKPhotoBrowser
 
 SPEC REPOS:
   trunk:
@@ -392,6 +448,9 @@ SPEC REPOS:
     - BoringSSL-GRPC
     - CropViewController
     - DatePickerDialog
+    - DKCamera
+    - DKImagePickerController
+    - DKPhotoGallery
     - DropDown
     - ExpandingMenu
     - Firebase
@@ -419,7 +478,10 @@ SPEC REPOS:
     - PryntTrimmerView
     - ReachabilitySwift
     - SCLAlertView
+    - SDWebImage
     - SideMenu
+    - SKPhotoBrowser
+    - SwiftyGif
 
 SPEC CHECKSUMS:
   abseil: 6c8eb7892aefa08d929b39f9bb108e5367e3228f
@@ -429,6 +491,9 @@ SPEC CHECKSUMS:
   BoringSSL-GRPC: 8edf627ee524575e2f8d19d56f068b448eea3879
   CropViewController: 7093b39ec3cb508531b22d35773e06cecd7378d8
   DatePickerDialog: ccff2f91ff7a018057a4d72fa5ad6de49c8cb0cd
+  DKCamera: a902b66921fca14b7a75266feb8c7568aa7caa71
+  DKImagePickerController: b5eb7f7a388e4643264105d648d01f727110fc3d
+  DKPhotoGallery: fdfad5125a9fdda9cc57df834d49df790dbb4179
   DropDown: 8a2116376c1981888557f72ec2ffc9a5e0e456ec
   ExpandingMenu: 3187a4ed1aa1aea85418e444c213e4cd6063c122
   Firebase: fffddd0bab8677d07376538365faa93ff3889b39
@@ -456,8 +521,11 @@ SPEC CHECKSUMS:
   PryntTrimmerView: 6a43cc90df5d99addeabd33d4ba09b1365322130
   ReachabilitySwift: f5b9bb30a0777fac8f09ce8b067e32faeb29bb64
   SCLAlertView: 6a77bb2edfc65e04dbe57725546cb4107a506b85
+  SDWebImage: 7acbb57630ac7db4a495547fb73916ff3e432f6b
   SideMenu: f583187d21c5b1dd04c72002be544b555a2627a2
+  SKPhotoBrowser: 343de95d89dc7913763c5dda243cc6e606e4a168
+  SwiftyGif: 5d4af95df24caf1c570dbbcb32a3b8a0763bc6d7
 
-PODFILE CHECKSUM: 15c8323cd919bbc426a491d5e1a1de7293f7d3f1
+PODFILE CHECKSUM: 9e11101d77efb268534fc0f353b630a4a7fb05f6
 
 COCOAPODS: 1.10.0

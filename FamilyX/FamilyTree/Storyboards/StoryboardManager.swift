@@ -94,4 +94,8 @@ extension UIStoryboard {
     class func familyMemoriesViewController() -> FamilyMemoriesViewController? {
         return familyTreeStoryboard().instantiateViewController(withIdentifier: "FamilyMemoriesViewController") as? FamilyMemoriesViewController
     }
+    
+    class func addFamilyTreeMemoryViewController() -> AddFamilyTreeMemoryViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "AddFamilyTreeMemoryViewController") as? AddFamilyTreeMemoryViewController
+    }
 }

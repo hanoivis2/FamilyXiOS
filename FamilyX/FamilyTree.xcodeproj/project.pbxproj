@@ -177,12 +177,14 @@
 		F54AFED72636A7000019A904 /* ResAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54AFED62636A6FF0019A904 /* ResAPI.swift */; };
 		F54AFF6B263737930019A904 /* ResResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F54AFF6A263737930019A904 /* ResResponse.swift */; };
 		F561D1AB2643AA2800A5520D /* InformationPoopleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */; };
+		F56EF242267514960074CCF7 /* FamilyTreeMemory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F56EF241267514960074CCF7 /* FamilyTreeMemory.swift */; };
 		F57C3FF426673F88004FCC80 /* FamilyTreeManageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C3FF326673F88004FCC80 /* FamilyTreeManageViewController.swift */; };
 		F57C3FF726675943004FCC80 /* ListAllFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57C3FF626675943004FCC80 /* ListAllFamilyTreeViewController.swift */; };
 		F59844DF26426E2A009CE510 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59844DE26426E2A009CE510 /* SideMenuViewController.swift */; };
 		F5B512712653983C00EB2184 /* UploadLargeFile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5B512702653983C00EB2184 /* UploadLargeFile.swift */; };
 		F5C84C332669040700B85A09 /* ViewHeaderEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5C84C322669040700B85A09 /* ViewHeaderEditor.xib */; };
 		F5C84C352669057000B85A09 /* ViewHeaderEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C84C342669057000B85A09 /* ViewHeaderEditor.swift */; };
+		F5CA40032676420000CF0E48 /* AddFamilyTreeMemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CA40022676420000CF0E48 /* AddFamilyTreeMemoryViewController.swift */; };
 		F5F1AECE264E3316006C4203 /* AddFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -381,12 +383,14 @@
 		F54AFED62636A6FF0019A904 /* ResAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResAPI.swift; sourceTree = "<group>"; };
 		F54AFF6A263737930019A904 /* ResResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResResponse.swift; sourceTree = "<group>"; };
 		F561D1AA2643AA2800A5520D /* InformationPoopleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InformationPoopleViewController.swift; sourceTree = "<group>"; };
+		F56EF241267514960074CCF7 /* FamilyTreeMemory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTreeMemory.swift; sourceTree = "<group>"; };
 		F57C3FF326673F88004FCC80 /* FamilyTreeManageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTreeManageViewController.swift; sourceTree = "<group>"; };
 		F57C3FF626675943004FCC80 /* ListAllFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListAllFamilyTreeViewController.swift; sourceTree = "<group>"; };
 		F59844DE26426E2A009CE510 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		F5B512702653983C00EB2184 /* UploadLargeFile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadLargeFile.swift; sourceTree = "<group>"; };
 		F5C84C322669040700B85A09 /* ViewHeaderEditor.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewHeaderEditor.xib; sourceTree = "<group>"; };
 		F5C84C342669057000B85A09 /* ViewHeaderEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHeaderEditor.swift; sourceTree = "<group>"; };
+		F5CA40022676420000CF0E48 /* AddFamilyTreeMemoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFamilyTreeMemoryViewController.swift; sourceTree = "<group>"; };
 		F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFamilyTreeViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -780,6 +784,7 @@
 				F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */,
 				F506E9602664ECEC00345994 /* EditFamilyTreeInfoViewController.swift */,
 				F52232C326734FA000273C35 /* FamilyMemoriesViewController.swift */,
+				F5CA40022676420000CF0E48 /* AddFamilyTreeMemoryViewController.swift */,
 			);
 			path = FamilyTree;
 			sourceTree = "<group>";
@@ -791,6 +796,7 @@
 				F545DF4B2633442900015C9D /* Account.swift */,
 				F54AFF6A263737930019A904 /* ResResponse.swift */,
 				F530A3EE264169000096BAC2 /* FamilyTree.swift */,
+				F56EF241267514960074CCF7 /* FamilyTreeMemory.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1017,6 +1023,7 @@
 				F545DFE32633442900015C9D /* LoginViewController.swift in Sources */,
 				F545DFE92633442900015C9D /* ToastExtension.swift in Sources */,
 				F545DFDC2633442900015C9D /* AddPeopleViewController.swift in Sources */,
+				F5CA40032676420000CF0E48 /* AddFamilyTreeMemoryViewController.swift in Sources */,
 				F545DF722633442900015C9D /* Stevia+Alignment.swift in Sources */,
 				F545DFAD2633442900015C9D /* PostiOS10PhotoCapture.swift in Sources */,
 				F545DF7C2633442900015C9D /* YPCropView.swift in Sources */,
@@ -1095,6 +1102,7 @@
 				F545DFB82633442900015C9D /* AVPlayer+Extensions.swift in Sources */,
 				F545DE7F263343EF00015C9D /* AppDelegate.swift in Sources */,
 				F545DF8B2633442900015C9D /* YPLibrarySelection.swift in Sources */,
+				F56EF242267514960074CCF7 /* FamilyTreeMemory.swift in Sources */,
 				F545DF892633442900015C9D /* YPIcons.swift in Sources */,
 				F545DFC52633442900015C9D /* AVCaptureSession+Extensions.swift in Sources */,
 				F545DF9E2633442900015C9D /* YPLibrary+LibraryChange.swift in Sources */,

@@ -238,10 +238,17 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         view.delegate = self
         
         let imageView = UIImageView()
+        var imageHolder = UIImage()
+        if view.people.gender == GENDER_ID.MALE.rawValue {
+            imageHolder = UIImage(named: "male")!
+        }
+        else {
+            imageHolder = UIImage(named: "female")!
+        }
         if let url = URL(string: newPeople.imageUrl) {
             
             
-            imageView.kf.setImage(with: url, placeholder: UIImage(named: "female"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+            imageView.kf.setImage(with: url, placeholder: imageHolder, options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
                 // Progress updated
             }, completionHandler: { result in
                 if let image = imageView.image {
@@ -250,7 +257,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             })
             
         } else {
-            view.img_avatar.image = UIImage(named: "male")!
+            
+            view.img_avatar.image = imageHolder
         }
 
         view.lbl_name.text = newPeople.firstName + " " + newPeople.lastName
@@ -371,10 +379,17 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 view.delegate = self
                 
                 let imageView = UIImageView()
-                if let url = URL(string: person.imageUrl) {
+                var imageHolder = UIImage()
+                if view.people.gender == GENDER_ID.MALE.rawValue {
+                    imageHolder = UIImage(named: "male")!
+                }
+                else {
+                    imageHolder = UIImage(named: "female")!
+                }
+                if let url = URL(string: view.people.imageUrl) {
                     
                     
-                    imageView.kf.setImage(with: url, placeholder: UIImage(named: "male"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                    imageView.kf.setImage(with: url, placeholder: imageHolder, options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
                         // Progress updated
                     }, completionHandler: { result in
                         if let image = imageView.image {
@@ -383,7 +398,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                     })
                     
                 } else {
-                    view.img_avatar.image = UIImage(named: "male")!
+                    
+                    view.img_avatar.image = imageHolder
                 }
 
                 view.lbl_name.text = person.firstName + " " + person.lastName
@@ -568,6 +584,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             scrollPoint.y = centerPointY - (UIScreen.main.bounds.height / 2)
         }
         
+        zoomLevel = 1
         scrollView.setContentOffset(scrollPoint, animated: true)
         view.borderWidth = 1.5
         view.borderColor = .black
@@ -653,6 +670,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "FORBIDEN":
+                Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -705,6 +724,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "FORBIDEN":
+                Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -757,6 +778,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "FORBIDEN":
+                Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -809,6 +832,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "FORBIDEN":
+                Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -861,6 +886,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "FORBIDEN":
+                Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -908,6 +935,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             case "DATA":
                 Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            case "FORBIDEN":
+                Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
             default:
                 if data != nil {
                     let response = data as! ResResponse
@@ -1156,10 +1185,17 @@ extension EditFamilyTreeViewController : UITableViewDelegate, UITableViewDataSou
         cell.delegate = self
         
         let imageView = UIImageView()
+        var imageHolder = UIImage()
+        if item.gender == GENDER_ID.MALE.rawValue {
+            imageHolder = UIImage(named: "male")!
+        }
+        else {
+            imageHolder = UIImage(named: "female")!
+        }
         if let url = URL(string: item.imageUrl) {
             
             
-            imageView.kf.setImage(with: url, placeholder: UIImage(named: "female"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+            imageView.kf.setImage(with: url, placeholder: imageHolder, options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
                 // Progress updated
             }, completionHandler: { result in
                 if let image = imageView.image {
@@ -1168,7 +1204,8 @@ extension EditFamilyTreeViewController : UITableViewDelegate, UITableViewDataSou
             })
             
         } else {
-            cell.img_avatar.image = UIImage(named: "male")!
+            
+            cell.img_avatar.image = imageHolder
         }
         
         return cell

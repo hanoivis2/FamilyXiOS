@@ -16,7 +16,7 @@ class Utils: NSObject {
         if let url = URL(string: avatar) {
             
             
-            imageView.kf.setImage(with: url, placeholder: UIImage(named: "male"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+            imageView.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
                 // Progress updated
             }, completionHandler: { result in
                 if let image = imageView.image {
@@ -25,7 +25,7 @@ class Utils: NSObject {
             })
             
         } else {
-            return UIImage(named: "male")!
+            return UIImage(named: "no_image")!
         }
         
         return resultImage
