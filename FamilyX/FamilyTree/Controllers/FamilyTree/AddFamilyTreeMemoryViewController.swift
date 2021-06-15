@@ -257,38 +257,7 @@ class AddFamilyTreeMemoryViewController : UIViewController, NavigationController
                     let item = self.selectedAssets[i]
                     let parameters = [String:AnyObject]()
                     var imageData: Data = item.pngData()!
-                    
-                    if imageData.count > maxSizeInBytesUploadImage {
-                        
-                        let ratio = item.size.width / item.size.height
-                        
-                        if ratio > 1 {
-                            
-                            if (_maxImageUploadBigSize / ratio) <= _maxImageUpLoadSmallSize {
-                                imageData = (item.resized(to: CGSize(width: _maxImageUploadBigSize, height: _maxImageUploadBigSize / ratio))?.pngData())!
-                                print("width: \(_maxImageUploadBigSize) - height: \(_maxImageUploadBigSize / ratio)")
-                            }
-                            else {
-                                imageData = (item.resized(to: CGSize(width: _maxImageUpLoadSmallSize*ratio, height: _maxImageUpLoadSmallSize))?.pngData())!
-                                print("width: \(_maxImageUpLoadSmallSize*ratio) - height: \(_maxImageUpLoadSmallSize)")
-                            }
-                            
-                        }
-                        else {
-                            if (_maxImageUploadBigSize * ratio) <= _maxImageUpLoadSmallSize {
-                                imageData = (item.resized(to: CGSize(width: _maxImageUploadBigSize*ratio, height: _maxImageUploadBigSize))?.pngData())!
-                                print("width: \(_maxImageUploadBigSize*ratio) - height: \(_maxImageUploadBigSize)")
-                            }
-                            else {
-                                imageData = (item.resized(to: CGSize(width: _maxImageUpLoadSmallSize, height: _maxImageUpLoadSmallSize / ratio))?.pngData())!
-                                print("width: \(_maxImageUpLoadSmallSize) - height: \(_maxImageUpLoadSmallSize / ratio)")
-                            }
-                        }
-                        
-                        
-                        print(">>>>>>> \(imageData.count)")
-                    }
-                    
+                    imageData = Utils.bestImageDataForUpload(data: imageData, item: item)
                     let date = Date()
                     let formatter = DateFormatter()
                     formatter.dateFormat = "yyyy-MM-ddHH:mm:ss"

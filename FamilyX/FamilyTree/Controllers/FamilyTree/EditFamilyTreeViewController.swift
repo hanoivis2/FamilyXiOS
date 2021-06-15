@@ -12,6 +12,11 @@ import ObjectMapper
 import Alamofire
 import Kingfisher
 
+protocol EditFamilyTreeViewControllerDelegate {
+    func reload()
+    func logoutFromEditFamilyTree()
+}
+
 class EditFamilyTreeViewController : UIViewController, NavigationControllerCustomDelegate {
     
     @IBOutlet weak var scrollView: UIScrollView!
@@ -23,6 +28,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     @IBOutlet weak var tbl_searchResult: UITableView!
     @IBOutlet weak var btn_close_search: UIButton!
     @IBOutlet weak var constraint_left_searchbar: NSLayoutConstraint!
+    
+    var delegate:EditFamilyTreeViewControllerDelegate?
     
     var zoomLevel = 1 {
         didSet {
@@ -64,10 +71,19 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+        let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideAddButton: true, title: "FAMILY TREE")
+        navigationControllerCustom.touchTarget = self
+        navigationControllerCustom.navigationBar.barTintColor = ColorUtils.toolbar()
+        navigationControllerCustom.navigationBar.isHidden = false
+        
+        self.navigationItem.setHidesBackButton(true, animated: false)
+        self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
+        
+    }
     
-        
-        
+    func backTap() {
+        navigationController?.popViewController(animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -146,25 +162,23 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         return People()
     }
     
-    func getChildren(people:People) -> [People] {
-        
-        var results = [People]()
-        
-        for item in self.people {
-            if item.fatherId == people.id || item.motherId == people.id {
-                results.append(item)
-            }
-        }
-        return results
-    }
-    
-    func getPeopleView(people:People) -> PeopleView {
+    func getPeopleView(person:People) -> PeopleView {
         for view in self.peopleViews {
-            if view.people.id == people.id {
+            if view.people.id == person.id {
                 return view
             }
         }
         return PeopleView()
+    }
+    
+    func getChildrenAmount(person:People) -> Int {
+        var count = 0
+        for item in  people {
+            if item.fatherId == person.id || item.motherId == person.id {
+                count += 1
+            }
+        }
+        return count
     }
     
     func drawLineFromPoint(start : CGPoint, toPoint end:CGPoint, ofColor lineColor: UIColor, inView view:UIView) -> CAShapeLayer {
@@ -185,14 +199,14 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     }
     
     func drawSiblingsLine(siblings:[People]) {
-        var firstSiblingView = getPeopleView(people: siblings.first!)
-        var lastSiblingView = getPeopleView(people: siblings.last!)
+        var firstSiblingView = getPeopleView(person: siblings.first!)
+        var lastSiblingView = getPeopleView(person: siblings.last!)
         
         var minMaxX = firstSiblingView.frame.maxX
         var maxMaxX = firstSiblingView.frame.maxX
         
         for item in siblings {
-            let tempView = getPeopleView(people: item)
+            let tempView = getPeopleView(person: item)
             if tempView.frame.maxX < minMaxX {
                 firstSiblingView = tempView
                 minMaxX = tempView.frame.maxX
@@ -208,7 +222,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         let lastSiblingMinX = lastSiblingView.frame.minX
         
         for item in siblings {
-            let firstSiblingView = getPeopleView(people: item)
+            let firstSiblingView = getPeopleView(person: item)
             
             let firstSiblingMinX = firstSiblingView.frame.minX
             let firstSiblingMinY = firstSiblingView.frame.minY
@@ -224,7 +238,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     func addSpouseView(rootPeople:People, newPeople:People) {
         
-        let relativePeopleNode = getPeopleView(people: rootPeople)
+        let relativePeopleNode = getPeopleView(person: rootPeople)
 
         let view = Bundle.main.loadNibNamed("PeopleView", owner: self, options: nil)?.first as! PeopleView
 
@@ -313,7 +327,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             var peopleInSameLevel = [People]()
             
             for person in people {
-                if calcutlateSpaceToFirstPeople(people: person, firstPeople: rootPeople) == i && (person.fatherId != 0 || person.id == rootPeople.id) {
+                if calcutlateSpaceToFirstPeople(people: person, firstPeople: rootPeople) == i
+                    && (person.fatherId != 0 || person.motherId != 0 || person.id == rootPeople.id) {
                     peopleInSameLevel.append(person)
                 }
             }
@@ -347,15 +362,30 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             
                 
                 if person.maxX != 0 {
-                    view.frame.origin.x = person.maxX - _peopleNodeWidth - (_nodeHorizontalSpace / 2)
+                    
+                    if person.spouse.count > 0 {
+                        
+                        if getChildrenAmount(person: person) > 1 {
+                            view.frame.origin.x = person.maxX - _peopleNodeWidth - (_nodeHorizontalSpace / 2)
+                        }
+                        else {
+                            view.frame.origin.x = person.maxX - (_peopleNodeWidth * 3/2) - (_nodeHorizontalSpace / 2)
+                        }
+                        
+                    }
+                    else {
+                        view.frame.origin.x = person.maxX - (_peopleNodeWidth)
+                    }
+                    
                 }
                 else {
                     view.frame.origin.x = maxX + _nodeHorizontalSpace
                 }
                 
-                if person.fatherId != currentFatherId && currentFatherId != 0 {
+                if !(person.fatherId == currentFatherId || person.motherId == currentFatherId || currentFatherId == 0) {
                     view.frame.origin.x = maxX + 2*_peopleNodeWidth
                 }
+                
                 
                 if view.frame.origin.x < 0 {
                     let space = (_defaultPaddingLeft - view.frame.origin.x)
@@ -418,6 +448,9 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
 
                 self.view_canvas.addSubview(view)
                 self.peopleViews.append(view)
+                
+                let father = getFather(people: person)
+                let mother = getMother(people: person)
 
                 
                 if person.spouse.count > 0 {
@@ -429,25 +462,33 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 }
               
                 if currentFatherId == 0 {
-                    currentFatherId = person.fatherId
                     
-                    if getFather(people: person).fatherId == 0 && getFather(people: person).motherId == 0
-                                && getMother(people: person).fatherId != 0 && getMother(people: person).motherId != 0 {
+                    //Nếu không có cha hoặc cha là con rể
+                    if (father.fatherId == 0 && father.motherId == 0
+                        && mother.fatherId != 0 && mother.motherId != 0
+                        && father.id != rootPeople.id )
+                        || (person.fatherId == 0 && person.motherId != 0) {
+                        
                         getMother(people: person).firstChildMaxX = view.frame.maxX
+                        currentFatherId = person.motherId
                     }
                     else {
                         getFather(people: person).firstChildMaxX = view.frame.maxX
+                        currentFatherId = person.fatherId
                     }
                     siblings.append(person)
                 }
-                else if currentFatherId != person.fatherId {
+                //Nếu có cha và cha không phải con rể thì dùng id của cha
+                //Ngược lại dùng id của mẹ
+                else if (person.fatherId != 0) && (father.fatherId != 0 && father.motherId != 0 || father.id == rootPeople.id) && (currentFatherId != person.fatherId)
+                    || (person.fatherId == 0 && person.motherId != 0 && currentFatherId != person .motherId) {
                     
                     if siblings.count > 1 {
                         drawSiblingsLine(siblings: siblings)
                         
                         
-                        let firstSiblingView = getPeopleView(people: siblings.first!)
-                        let lastSiblingView = getPeopleView(people: siblings.last!)
+                        let firstSiblingView = getPeopleView(person: siblings.first!)
+                        let lastSiblingView = getPeopleView(person: siblings.last!)
                         
                         let firstSiblingMinX = firstSiblingView.frame.minX
                         let firstSiblingMinY = firstSiblingView.frame.minY
@@ -470,10 +511,14 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                         
                     }
                     else {
-                        let childView = getPeopleView(people: siblings[0])
-                        
-                        if getFather(people: siblings[0]).fatherId == 0 && getFather(people: siblings[0]).motherId == 0
-                                    && getMother(people: siblings[0]).fatherId != 0 && getMother(people: siblings[0]).motherId != 0 {
+                        let childView = getPeopleView(person: siblings[0])
+                        let father = getFather(people: siblings[0])
+                        let mother = getMother(people: siblings[0])
+                        //Nếu không có cha hoặc cha là con rể
+                        if (father.fatherId == 0 && father.motherId == 0
+                            && mother.fatherId != 0 && mother.motherId != 0
+                            && father.id != rootPeople.id )
+                            || (person.fatherId == 0 && person.motherId != 0) {
                             getMother(people: siblings[0]).maxX = childView.frame.maxX
                         }
                         else {
@@ -490,68 +535,81 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                     if getFather(people: person).fatherId == 0 && getFather(people: person).motherId == 0
                                 && getMother(people: person).fatherId != 0 && getMother(people: person).motherId != 0 {
                         getMother(people: person).firstChildMaxX = view.frame.maxX
+                        currentFatherId = person.motherId
                     }
                     else {
                         getFather(people: person).firstChildMaxX = view.frame.maxX
-                    }
-                    currentFatherId = person.fatherId
-                }
-                
-                if peopleInSameLevel.last?.id == person.id && person.fatherId != 0 {
-                    siblings.append(person)
-                    
-                    if siblings.count > 1 {
-                        drawSiblingsLine(siblings: siblings)
-                        
-                        
-                        let firstSiblingView = getPeopleView(people: siblings.first!)
-                        let lastSiblingView = getPeopleView(people: siblings.last!)
-                        
-                        let firstSiblingMinX = firstSiblingView.frame.minX
-                        let firstSiblingMinY = firstSiblingView.frame.minY
-                        let lastSiblingMinX = lastSiblingView.frame.minX
-                        
-                        let centerX = (firstSiblingMinX + (_peopleNodeWidth / 2) + lastSiblingMinX + (_peopleNodeWidth / 2)) / 2
-                        
-                        if getFather(people: siblings[0]).fatherId == 0 && getFather(people: siblings[0]).motherId == 0
-                                    && getMother(people: siblings[0]).fatherId != 0 && getMother(people: siblings[0]).motherId != 0 {
-                            getMother(people: siblings[0]).maxX = centerX
-                        }
-                        else {
-                            getFather(people: siblings[0]).maxX = centerX
-                        }
-                        
-                        let line = drawLineFromPoint(start: CGPoint(x: centerX, y: firstSiblingMinY - _siblingsLineHeight), toPoint: CGPoint(x: centerX, y: firstSiblingMinY - _nodeVerticalSpace - _peopleNodeHeight/2), ofColor: .black, inView: view_canvas)
-                        lines.append(line)
-                        
-                    }
-                    else {
-                        let childView = getPeopleView(people: siblings[0])
-                        
-                        
-                        if getFather(people: siblings[0]).fatherId == 0 && getFather(people: siblings[0]).motherId == 0
-                                    && getMother(people: siblings[0]).fatherId != 0 && getMother(people: siblings[0]).motherId != 0 {
-                            getMother(people: siblings[0]).maxX = childView.frame.maxX
-                        }
-                        else {
-                            getFather(people: siblings[0]).maxX = childView.frame.maxX
-                        }
-                        
-                        let line = drawLineFromPoint(start: CGPoint(x: childView.centerX(), y: childView.frame.minY), toPoint: CGPoint(x: childView.centerX(), y: childView.frame.minY - _nodeVerticalSpace - _peopleNodeHeight/2), ofColor: .black, inView: view_canvas)
-                        lines.append(line)
+                        currentFatherId = person.fatherId
                     }
                     
-                    siblings.removeAll()
                 }
                 else {
                     siblings.append(person)
-                    
                 }
+                
+                if (peopleInSameLevel.last?.id == person.id)
+                    && (person.fatherId != 0 || person.motherId != 0) {
+                    
+                    if !siblings.contains(where: { people in return people.id == person.id }) {
+                        siblings.append(person)
+                    }
+                    
+                    
+                    if siblings.count > 1 {
+                        drawSiblingsLine(siblings: siblings)
+                        
+                        
+                        let firstSiblingView = getPeopleView(person: siblings.first!)
+                        let lastSiblingView = getPeopleView(person: siblings.last!)
+                        
+                        let firstSiblingMinX = firstSiblingView.frame.minX
+                        let firstSiblingMinY = firstSiblingView.frame.minY
+                        let lastSiblingMinX = lastSiblingView.frame.minX
+                        
+                        let centerX = (firstSiblingMinX + (_peopleNodeWidth / 2) + lastSiblingMinX + (_peopleNodeWidth / 2)) / 2
+                        
+                        if getFather(people: siblings[0]).fatherId == 0 && getFather(people: siblings[0]).motherId == 0
+                                    && getMother(people: siblings[0]).fatherId != 0 && getMother(people: siblings[0]).motherId != 0 {
+                            getMother(people: siblings[0]).maxX = centerX
+                        }
+                        else {
+                            getFather(people: siblings[0]).maxX = centerX
+                        }
+                        
+                        let line = drawLineFromPoint(start: CGPoint(x: centerX, y: firstSiblingMinY - _siblingsLineHeight), toPoint: CGPoint(x: centerX, y: firstSiblingMinY - _nodeVerticalSpace - _peopleNodeHeight/2), ofColor: .black, inView: view_canvas)
+                        lines.append(line)
+                        
+                    }
+                    else {
+                        let childView = getPeopleView(person: siblings[0])
+                        
+                        let father = getFather(people: siblings[0])
+                        let mother = getMother(people: siblings[0])
+                        //Nếu không có cha hoặc cha là con rể
+                        if (father.fatherId == 0 && father.motherId == 0
+                            && mother.fatherId != 0 && mother.motherId != 0
+                            && father.id != rootPeople.id )
+                            || (person.fatherId == 0 && person.motherId != 0) {
+                            getMother(people: siblings[0]).maxX = childView.frame.maxX
+                        }
+                        else {
+                            getFather(people: siblings[0]).maxX = childView.frame.maxX
+                        }
+                        
+                        let line = drawLineFromPoint(start: CGPoint(x: childView.centerX(), y: childView.frame.minY), toPoint: CGPoint(x: childView.centerX(), y: childView.frame.minY - _nodeVerticalSpace - _peopleNodeHeight/2), ofColor: .black, inView: view_canvas)
+                        lines.append(line)
+                    }
+                    
+                    siblings.removeAll()
+                    currentFatherId = 0
+                }
+ 
             }
         }
         
         view_canvas.frame.origin.x = 0
         view_canvas.frame.origin.y = 0
+        view_canvas.reloadInputViews()
         self.peopleViewsFilter = self.peopleViews
         tbl_searchResult.reloadData()
         
@@ -632,9 +690,19 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                         }
                         
                         for person in self.people {
-                            if person.fatherId == 0 && person.gender == GENDER_ID.MALE.rawValue {
-                                self.rootPeople = person
-                                break
+                            if person.fatherId == 0 && person.motherId == 0 {
+                                if  person.spouse.count == 0 {
+                                    self.rootPeople = person
+                                    break
+                                }
+                                else {
+                                    if person.spouse[0].fatherId == 0 && person.spouse[0].motherId == 0 {
+                                        if person.gender == GENDER_ID.MALE.rawValue {
+                                            self.rootPeople = person
+                                            break
+                                        }
+                                    }
+                                }
                             }
                         }
                         
@@ -646,24 +714,13 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                         }
                         self.peopleViews.removeAll()
                         self.lines.removeAll()
+                        self.view_canvas.reloadInputViews()
                         self.renderTree()
                     }
                     
                 }
             case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+                self.delegate?.logoutFromEditFamilyTree()
             case "RECALL":
                 self.getTreeInfo()
             case "NOTFOUND":
@@ -703,21 +760,9 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             
             switch message {
             case "SUCCESS":
-                self.getTreeInfo()
+                self.delegate?.reload()
             case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+                self.delegate?.logoutFromEditFamilyTree()
             case "RECALL":
                 self.addChild(child: child)
             case "NOTFOUND":
@@ -757,21 +802,9 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             
             switch message {
             case "SUCCESS":
-                self.getTreeInfo()
+                self.delegate?.reload()
             case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+                self.delegate?.logoutFromEditFamilyTree()
             case "RECALL":
                 self.addSpouse(spouse: spouse, relativePeopleId: relativePeopleId)
             case "NOTFOUND":
@@ -811,21 +844,9 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
             
             switch message {
             case "SUCCESS":
-                self.getTreeInfo()
+                self.delegate?.reload()
             case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+                self.delegate?.logoutFromEditFamilyTree()
             case "RECALL":
                 self.addParent(parent: parent, relativePeopleId: relativePeopleId)
             case "NOTFOUND":
@@ -865,21 +886,9 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
            
             switch message {
             case "SUCCESS":
-                self.getTreeInfo()
+                self.delegate?.reload()
             case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+                self.delegate?.logoutFromEditFamilyTree()
             case "RECALL":
                 self.editNode(person: person)
             case "NOTFOUND":
@@ -914,21 +923,9 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
           
             switch message {
             case "SUCCESS":
-                self.getTreeInfo()
+                self.delegate?.reload()
             case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+                self.delegate?.logoutFromEditFamilyTree()
             case "RECALL":
                 self.deleteNode(personId: personId)
             case "NOTFOUND":
@@ -998,7 +995,8 @@ extension EditFamilyTreeViewController : AddPeopleDelegate {
         
         let item = image
         let parameters = [String:AnyObject]()
-        let imageData: Data = item.jpegData(compressionQuality: 0.5)!
+        var imageData: Data = item.pngData()!
+        imageData = Utils.bestImageDataForUpload(data: imageData, item: item)
         let date = Date()
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-ddHH:mm:ss"
@@ -1065,18 +1063,23 @@ extension EditFamilyTreeViewController : ArrayChoiceReportViewControllerDelegate
         }
         else if pos == 1 {
             
-
+            if people.spouse.count == 0 && getChildrenAmount(person: people) > 0 {
+                Loaf.init("You cannot add node this node!", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+            }
+            else {
                 let addPeopleViewController:AddPeopleViewController?
                 addPeopleViewController = UIStoryboard.addPeopleViewController()
                 addPeopleViewController?.relativePerson = people
                 addPeopleViewController?.delegate = self
                 navigationController?.pushViewController(addPeopleViewController!, animated: true)
+            }
+            
 
         }
         else {
             
-            if people.spouse.count == 0 && getChildren(people: people).count == 0
-                || people.spouse.count == 0 && people.fatherId == 0 && people.motherId == 0 && getChildren(people: people).count <= 1
+            if people.spouse.count == 0 && getChildrenAmount(person: people) == 0
+                || people.spouse.count == 0 && people.fatherId == 0 && people.motherId == 0 && getChildrenAmount(person: people) <= 1
                 || people.spouse.count == 1 && people.fatherId == 0 && people.motherId == 0
             {
                 self.selectedDeletePersonId = people.id

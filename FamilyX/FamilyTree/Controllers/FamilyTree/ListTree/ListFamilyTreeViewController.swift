@@ -393,6 +393,7 @@ extension ListFamilyTreeViewController : ListFamilyTreeDelegate {
         editFamilyTreeAndEditorsViewController?.treeId = trees[pos].id
         editFamilyTreeAndEditorsViewController?.ownerId = trees[pos].owner.id
         navigationController?.pushViewController(editFamilyTreeAndEditorsViewController!, animated: true)
+    
     }
     
     func editTree(pos: Int) {

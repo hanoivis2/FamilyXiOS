@@ -12,6 +12,7 @@ import ObjectMapper
 
 protocol ListUserSharedTreeDelegate {
     func addContributor()
+    func logoutFromListEditors()
 }
 
 class ListUserSharedTreeViewController : UIViewController, NavigationControllerCustomDelegate {
@@ -82,20 +83,8 @@ class ListUserSharedTreeViewController : UIViewController, NavigationControllerC
                     
                     
                 }
-            case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+          case "UNAUTHORIZED":
+            self.delegate?.logoutFromListEditors()
           case "RECALL":
               self.getUserList()
             case "NOTFOUND":
@@ -132,19 +121,7 @@ class ListUserSharedTreeViewController : UIViewController, NavigationControllerC
                 self.getUserList()
                 Loaf.init("Removed successfully!", state: .success, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
             case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+                self.delegate?.logoutFromListEditors()
           case "RECALL":
               self.removeEditor(username: username)
             case "NOTFOUND":

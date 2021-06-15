@@ -98,4 +98,32 @@ extension UIStoryboard {
     class func addFamilyTreeMemoryViewController() -> AddFamilyTreeMemoryViewController? {
         return familyTreeStoryboard().instantiateViewController(withIdentifier: "AddFamilyTreeMemoryViewController") as? AddFamilyTreeMemoryViewController
     }
+    
+//    ============== define Profile Storyboard ===============
+    
+    class func profileStoryboard() -> UIStoryboard {
+        return UIStoryboard(name: "Profile", bundle: Bundle.main)
+    }
+    
+    class func allSystemUsersViewController() -> AllSystemUsersViewController? {
+        return profileStoryboard().instantiateViewController(withIdentifier: "AllSystemUsersViewController") as? AllSystemUsersViewController
+    }
+    
+    class func userProfileViewController() -> UserProfileViewController? {
+        return profileStoryboard().instantiateViewController(withIdentifier: "UserProfileViewController") as? UserProfileViewController
+    }
+    
+    class func editUserProfileViewController() -> EditUserProfileViewController? {
+        return profileStoryboard().instantiateViewController(withIdentifier: "EditUserProfileViewController") as? EditUserProfileViewController
+    }
+    
+//    ============== define Profile Storyboard ===============
+    
+    class func notificationStoryboard() -> UIStoryboard {
+        return UIStoryboard(name: "Notification", bundle: Bundle.main)
+    }
+    
+    class func notificationViewController() -> NotificationViewController? {
+        return notificationStoryboard().instantiateViewController(withIdentifier: "NotificationViewController") as? NotificationViewController
+    }
 }

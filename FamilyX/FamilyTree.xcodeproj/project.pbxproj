@@ -185,7 +185,15 @@
 		F5C84C332669040700B85A09 /* ViewHeaderEditor.xib in Resources */ = {isa = PBXBuildFile; fileRef = F5C84C322669040700B85A09 /* ViewHeaderEditor.xib */; };
 		F5C84C352669057000B85A09 /* ViewHeaderEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5C84C342669057000B85A09 /* ViewHeaderEditor.swift */; };
 		F5CA40032676420000CF0E48 /* AddFamilyTreeMemoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5CA40022676420000CF0E48 /* AddFamilyTreeMemoryViewController.swift */; };
+		F5CA402C2677CCD900CF0E48 /* Calendar.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CA402B2677CCD900CF0E48 /* Calendar.storyboard */; };
+		F5CA402E2677CCEA00CF0E48 /* Notification.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CA402D2677CCEA00CF0E48 /* Notification.storyboard */; };
+		F5CA40302677CCF300CF0E48 /* Profile.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5CA402F2677CCF300CF0E48 /* Profile.storyboard */; };
+		F5D52B8C2678F4690071A6CB /* AllSystemUsersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D52B8B2678F4690071A6CB /* AllSystemUsersViewController.swift */; };
+		F5D52B8E2678F4780071A6CB /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D52B8D2678F4780071A6CB /* UserProfileViewController.swift */; };
+		F5D52B902678F4920071A6CB /* EditUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5D52B8F2678F4920071A6CB /* EditUserProfileViewController.swift */; };
 		F5F1AECE264E3316006C4203 /* AddFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */; };
+		F5FEE8A926793A5B00086D58 /* NotificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FEE8A826793A5B00086D58 /* NotificationViewController.swift */; };
+		F5FEE8AB26793B3D00086D58 /* Notification.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5FEE8AA26793B3D00086D58 /* Notification.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -391,7 +399,15 @@
 		F5C84C322669040700B85A09 /* ViewHeaderEditor.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ViewHeaderEditor.xib; sourceTree = "<group>"; };
 		F5C84C342669057000B85A09 /* ViewHeaderEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewHeaderEditor.swift; sourceTree = "<group>"; };
 		F5CA40022676420000CF0E48 /* AddFamilyTreeMemoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFamilyTreeMemoryViewController.swift; sourceTree = "<group>"; };
+		F5CA402B2677CCD900CF0E48 /* Calendar.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Calendar.storyboard; sourceTree = "<group>"; };
+		F5CA402D2677CCEA00CF0E48 /* Notification.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Notification.storyboard; sourceTree = "<group>"; };
+		F5CA402F2677CCF300CF0E48 /* Profile.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Profile.storyboard; sourceTree = "<group>"; };
+		F5D52B8B2678F4690071A6CB /* AllSystemUsersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllSystemUsersViewController.swift; sourceTree = "<group>"; };
+		F5D52B8D2678F4780071A6CB /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		F5D52B8F2678F4920071A6CB /* EditUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditUserProfileViewController.swift; sourceTree = "<group>"; };
 		F5F1AECD264E3316006C4203 /* AddFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFamilyTreeViewController.swift; sourceTree = "<group>"; };
+		F5FEE8A826793A5B00086D58 /* NotificationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationViewController.swift; sourceTree = "<group>"; };
+		F5FEE8AA26793B3D00086D58 /* Notification.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notification.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -757,6 +773,9 @@
 				F545DF382633442800015C9D /* Main.storyboard */,
 				F545DF3A2633442800015C9D /* FamilyTree.storyboard */,
 				F545DF3B2633442800015C9D /* SplashViewController.xib */,
+				F5CA402B2677CCD900CF0E48 /* Calendar.storyboard */,
+				F5CA402D2677CCEA00CF0E48 /* Notification.storyboard */,
+				F5CA402F2677CCF300CF0E48 /* Profile.storyboard */,
 			);
 			path = Storyboards;
 			sourceTree = "<group>";
@@ -764,6 +783,8 @@
 		F545DF3C2633442800015C9D /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				F5FEE8A726793A3D00086D58 /* Notification */,
+				F5D52B8A2678F44F0071A6CB /* Profile */,
 				F59844E626429878009CE510 /* Navigation */,
 				F59844E52642986E009CE510 /* Main */,
 				F545DF3F2633442800015C9D /* FamilyTree */,
@@ -797,6 +818,7 @@
 				F54AFF6A263737930019A904 /* ResResponse.swift */,
 				F530A3EE264169000096BAC2 /* FamilyTree.swift */,
 				F56EF241267514960074CCF7 /* FamilyTreeMemory.swift */,
+				F5FEE8AA26793B3D00086D58 /* Notification.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -866,6 +888,24 @@
 				F545DF442633442800015C9D /* DialogConfirmViewController.swift */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		F5D52B8A2678F44F0071A6CB /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				F5D52B8B2678F4690071A6CB /* AllSystemUsersViewController.swift */,
+				F5D52B8D2678F4780071A6CB /* UserProfileViewController.swift */,
+				F5D52B8F2678F4920071A6CB /* EditUserProfileViewController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		F5FEE8A726793A3D00086D58 /* Notification */ = {
+			isa = PBXGroup;
+			children = (
+				F5FEE8A826793A5B00086D58 /* NotificationViewController.swift */,
+			);
+			path = Notification;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -950,7 +990,9 @@
 				F545DE88263343F200015C9D /* Assets.xcassets in Resources */,
 				F545DF772633442900015C9D /* YPImagePickerLocalizable.strings in Resources */,
 				F545DFA92633442900015C9D /* YPLibraryView.xib in Resources */,
+				F5CA402C2677CCD900CF0E48 /* Calendar.storyboard in Resources */,
 				F545DF762633442900015C9D /* LICENSE in Resources */,
+				F5CA40302677CCF300CF0E48 /* Profile.storyboard in Resources */,
 				F545E0232633480600015C9D /* PeopleView.xib in Resources */,
 				F506E98C2666B82A00345994 /* TreeSeperatorViewBmo.xib in Resources */,
 				F545E0252633480600015C9D /* CustomActionTableViewCell.xib in Resources */,
@@ -960,6 +1002,7 @@
 				F545DFD82633442900015C9D /* FamilyTree.storyboard in Resources */,
 				F545DFD62633442900015C9D /* LaunchScreen.storyboard in Resources */,
 				F545DFD92633442900015C9D /* SplashViewController.xib in Resources */,
+				F5CA402E2677CCEA00CF0E48 /* Notification.storyboard in Resources */,
 				F545DF7B2633442900015C9D /* YPVideoFiltersVC.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1030,6 +1073,7 @@
 				F545E0222633480600015C9D /* PeopleView.swift in Sources */,
 				F506E9612664ECEC00345994 /* EditFamilyTreeInfoViewController.swift in Sources */,
 				F545DF8F2633442900015C9D /* YPTrimError.swift in Sources */,
+				F5FEE8A926793A5B00086D58 /* NotificationViewController.swift in Sources */,
 				F545DF6A2633442900015C9D /* Stevia+FlexibleMargin.swift in Sources */,
 				F5F1AECE264E3316006C4203 /* AddFamilyTreeViewController.swift in Sources */,
 				F53FE2152667A6B3009238AE /* ListUserSharedTreeViewController.swift in Sources */,
@@ -1044,6 +1088,7 @@
 				F545DFF12633442900015C9D /* localizedText.swift in Sources */,
 				F545DF792633442900015C9D /* YPVideoView.swift in Sources */,
 				F545DFC62633442900015C9D /* CGFloat+Extensions.swift in Sources */,
+				F5D52B8E2678F4780071A6CB /* UserProfileViewController.swift in Sources */,
 				F545DFF42633442900015C9D /* RoundedCornerView.swift in Sources */,
 				F545DFA72633442900015C9D /* YPAlbum.swift in Sources */,
 				F545DFB32633442900015C9D /* AVCaptureDevice+Extensions.swift in Sources */,
@@ -1129,11 +1174,13 @@
 				F545DF5E2633442900015C9D /* AlwaysShowPopup.swift in Sources */,
 				F545DFBF2633442900015C9D /* NSFileManager+Extensions.swift in Sources */,
 				F545DFA12633442900015C9D /* YPPagerMenu.swift in Sources */,
+				F5D52B8C2678F4690071A6CB /* AllSystemUsersViewController.swift in Sources */,
 				F545DFB92633442900015C9D /* UIColor+Extensions.swift in Sources */,
 				F545DF832633442900015C9D /* YPFonts.swift in Sources */,
 				F545DF812633442900015C9D /* YPFilter.swift in Sources */,
 				F545DFBD2633442900015C9D /* UIBarButtonItem+Extensions.swift in Sources */,
 				F545DFBE2633442900015C9D /* CIImage+Extensions.swift in Sources */,
+				F5D52B902678F4920071A6CB /* EditUserProfileViewController.swift in Sources */,
 				F545DF732633442900015C9D /* Stevia+LayoutAnchors.swift in Sources */,
 				F54AFED72636A7000019A904 /* ResAPI.swift in Sources */,
 				F545DF982633442900015C9D /* YPLibraryViewDelegate.swift in Sources */,
@@ -1173,6 +1220,7 @@
 				F53FE2112667A6A1009238AE /* EditFamilyTreeAndEditorsViewController.swift in Sources */,
 				F545DFB12633442900015C9D /* YPPermissionCheckable.swift in Sources */,
 				F545DFCC2633442900015C9D /* YPAlerts.swift in Sources */,
+				F5FEE8AB26793B3D00086D58 /* Notification.swift in Sources */,
 				F545DFE52633442900015C9D /* People.swift in Sources */,
 				F59844DF26426E2A009CE510 /* SideMenuViewController.swift in Sources */,
 				F545DF5D2633442900015C9D /* ConnectorView.swift in Sources */,

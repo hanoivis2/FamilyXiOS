@@ -60,6 +60,7 @@ extension EditFamilyTreeAndEditorsViewController : BmoViewPagerDelegate, BmoView
             let editFamilyTreeViewController:EditFamilyTreeViewController?
             editFamilyTreeViewController = UIStoryboard.editFamilyTreeViewController()
             editFamilyTreeViewController?.treeId = self.treeId
+            editFamilyTreeViewController?.delegate = self
             return editFamilyTreeViewController!
         case 1:
             let listUserSharedTreeViewController:ListUserSharedTreeViewController?
@@ -161,6 +162,22 @@ extension EditFamilyTreeAndEditorsViewController : ListUserSharedTreeDelegate {
         
         
     }
+    
+    func logoutFromMemory() {
+        ManageCacheObject.saveCurrentAccount(Account())
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: LoginViewController.self) {
+                self.navigationController!.popToViewController(controller, animated: true)
+                return
+            }
+        }
+
+        let loginViewController: LoginViewController?
+        loginViewController = UIStoryboard.loginViewController()
+        self.navigationController!.pushViewController(loginViewController!, animated: false)
+        
+        Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+    }
 }
 
 extension EditFamilyTreeAndEditorsViewController : FamilyMemoriesViewControllerDelegate {
@@ -169,5 +186,43 @@ extension EditFamilyTreeAndEditorsViewController : FamilyMemoriesViewControllerD
         addFamilyTreeMemoryViewController = UIStoryboard.addFamilyTreeMemoryViewController()
         addFamilyTreeMemoryViewController?.treeId = self.treeId
         navigationController?.pushViewController(addFamilyTreeMemoryViewController!, animated: true)
+    }
+    
+    func logoutFromListEditors() {
+        ManageCacheObject.saveCurrentAccount(Account())
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: LoginViewController.self) {
+                self.navigationController!.popToViewController(controller, animated: true)
+                return
+            }
+        }
+
+        let loginViewController: LoginViewController?
+        loginViewController = UIStoryboard.loginViewController()
+        self.navigationController!.pushViewController(loginViewController!, animated: false)
+        
+        Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+    }
+}
+
+extension EditFamilyTreeAndEditorsViewController : EditFamilyTreeViewControllerDelegate {
+    func reload() {
+        self.bmo_view_pager.reloadData()
+    }
+    
+    func logoutFromEditFamilyTree() {
+        ManageCacheObject.saveCurrentAccount(Account())
+        for controller in self.navigationController!.viewControllers as Array {
+            if controller.isKind(of: LoginViewController.self) {
+                self.navigationController!.popToViewController(controller, animated: true)
+                return
+            }
+        }
+
+        let loginViewController: LoginViewController?
+        loginViewController = UIStoryboard.loginViewController()
+        self.navigationController!.pushViewController(loginViewController!, animated: false)
+        
+        Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
     }
 }

@@ -747,6 +747,31 @@ class ResAPI: UIResponder {
         
     }
     
+    func editProfileUser(firstName:String, midName:String, lastName:String, avatarUrl:String, address:String, phone:String, gender:Int, birthday:String, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_EDIT_PROFILE_USER, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            "firstName": firstName,
+            "midName": midName,
+            "lastName": lastName,
+            "avatarUrl": avatarUrl,
+            "address": address,
+            "phone": phone,
+            "gender": gender,
+            "dateOfBirth": birthday
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.PUT.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
     func getAllEditors(treeId:Int, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
 
         
@@ -853,6 +878,24 @@ class ResAPI: UIResponder {
 
 
         checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.DELETE.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func getNotifications(_ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_NOTIFICATION, ManageCacheObject.getVersion())
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         

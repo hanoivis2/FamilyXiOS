@@ -13,6 +13,7 @@ class Account : Mappable {
     var id = ""
     var username = ""
     var email = ""
+    var emailConfirmed = false
     var firstName = ""
     var midName = ""
     var lastName = ""
@@ -21,6 +22,7 @@ class Account : Mappable {
     var phone = ""
     var gender = 0
     var birthday = ""
+    var createdDate = ""
     
     
     var accessToken = ""
@@ -39,6 +41,7 @@ class Account : Mappable {
         id                                  <- map["id"]
         username                            <- map["userName"]
         email                               <- map["email"]
+        emailConfirmed                      <- map["emailConfirmed"]
         firstName                           <- map["firstName"]
         midName                             <- map["midName"]
         lastName                            <- map["lastName"]
@@ -47,6 +50,7 @@ class Account : Mappable {
         phone                               <- map["phone"]
         gender                              <- map["gender"]
         birthday                            <- map["dateOfBirth"]
+        createdDate                         <- map["createdDate"]
         accessToken                         <- map["accessToken"]
         refreshToken                        <- map["refreshToken"]
     }

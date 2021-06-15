@@ -10,6 +10,9 @@ import SideMenu
 
 protocol SideMenuDelegate {
     func logout()
+    func profile()
+    func notification()
+    func calendar()
     func familyTreesList()
 }
 
@@ -18,7 +21,8 @@ class SideMenuViewController : UIViewController {
     @IBOutlet weak var tbl_menu: UITableView!
     
     var delegate:SideMenuDelegate?
-    var menuLabel = ["Family Trees List", "Log out"]
+    var menuLabel = ["Family Trees List", "Users Profile", "Notification", "Calendar", "Log out"]
+    var menuIcon = ["list", "user_profile", "notification", "schedule", "logout"]
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -44,6 +48,7 @@ extension SideMenuViewController : UITableViewDelegate, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "SideMenuItemTableViewCell") as! SideMenuItemTableViewCell
 
         cell.lbl_title.text = menuLabel[indexPath.row]
+        cell.img_icon.image = UIImage(named: menuIcon[indexPath.row])
         
         return cell
     }
@@ -54,6 +59,12 @@ extension SideMenuViewController : UITableViewDelegate, UITableViewDataSource {
         switch indexPath.row {
         case 0:
             delegate?.familyTreesList()
+        case 1:
+            delegate?.profile()
+        case 2:
+            delegate?.notification()
+        case 3:
+            delegate?.calendar()
         default:
             delegate?.logout()
         }
@@ -63,5 +74,6 @@ extension SideMenuViewController : UITableViewDelegate, UITableViewDataSource {
 }
 
 class SideMenuItemTableViewCell : UITableViewCell {
+    @IBOutlet weak var img_icon: UIImageView!
     @IBOutlet weak var lbl_title: UILabel!
 }

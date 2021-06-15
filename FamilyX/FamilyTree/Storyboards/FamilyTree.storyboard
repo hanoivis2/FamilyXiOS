@@ -195,7 +195,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="FW3-dM-ZpQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2786.9565217391305" y="172.76785714285714"/>
+            <point key="canvasLocation" x="-3659" y="2666"/>
         </scene>
         <!--Family Tree Manage View Controller-->
         <scene sceneID="z7x-IQ-0Sm">
@@ -236,7 +236,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vQr-2o-nd3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-4130" y="858"/>
+            <point key="canvasLocation" x="-4328" y="1265"/>
         </scene>
         <!--List Family Tree View Controller-->
         <scene sceneID="XlD-hL-2fX">
@@ -516,7 +516,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="L4t-QX-LSp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3462.3188405797105" y="858.48214285714278"/>
+            <point key="canvasLocation" x="-3659" y="1266"/>
         </scene>
         <!--List All Family Tree View Controller-->
         <scene sceneID="ZHc-Ph-KfS">
@@ -662,7 +662,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="EUw-VX-Uok" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2830.434782608696" y="857.8125"/>
+            <point key="canvasLocation" x="-3028" y="1265"/>
         </scene>
         <!--List User To Share Tree View Controller-->
         <scene sceneID="8hO-kG-t3A">
@@ -802,7 +802,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tPZ-Dt-gmi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="537.68115942028987" y="1264.9553571428571"/>
+            <point key="canvasLocation" x="-114" y="1945"/>
         </scene>
         <!--Family Memories View Controller-->
         <scene sceneID="t87-Kv-s3e">
@@ -1059,7 +1059,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kuc-CU-xm5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1234.7826086956522" y="1264.9553571428571"/>
+            <point key="canvasLocation" x="613" y="1265"/>
         </scene>
         <!--Edit Family Tree View Controller-->
         <scene sceneID="cdc-qd-CsR">
@@ -1753,7 +1753,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="377-bN-Ldj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-726" y="376"/>
+            <point key="canvasLocation" x="-796" y="2148"/>
         </scene>
         <!--Edit People View Controller-->
         <scene sceneID="Q5Q-Vq-Vqs">
@@ -2132,7 +2132,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sWi-6G-Qch" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-20" y="376"/>
+            <point key="canvasLocation" x="-797" y="3291"/>
         </scene>
         <!--Edit Family Tree Info View Controller-->
         <scene sceneID="ecU-AS-2k1">
@@ -2320,7 +2320,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aCs-86-njc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-3462" y="173"/>
+            <point key="canvasLocation" x="-3661" y="1947"/>
         </scene>
         <!--Edit Family Tree And Editors View Controller-->
         <scene sceneID="HIu-uF-xPw">
@@ -2840,9 +2840,17 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="m3z-uL-o5b" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1969.5652173913045" y="1490.625"/>
+            <point key="canvasLocation" x="613" y="2146"/>
         </scene>
     </scenes>
+    <designables>
+        <designable name="Rkq-WH-Q74">
+            <size key="intrinsicContentSize" width="414" height="60"/>
+        </designable>
+        <designable name="SYK-L5-ow0">
+            <size key="intrinsicContentSize" width="414" height="60"/>
+        </designable>
+    </designables>
     <resources>
         <image name="addNode" width="48" height="48"/>
         <image name="calendar" width="512" height="512"/>

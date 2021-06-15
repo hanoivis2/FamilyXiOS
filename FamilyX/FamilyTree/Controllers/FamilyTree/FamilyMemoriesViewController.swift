@@ -13,6 +13,7 @@ import SKPhotoBrowser
 
 protocol FamilyMemoriesViewControllerDelegate {
     func createMemory()
+    func logoutFromMemory()
 }
 
 class FamilyMemoriesViewController : UIViewController {
@@ -124,19 +125,7 @@ class FamilyMemoriesViewController : UIViewController {
                 Loaf.init("Delete successfully", state: .success, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
                 self.getFamilyTreeMemories()
             case "UNAUTHORIZED":
-                ManageCacheObject.saveCurrentAccount(Account())
-                for controller in self.navigationController!.viewControllers as Array {
-                    if controller.isKind(of: LoginViewController.self) {
-                        self.navigationController!.popToViewController(controller, animated: true)
-                        return
-                    }
-                }
-
-                let loginViewController: LoginViewController?
-                loginViewController = UIStoryboard.loginViewController()
-                self.navigationController!.pushViewController(loginViewController!, animated: false)
-                
-                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+                self.delegate?.logoutFromMemory()
             case "RECALL":
                 self.deleteFamilyMemory(memoryId:memoryId)
             case "NOTFOUND":

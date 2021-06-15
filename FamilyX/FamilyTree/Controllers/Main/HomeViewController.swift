@@ -105,6 +105,24 @@ extension HomeViewController: SideMenuNavigationControllerDelegate {
 }
 
 extension HomeViewController : SideMenuDelegate {
+    func profile() {
+        self.dismiss(animated: true, completion: nil)
+        let allSystemUsersViewController:AllSystemUsersViewController?
+        allSystemUsersViewController = UIStoryboard.allSystemUsersViewController()
+        navigationController!.pushViewController(allSystemUsersViewController!, animated: true)
+    }
+    
+    func notification() {
+        self.dismiss(animated: true, completion: nil)
+        let notificationViewController:NotificationViewController?
+        notificationViewController = UIStoryboard.notificationViewController()
+        navigationController?.pushViewController(notificationViewController!, animated: true)
+    }
+    
+    func calendar() {
+        
+    }
+    
     func logout() {
         self.dismiss(animated: true, completion: nil)
         let dialogConfirmViewController:DialogConfirmViewController?
