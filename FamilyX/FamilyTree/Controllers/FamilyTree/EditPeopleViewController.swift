@@ -10,6 +10,8 @@ import DropDown
 import CropViewController
 import DatePickerDialog
 import Loaf
+import JGProgressHUD
+import ObjectMapper
 
 protocol EditPeopleDelegate {
     func editPeople(people:People, image:UIImage, hasChangeAvatar:Bool)
@@ -24,11 +26,12 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
     @IBOutlet weak var textfield_deathday: UITextField!
     @IBOutlet weak var textfield_gender: UITextField!
     @IBOutlet weak var textfield_note: UITextField!
+    @IBOutlet weak var textfield_tagUser: UITextField!
     
     var delegate:EditPeopleDelegate?
     
     var relativePerson = People()
-    
+    var tagUser = Account()
     let dropDownGender = DropDown()
     var allGenderType: [GenderType] = [GenderType(id: GENDER_ID.MALE.rawValue, text: "Male"),
                                         GenderType(id: GENDER_ID.FEMALE.rawValue, text: "Female")]
@@ -61,7 +64,9 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
             dropDownGender.selectRow(at: 1)
         }
         
-       
+        if let userId = person.userId {
+            getUserProfile(userId: userId)
+        }
         
         
         let imageView = UIImageView()
@@ -124,11 +129,19 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
             newPeople.deathday = textfield_deathday.text ?? ""
             newPeople.note = textfield_note.text ?? ""
             newPeople.imageUrl = person.imageUrl
+            newPeople.userId = tagUser.id
             
             delegate?.editPeople(people: newPeople, image: img_avatar.image ?? UIImage(), hasChangeAvatar: hasChangedImage)
             self.navigationController?.popViewController(animated: true)
         }
         
+    }
+    
+    @IBAction func btn_tagUser(_ sender: Any) {
+        let listUserToTagViewController:ListUserToTagViewController?
+        listUserToTagViewController = UIStoryboard.listUserToTagViewController()
+        listUserToTagViewController?.delegate = self
+        navigationController?.pushViewController(listUserToTagViewController!, animated: true)
     }
     
     @IBAction func btn_choose_birthday(_ sender: Any) {
@@ -249,6 +262,67 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
         self.present(picker, animated: true, completion: nil)
     }
     
+    
+    func getUserProfile(userId:String){
+        
+        let hud = JGProgressHUD(style: .dark)
+        hud.textLabel.text = "Please wait..."
+        hud.show(in: self.view)
+        
+        ResAPI.sharedInstance.getUserProfile(userId: userId, { (data, message) -> Void in
+            
+          switch message {
+            case "SUCCESS":
+                if(data != nil){
+
+                    let response:ResResponse = data as! ResResponse
+
+                    if let usersRes = Mapper<Account>().map(JSONObject: response.data) {
+                        self.tagUser = usersRes
+                        self.textfield_tagUser.text = self.tagUser.firstName + " " + self.tagUser.midName + " " + self.tagUser.lastName
+                        
+                    }
+                    else {
+                        Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
+                    
+                    
+                }
+            case "UNAUTHORIZED":
+                ManageCacheObject.saveCurrentAccount(Account())
+                for controller in self.navigationController!.viewControllers as Array {
+                    if controller.isKind(of: LoginViewController.self) {
+                        self.navigationController!.popToViewController(controller, animated: true)
+                        return
+                    }
+                }
+
+                let loginViewController: LoginViewController?
+                loginViewController = UIStoryboard.loginViewController()
+                self.navigationController!.pushViewController(loginViewController!, animated: false)
+                
+                Loaf.init(UnauthorizedError, state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(4), completionHandler: nil)
+          case "RECALL":
+            self.getUserProfile(userId:userId)
+          case "NOTFOUND":
+                Loaf.init("Request not found", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+          case "DATA":
+                Loaf.init("Data error", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+          case "FORBIDEN":
+              Loaf.init("You don't have permission to do this function", state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+            default:
+                if data != nil {
+                    let response = data as! ResResponse
+                    if !response.message!.isEmpty {
+                        Loaf.init(response.message!, state: .error, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
+                    }
+                }
+                
+            }
+            
+        })
+        hud.dismiss()
+    }
 }
 
 extension EditPeopleViewController : CropViewControllerDelegate {
@@ -263,5 +337,12 @@ extension EditPeopleViewController : CropViewControllerDelegate {
         
     }
 
+}
+
+extension EditPeopleViewController : ListUserToTagDelegate {
+    func tag(user: Account) {
+        tagUser = user
+        textfield_tagUser.text = user.firstName + " " + user.midName + " " + user.lastName
+    }
 }
 

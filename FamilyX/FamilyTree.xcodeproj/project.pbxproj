@@ -15,6 +15,7 @@
 		F52232C426734FA000273C35 /* FamilyMemoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F52232C326734FA000273C35 /* FamilyMemoriesViewController.swift */; };
 		F530A3EB264167990096BAC2 /* ListFamilyTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */; };
 		F530A3EF264169000096BAC2 /* FamilyTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = F530A3EE264169000096BAC2 /* FamilyTree.swift */; };
+		F53237EC267E0F1700264A21 /* ListUserToTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53237EB267E0F1700264A21 /* ListUserToTagViewController.swift */; };
 		F53FE2112667A6A1009238AE /* EditFamilyTreeAndEditorsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53FE2102667A6A1009238AE /* EditFamilyTreeAndEditorsViewController.swift */; };
 		F53FE2152667A6B3009238AE /* ListUserSharedTreeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F53FE2142667A6B3009238AE /* ListUserSharedTreeViewController.swift */; };
 		F545DE7F263343EF00015C9D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F545DE7E263343EF00015C9D /* AppDelegate.swift */; };
@@ -207,6 +208,7 @@
 		F52232C326734FA000273C35 /* FamilyMemoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyMemoriesViewController.swift; sourceTree = "<group>"; };
 		F530A3EA264167990096BAC2 /* ListFamilyTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListFamilyTreeViewController.swift; sourceTree = "<group>"; };
 		F530A3EE264169000096BAC2 /* FamilyTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FamilyTree.swift; sourceTree = "<group>"; };
+		F53237EB267E0F1700264A21 /* ListUserToTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUserToTagViewController.swift; sourceTree = "<group>"; };
 		F53FE2102667A6A1009238AE /* EditFamilyTreeAndEditorsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFamilyTreeAndEditorsViewController.swift; sourceTree = "<group>"; };
 		F53FE2142667A6B3009238AE /* ListUserSharedTreeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListUserSharedTreeViewController.swift; sourceTree = "<group>"; };
 		F545DE7B263343EF00015C9D /* FamilyTree.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FamilyTree.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -454,6 +456,7 @@
 			children = (
 				F53FE2142667A6B3009238AE /* ListUserSharedTreeViewController.swift */,
 				F501172226677B8A00E5AB47 /* ListUserToShareTreeViewController.swift */,
+				F53237EB267E0F1700264A21 /* ListUserToTagViewController.swift */,
 			);
 			path = ListUser;
 			sourceTree = "<group>";
@@ -1128,6 +1131,7 @@
 				F545DFD02633442900015C9D /* NodeView.swift in Sources */,
 				F545DFEA2633442900015C9D /* Gif.swift in Sources */,
 				F545DFE82633442900015C9D /* UITextView+Extensions.swift in Sources */,
+				F53237EC267E0F1700264A21 /* ListUserToTagViewController.swift in Sources */,
 				F545DF9A2633442900015C9D /* YPAssetZoomableView.swift in Sources */,
 				F561D1AB2643AA2800A5520D /* InformationPoopleViewController.swift in Sources */,
 				F545DF882633442900015C9D /* YPPickerScreen.swift in Sources */,

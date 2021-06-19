@@ -36,11 +36,12 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
     @IBOutlet weak var textfield_relationship: UITextField!
     @IBOutlet weak var textfield_relate: UITextField!
     @IBOutlet weak var textfield_note: UITextField!
+    @IBOutlet weak var textfield_tagUser: UITextField!
     
     var delegate:AddPeopleDelegate?
     
     var relativePerson = People()
-    
+    var tagUser = Account()
     let dropDownGender = DropDown()
     let dropDownRelationship = DropDown()
     var allGenderType: [GenderType] = [GenderType(id: GENDER_ID.MALE.rawValue, text: "Male"),
@@ -119,6 +120,7 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
                 newPeople.birthday = textfield_birthday.text!
                 newPeople.deathday = textfield_deathday.text ?? ""
                 newPeople.note = textfield_note.text ?? ""
+                newPeople.userId = tagUser.id
                 
                 delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id, image: self.img_avatar.image ?? UIImage())
                 self.navigationController?.popViewController(animated: true)
@@ -246,6 +248,13 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
         self.view.addSubview(datePicker)
     }
     
+    @IBAction func btn_tagUser(_ sender: Any) {
+        let listUserToTagViewController:ListUserToTagViewController?
+        listUserToTagViewController = UIStoryboard.listUserToTagViewController()
+        listUserToTagViewController?.delegate = self
+        navigationController?.pushViewController(listUserToTagViewController!, animated: true)
+    }
+    
     @IBAction func btn_choose_gender(_ sender: Any) {
         dropDownGender.show()
         dropDownGender.selectionAction = { [unowned self] (index: Int, item: String) in
@@ -319,4 +328,11 @@ extension AddPeopleViewController : CropViewControllerDelegate {
         
     }
 
+}
+
+extension AddPeopleViewController : ListUserToTagDelegate {
+    func tag(user: Account) {
+        tagUser = user
+        textfield_tagUser.text = user.firstName + " " + user.midName + " " + user.lastName
+    }
 }

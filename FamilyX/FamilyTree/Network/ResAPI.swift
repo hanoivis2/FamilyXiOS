@@ -649,7 +649,7 @@ class ResAPI: UIResponder {
             "lastName": spouse.lastName,
             "dateOfBirth": spouse.birthday,
             "dateOfDeath": spouse.deathday,
-            "userId": nil,
+            "userId": spouse.userId,
             "imageUrl": spouse.imageUrl,
             "note": spouse.note
         ] as [String : Any?]
@@ -674,7 +674,7 @@ class ResAPI: UIResponder {
             "lastName": parent.lastName,
             "dateOfBirth": parent.birthday,
             "dateOfDeath": parent.deathday,
-            "userId": nil,
+            "userId": parent.userId,
             "imageUrl": parent.imageUrl,
             "note": parent.note
         ] as [String : Any?]
@@ -699,7 +699,7 @@ class ResAPI: UIResponder {
             "lastName": person.lastName,
             "dateOfBirth": person.birthday,
             "dateOfDeath": person.deathday,
-            "userId": nil,
+            "userId": person.userId,
             "imageUrl": person.imageUrl,
             "note": person.note
         ] as [String : Any?]
@@ -742,6 +742,24 @@ class ResAPI: UIResponder {
 
 
         checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
+            return callBack(data, error)
+        }
+        
+    }
+    
+    func getUserProfile(userId:String, _ callBack: @escaping (_ data : AnyObject? , _ message : String?)->Void) ->Void{
+
+        
+        let url: String  = OAUTH_SERVER_URL + String(format: API_GET_USER_PROFILE, ManageCacheObject.getVersion(), userId)
+
+        debugPrint(url)
+        
+        let params = [
+            :
+        ] as [String : Any?]
+
+
+        checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.GET.rawValue) { (data, error) -> () in
             return callBack(data, error)
         }
         

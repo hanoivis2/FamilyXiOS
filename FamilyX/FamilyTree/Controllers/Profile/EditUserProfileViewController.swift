@@ -87,7 +87,7 @@ class EditUserProfileViewController : UIViewController, NavigationControllerCust
         super.viewWillAppear(animated)
         
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, title: "EDIT NODE")
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, title: "EDIT PROFILE")
         navigationControllerCustom.touchTarget = self
         self.navigationItem.hidesBackButton = true
         

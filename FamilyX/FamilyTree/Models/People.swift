@@ -20,6 +20,7 @@ class People : Mappable {
     var motherId = 0
     var gender = GENDER_ID.MALE.rawValue
     var note = ""
+    var userId:String?
     var spouse = [Spouse]()
     
     var maxX:CGFloat = 0
@@ -42,6 +43,7 @@ class People : Mappable {
         gender                                  <- map["gender"]
         note                                    <- map["note"]
         spouse                                  <- map["spouses"]
+        userId                                  <- map["userId"]
     }
     
 }

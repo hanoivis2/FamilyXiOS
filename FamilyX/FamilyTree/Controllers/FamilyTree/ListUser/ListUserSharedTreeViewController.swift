@@ -39,7 +39,19 @@ class ListUserSharedTreeViewController : UIViewController, NavigationControllerC
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
+        let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideAddButton: true, title: "FAMILY TREE")
+        navigationControllerCustom.touchTarget = self
+        navigationControllerCustom.navigationBar.barTintColor = ColorUtils.toolbar()
+        navigationControllerCustom.navigationBar.isHidden = false
+        
+        self.navigationItem.setHidesBackButton(true, animated: false)
+        self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
+        
+    }
+    
+    func backTap() {
+        navigationController?.popViewController(animated: true)
     }
     
     func setupRefreshControl() {

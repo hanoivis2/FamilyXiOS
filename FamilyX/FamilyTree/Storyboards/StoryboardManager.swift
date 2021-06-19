@@ -99,6 +99,10 @@ extension UIStoryboard {
         return familyTreeStoryboard().instantiateViewController(withIdentifier: "AddFamilyTreeMemoryViewController") as? AddFamilyTreeMemoryViewController
     }
     
+    class func listUserToTagViewController() -> ListUserToTagViewController? {
+        return familyTreeStoryboard().instantiateViewController(withIdentifier: "ListUserToTagViewController") as? ListUserToTagViewController
+    }
+    
 //    ============== define Profile Storyboard ===============
     
     class func profileStoryboard() -> UIStoryboard {

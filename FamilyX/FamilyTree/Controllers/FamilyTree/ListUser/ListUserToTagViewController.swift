@@ -1,42 +1,48 @@
 //
-//  AllSystemUsersViewController.swift
+//  ListUserToTagViewController.swift
 //  FamilyTree
 //
-//  Created by Gia Huy on 15/06/2021.
+//  Created by Gia Huy on 19/06/2021.
 //
 
 import UIKit
 import JGProgressHUD
-import ObjectMapper
 import Loaf
+import ObjectMapper
 
-class AllSystemUsersViewController : UIViewController, NavigationControllerCustomDelegate {
+protocol ListUserToTagDelegate {
+    func tag(user:Account)
+}
+
+class ListUserToTagViewController : UIViewController, NavigationControllerCustomDelegate {
+    
     
     @IBOutlet weak var search_bar:UISearchBar!
     @IBOutlet weak var tbl_users:UITableView!
     
     var users = [Account]()
     var usersFilter = [Account]()
-    var myAccount = Account()
     var refreshControl = UIRefreshControl()
+    var treeId = 0
+    var delegate:ListUserToTagDelegate?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+            
         search_bar.backgroundImage = UIImage()
         tbl_users.allowsSelection = false
         tbl_users.separatorStyle = .none
         
         setupRefreshControl()
-        
         getUserList()
+    
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         //custom navigation bar
         let navigationControllerCustom : NavigationControllerCustom = self.navigationController as! NavigationControllerCustom
-        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideAddButton: true, title: "USERS IN SYSTEM")
+        navigationControllerCustom.setUpNavigationBar(self, hideBackButton: false, hideAddButton: true, title: "USERS")
         navigationControllerCustom.touchTarget = self
         navigationControllerCustom.navigationBar.barTintColor = ColorUtils.toolbar()
         navigationControllerCustom.navigationBar.isHidden = false
@@ -44,12 +50,12 @@ class AllSystemUsersViewController : UIViewController, NavigationControllerCusto
         self.navigationItem.setHidesBackButton(true, animated: false)
         self.navigationController?.navigationItem.backBarButtonItem?.isEnabled = false
         
-        
     }
     
     func backTap() {
         navigationController?.popViewController(animated: true)
     }
+    
     
     func setupRefreshControl() {
         refreshControl.attributedTitle = NSAttributedString(string: "Pull to refresh")
@@ -80,14 +86,6 @@ class AllSystemUsersViewController : UIViewController, NavigationControllerCusto
                     if let usersRes = Mapper<Account>().mapArray(JSONObject: response.data) {
                         self.users = usersRes
                         
-                        for i in 0..<self.users.count {
-                            let item = self.users[i]
-                            if item.id == ManageCacheObject.getCurrentAccount().id {
-                                self.myAccount = item
-                                self.users.remove(at: i)
-                                break
-                            }
-                        }
                         
                         self.usersFilter = self.users
                         self.tbl_users.reloadData()
@@ -131,78 +129,26 @@ class AllSystemUsersViewController : UIViewController, NavigationControllerCusto
             }
             
         })
+        
         self.refreshControl.endRefreshing()
         hud.dismiss()
     }
+    
+    
+    
+    
 }
 
-extension AllSystemUsersViewController : ListUserTableViewCellDelegate {
-    func select(pos: IndexPath) {
-        if pos.section == 0 {
-            let userProfileViewController:UserProfileViewController?
-            userProfileViewController = UIStoryboard.userProfileViewController()
-            userProfileViewController?.account = myAccount
-            navigationController?.pushViewController(userProfileViewController!, animated: true)
-        }
-        else {
-            let userProfileViewController:UserProfileViewController?
-            userProfileViewController = UIStoryboard.userProfileViewController()
-            userProfileViewController?.account = usersFilter[pos.row]
-            navigationController?.pushViewController(userProfileViewController!, animated: true)
-        }
-    }
-}
-
-
-extension AllSystemUsersViewController : UITableViewDelegate, UITableViewDataSource {
-    
-    
-    func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        let view = Bundle.main.loadNibNamed("ViewHeaderEditor", owner: self, options: nil)?.first as! ViewHeaderEditor
-        
-        if section == 0 {
-            view.lbl_title.text = "My Account"
-        }
-        else {
-            view.lbl_title.text = "Users"
-        }
-        
-        return view
-    }
-    
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 40
-    }
+extension ListUserToTagViewController : UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
-        if section == 0 {
-            return 1
-        }
-        else {
-            return usersFilter.count
-        }
-        
-        
+        return usersFilter.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ListUserTableViewCell") as! ListUserTableViewCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ListUserToTagTableViewCell") as! ListUserToTagTableViewCell
         
-        var user = Account()
-        
-        if indexPath.section == 0 {
-            user = myAccount
-            cell.view_separator.isHidden = true
-        }
-        else {
-            user = usersFilter[indexPath.row]
-            cell.view_separator.isHidden = false
-        }
+        let user = usersFilter[indexPath.row]
         
         if user.avatarUrl == "" {
             if user.gender == GENDER_ID.MALE.rawValue {
@@ -237,12 +183,9 @@ extension AllSystemUsersViewController : UITableViewDelegate, UITableViewDataSou
         
         cell.lbl_fullname.text = user.firstName + " " + user.midName + " " + user.lastName
         cell.lbl_username.text = user.username
+    
         
-        cell.lbl_shared.isHidden = true
-        cell.img_share.isHidden = true
-        cell.btn_shared.isEnabled = true
-        
-        cell.pos = indexPath
+        cell.pos = indexPath.row
         cell.delegate = self
         
         return cell
@@ -252,10 +195,16 @@ extension AllSystemUsersViewController : UITableViewDelegate, UITableViewDataSou
         return 70
     }
     
-    
 }
 
-extension AllSystemUsersViewController : UISearchBarDelegate {
+extension ListUserToTagViewController : ListUserToTagTableViewCellDelegate {
+    func tag(pos: Int) {
+        delegate?.tag(user: users[pos])
+        navigationController?.popViewController(animated: true)
+    }
+}
+
+extension ListUserToTagViewController : UISearchBarDelegate {
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         self.dismissKeyboard()
@@ -280,25 +229,21 @@ extension AllSystemUsersViewController : UISearchBarDelegate {
     }
 }
 
-
-protocol ListUserTableViewCellDelegate {
-    func select(pos:IndexPath)
+protocol ListUserToTagTableViewCellDelegate {
+    func tag(pos:Int)
 }
 
-class ListUserTableViewCell : UITableViewCell {
+class ListUserToTagTableViewCell : UITableViewCell {
     
     @IBOutlet weak var img_avatar: UIImageView!
     @IBOutlet weak var lbl_fullname: UILabel!
     @IBOutlet weak var lbl_username: UILabel!
-    @IBOutlet weak var img_share: UIImageView!
-    @IBOutlet weak var lbl_shared: UILabel!
-    @IBOutlet weak var btn_shared: UIButton!
     @IBOutlet weak var view_separator: UIView!
     
-    var pos = IndexPath()
-    var delegate:ListUserTableViewCellDelegate?
+    var pos = 0
+    var delegate:ListUserToTagTableViewCellDelegate?
     
     @IBAction func btn_selectRow(_ sender: Any) {
-        delegate?.select(pos: pos)
+        delegate?.tag(pos: pos)
     }
 }
