@@ -115,10 +115,7 @@ class AddFamilyTreeMemoryViewController : UIViewController, NavigationController
     
     func uploadPhotoToServer(parameters: Dictionary<String, AnyObject>, imageData: Data?, fileName:String, completion: ((String) -> Void)?) {
         
-        
-        
         let urlUploadFile = OAUTH_SERVER_URL  + String(format: API_UPLOAD_IMAGE, ManageCacheObject.getVersion())
-
 
         let headers: HTTPHeaders = [
             "Content-type": "multipart/form-data",
@@ -141,10 +138,8 @@ class AddFamilyTreeMemoryViewController : UIViewController, NavigationController
                 }
             }
             else {
-                
                 completion!("")
             }
-            
         }
         
         let failClosure: ((Error) -> Void)? = { err in
