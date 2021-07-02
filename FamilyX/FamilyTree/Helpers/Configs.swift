@@ -57,6 +57,6 @@ var _nodeHorizontalSpace:CGFloat = 15
 var _nodeVerticalSpace:CGFloat = 20
 var _siblingsLineHeight:CGFloat = 8
 
-var maxSizeInBytesUploadImage = 2097152 //About 1200 x 800
+var maxSizeInBytesUploadImage = 2097152 // Image size about 1200 x 800
 var _maxImageUploadBigSize:CGFloat = 1000
 var _maxImageUpLoadSmallSize:CGFloat = 700

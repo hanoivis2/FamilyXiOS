@@ -970,7 +970,13 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         let successClosure: ((DataResponse<Any>) -> Void)? = {response in
             print("SUCCEEDED :)")
             if let res:ResResponse = Mapper<ResResponse>().map(JSONObject: response.result.value) {
-                completion!(res.data as! String)
+                if let url = res.data as? String {
+                    completion!(url)
+                }
+                else {
+                    completion!("")
+                    Loaf.init("Your image is too large to upload, please try another by edit your node!", state: .warning, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(5), completionHandler: nil)
+                }
             }
             else {
                 completion!("")
@@ -1080,7 +1086,7 @@ extension EditFamilyTreeViewController : ArrayChoiceReportViewControllerDelegate
             
             if people.spouse.count == 0 && getChildrenAmount(person: people) == 0
                 || people.spouse.count == 0 && people.fatherId == 0 && people.motherId == 0 && getChildrenAmount(person: people) <= 1
-                || people.spouse.count == 1 && people.fatherId == 0 && people.motherId == 0
+                || people.spouse.count == 1 && people.fatherId == 0 && people.motherId == 0 && getChildrenAmount(person: people) <= 1
             {
                 self.selectedDeletePersonId = people.id
                 let dialogConfirmViewController:DialogConfirmViewController?
@@ -1117,7 +1123,8 @@ extension EditFamilyTreeViewController : EditPeopleDelegate {
         else {
             let item = image
             let parameters = [String:AnyObject]()
-            let imageData: Data = item.jpegData(compressionQuality: 0.5)!
+            var imageData: Data = item.pngData()!
+            imageData = Utils.bestImageDataForUpload(data: imageData, item: item)
             let date = Date()
             let formatter = DateFormatter()
             formatter.dateFormat = "yyyy-MM-ddHH:mm:ss"

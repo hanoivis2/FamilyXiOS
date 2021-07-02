@@ -120,7 +120,13 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
                 newPeople.birthday = textfield_birthday.text!
                 newPeople.deathday = textfield_deathday.text ?? ""
                 newPeople.note = textfield_note.text ?? ""
-                newPeople.userId = tagUser.id
+                
+                if tagUser.id == "" {
+                    newPeople.userId = nil
+                }
+                else {
+                    newPeople.userId = tagUser.id
+                }
                 
                 delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id, image: self.img_avatar.image ?? UIImage())
                 self.navigationController?.popViewController(animated: true)
@@ -152,6 +158,13 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
                 newPeople.deathday = textfield_deathday.text ?? ""
                 newPeople.note = textfield_note.text ?? ""
                 
+                if tagUser.id == "" {
+                    newPeople.userId = nil
+                }
+                else {
+                    newPeople.userId = tagUser.id
+                }
+                
                 delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id, image: img_avatar.image ?? UIImage())
                 self.navigationController?.popViewController(animated: true)
             }
@@ -178,6 +191,13 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
                 newPeople.birthday = textfield_birthday.text!
                 newPeople.deathday = textfield_deathday.text ?? ""
                 newPeople.note = textfield_note.text ?? ""
+                
+                if tagUser.id == "" {
+                    newPeople.userId = nil
+                }
+                else {
+                    newPeople.userId = tagUser.id
+                }
                 
                 delegate?.addPeople(people: newPeople, relationshipType: relationshipSelected, relativePersonId: relativePerson.id, image: img_avatar.image ?? UIImage())
                 self.navigationController?.popViewController(animated: true)

@@ -30,9 +30,8 @@ class SideMenuViewController : UIViewController {
         tbl_menu.reloadData()
         tbl_menu.separatorStyle = .none
     
-        let imageView = UIImageView(image: UIImage(named: "background"))
-        imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = UIColor.black.withAlphaComponent(0.2)
+        let imageView = UIView()
+        imageView.backgroundColor = ColorUtils.main_color()
         tbl_menu.backgroundView = imageView
         
     }

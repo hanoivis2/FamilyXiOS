@@ -623,11 +623,14 @@ class ResAPI: UIResponder {
 
         debugPrint(url)
         
+        let mapper = Mapper<People>()
+        mapper.shouldIncludeNilValues = true
+        
         let params = [
             "fatherId": child.fatherId,
             "motherId": child.motherId,
-            "childInfo": Mapper().toJSON(child)
-        ] as [String : Any]
+            "childInfo": mapper.toJSON(child)
+        ] as [String : Any?]
 
 
         checkOnlineCallServiceWithMethod(params: params as NSDictionary , url:url, method : REQUEST_METHOD.POST.rawValue) { (data, error) -> () in
