@@ -129,7 +129,12 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
             newPeople.deathday = textfield_deathday.text ?? ""
             newPeople.note = textfield_note.text ?? ""
             newPeople.imageUrl = person.imageUrl
-            newPeople.userId = tagUser.id
+            if tagUser.id == "" {
+                newPeople.userId = nil
+            }
+            else {
+                newPeople.userId = tagUser.id
+            }
             
             delegate?.editPeople(people: newPeople, image: img_avatar.image ?? UIImage(), hasChangeAvatar: hasChangedImage)
             self.navigationController?.popViewController(animated: true)
