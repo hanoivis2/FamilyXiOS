@@ -27,6 +27,7 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
     @IBOutlet weak var textfield_gender: UITextField!
     @IBOutlet weak var textfield_note: UITextField!
     @IBOutlet weak var textfield_tagUser: UITextField!
+    @IBOutlet weak var image_avatar_tagUser: UIImageView!
     
     var delegate:EditPeopleDelegate?
     
@@ -45,6 +46,8 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
 
         dropDownGender.anchorView = textfield_gender
         
@@ -106,7 +109,19 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
         navigationController?.popViewController(animated: true)
     }
     
-
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
     
     @IBAction func btn_confirm(_ sender: Any) {
         
@@ -219,10 +234,6 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
         }
     }
     
-    @IBAction func btn_choose_relationship(_ sender: Any) {
-        
-    }
-    
     
     @IBAction func btn_chhoose_avatar(_ sender: Any) {
         var config = YPImagePickerConfiguration()
@@ -286,6 +297,26 @@ class EditPeopleViewController : UIViewController, NavigationControllerCustomDel
                         self.tagUser = usersRes
                         self.textfield_tagUser.text = self.tagUser.firstName + " " + self.tagUser.midName + " " + self.tagUser.lastName
                         
+                        let imageView = UIImageView()
+                        var imageHolder = UIImage()
+                        imageHolder = UIImage(named: "no_image")!
+                        
+                        if let url = URL(string: usersRes.avatarUrl) {
+                            
+                            
+                            imageView.kf.setImage(with: url, placeholder: imageHolder, options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                                // Progress updated
+                            }, completionHandler: { result in
+                                if let image = imageView.image {
+                                    self.image_avatar_tagUser.image = image
+                                }
+                            })
+                            
+                        } else {
+                            
+                            self.image_avatar_tagUser.image = imageHolder
+                        }
+                        
                     }
                     else {
                         Loaf.init(response.message ?? "", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(2.5), completionHandler: nil)
@@ -348,6 +379,27 @@ extension EditPeopleViewController : ListUserToTagDelegate {
     func tag(user: Account) {
         tagUser = user
         textfield_tagUser.text = user.firstName + " " + user.midName + " " + user.lastName
+        
+        let imageView = UIImageView()
+        var imageHolder = UIImage()
+        imageHolder = UIImage(named: "no_image")!
+        
+        if let url = URL(string: user.avatarUrl) {
+            
+            
+            imageView.kf.setImage(with: url, placeholder: imageHolder, options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            }, completionHandler: { result in
+                if let image = imageView.image {
+                    self.image_avatar_tagUser.image = image
+                }
+            })
+            
+        } else {
+            
+            self.image_avatar_tagUser.image = imageHolder
+        }
+       
     }
 }
 

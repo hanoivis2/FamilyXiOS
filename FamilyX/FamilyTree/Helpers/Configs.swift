@@ -49,8 +49,8 @@ var InternetError = "No internet connection"
 var ServerErrorText = "There is an error in the process of retrieving data"
 var UnauthorizedError = "Your login term has expired, please log in again"
 
-var _peopleNodeWidth:CGFloat = 40
-var _peopleNodeHeight:CGFloat = 50
+var _peopleNodeWidth:CGFloat = 50
+var _peopleNodeHeight:CGFloat = 60
 var _defaultPaddingTop:CGFloat = 30
 var _defaultPaddingLeft:CGFloat = 30
 var _nodeHorizontalSpace:CGFloat = 15
@@ -58,5 +58,5 @@ var _nodeVerticalSpace:CGFloat = 20
 var _siblingsLineHeight:CGFloat = 8
 
 var maxSizeInBytesUploadImage = 2097152 // Image size about 1200 x 800
-var _maxImageUploadBigSize:CGFloat = 1000
-var _maxImageUpLoadSmallSize:CGFloat = 700
+var _maxImageUploadBigSize:CGFloat = 900
+var _maxImageUpLoadSmallSize:CGFloat = 600

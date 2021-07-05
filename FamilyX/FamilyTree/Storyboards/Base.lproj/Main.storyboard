@@ -760,20 +760,25 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="thumb" translatesAutoresizingMaskIntoConstraints="NO" id="ymQ-sf-Rnk">
-                                <rect key="frame" x="20" y="193" width="374" height="210"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="tree" translatesAutoresizingMaskIntoConstraints="NO" id="ymQ-sf-Rnk">
+                                <rect key="frame" x="100" y="144" width="214" height="214"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="ymQ-sf-Rnk" secondAttribute="height" multiplier="16:9" id="jyN-S8-pG5"/>
+                                    <constraint firstAttribute="width" secondItem="ymQ-sf-Rnk" secondAttribute="height" multiplier="1:1" id="jyN-S8-pG5"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Origin Keeper" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SXo-fM-9x2">
-                                <rect key="frame" x="20" y="423" width="374" height="36"/>
+                                <rect key="frame" x="20" y="378" width="374" height="36"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="30"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="A tool help users can create, edit, share their family tree." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SGQ-XB-N7R">
-                                <rect key="frame" x="20" y="479" width="374" height="48"/>
+                                <rect key="frame" x="20" y="434" width="374" height="48"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -792,13 +797,13 @@
                             <constraint firstItem="3vb-uR-9ev" firstAttribute="trailing" secondItem="SGQ-XB-N7R" secondAttribute="trailing" constant="20" id="GZM-cl-EJH"/>
                             <constraint firstItem="SGQ-XB-N7R" firstAttribute="leading" secondItem="3vb-uR-9ev" secondAttribute="leading" constant="20" id="LeM-fy-fhA"/>
                             <constraint firstItem="SGQ-XB-N7R" firstAttribute="top" secondItem="SXo-fM-9x2" secondAttribute="bottom" constant="20" id="PkR-L2-tGH"/>
-                            <constraint firstItem="ymQ-sf-Rnk" firstAttribute="centerY" secondItem="y6y-jJ-7S0" secondAttribute="centerY" constant="-150" id="Sxo-gn-nym"/>
-                            <constraint firstItem="3vb-uR-9ev" firstAttribute="trailing" secondItem="ymQ-sf-Rnk" secondAttribute="trailing" constant="20" id="ePX-lJ-dZR"/>
+                            <constraint firstItem="ymQ-sf-Rnk" firstAttribute="top" secondItem="3vb-uR-9ev" secondAttribute="top" constant="100" id="dyV-QN-JQs"/>
+                            <constraint firstItem="3vb-uR-9ev" firstAttribute="trailing" secondItem="ymQ-sf-Rnk" secondAttribute="trailing" constant="100" id="ePX-lJ-dZR"/>
                             <constraint firstItem="HMI-a8-NAP" firstAttribute="centerX" secondItem="y6y-jJ-7S0" secondAttribute="centerX" id="g0d-ax-hFd"/>
                             <constraint firstItem="3vb-uR-9ev" firstAttribute="trailing" secondItem="SXo-fM-9x2" secondAttribute="trailing" constant="20" id="jWf-Qt-bdW"/>
                             <constraint firstItem="SXo-fM-9x2" firstAttribute="top" secondItem="ymQ-sf-Rnk" secondAttribute="bottom" constant="20" id="qnA-3x-JFn"/>
                             <constraint firstItem="SXo-fM-9x2" firstAttribute="leading" secondItem="3vb-uR-9ev" secondAttribute="leading" constant="20" id="wDG-Rp-1c2"/>
-                            <constraint firstItem="ymQ-sf-Rnk" firstAttribute="leading" secondItem="3vb-uR-9ev" secondAttribute="leading" constant="20" id="x5t-WM-dSy"/>
+                            <constraint firstItem="ymQ-sf-Rnk" firstAttribute="leading" secondItem="3vb-uR-9ev" secondAttribute="leading" constant="100" id="x5t-WM-dSy"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Q6R-ZM-gbq"/>
@@ -938,7 +943,7 @@
     <resources>
         <image name="close" width="48" height="48"/>
         <image name="icon_menu" width="36" height="36"/>
-        <image name="thumb" width="220" height="124"/>
+        <image name="tree" width="512" height="512"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

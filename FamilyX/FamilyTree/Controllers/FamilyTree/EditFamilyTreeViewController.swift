@@ -33,11 +33,9 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     
     var zoomLevel = 1 {
         didSet {
-            let point = CGPoint(x: UIScreen.main.bounds.width / 2, y: UIScreen.main.bounds.height / 2)
             view_canvas.transform = CGAffineTransform(scaleX: zoomScale[zoomLevel - 1], y: zoomScale[zoomLevel - 1])
             view_canvas.frame.origin.x = 0
             view_canvas.frame.origin.y = 0
-            scrollView.setContentOffset(point, animated: true)
         }
     }
     var zoomScale:[CGFloat] = [1,2,3,4]
@@ -54,8 +52,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        constraint_view_canvas_width.constant = self.view.frame.width * 4
-        constraint_view_canvas_height.constant = self.view.frame.height * 4
+        constraint_view_canvas_width.constant = self.view.frame.width * 20
+        constraint_view_canvas_height.constant = self.view.frame.height * 20
         view_canvas.backgroundColor = .clear
         
         zoomLevel = 1
@@ -1010,6 +1008,36 @@ extension EditFamilyTreeViewController : AddPeopleDelegate {
         let randomString = String((0..<15).map{ _ in result.randomElement()! })
         let file_name = String(format: "avatar_%@.%@", randomString, "jpg")
         
+        if relationshipType == 2 {
+            
+            var person = People()
+            
+            for item in self.people {
+                if item.id == relativePersonId {
+                    person = item
+                    break
+                }
+            }
+            
+            if person.spouse.count > 0 {
+                let spouse = self.getSpouse(people: person)
+                let spouseFather = self.getFather(people: spouse)
+                let spouseMother = self.getMother(people: spouse)
+                
+                if spouseFather.id != 0 && spouseMother.id != 0 {
+                    Loaf.init("You cannot add parent to this node!", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+                    return
+                }
+                else if person.id != self.rootPeople.id {
+                    Loaf.init("You cannot add parent to this node!", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+                    return
+                }
+            }
+            else if person.fatherId != 0 && person.motherId != 0 {
+                Loaf.init("This person has already had parent!", state: .info, location: .bottom, presentingDirection: .left, dismissingDirection: .vertical, sender: self).show(.custom(3), completionHandler: nil)
+                return
+            }
+        }
         
         uploadPhotoToServer(parameters: parameters, imageData: imageData, fileName: file_name) { (url) in
             if relationshipType == 1 {

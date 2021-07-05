@@ -16,7 +16,9 @@ class PeopleView : UIView {
     @IBOutlet weak var img_avatar: UIImageView!
     @IBOutlet weak var lbl_name: UILabel!
     @IBOutlet weak var lbl_birthday: UILabel!
+    @IBOutlet weak var lbl_username: UILabel!
     @IBOutlet weak var constraint_height_avatar: NSLayoutConstraint!
+    @IBOutlet weak var constraint_avatar_to_top: NSLayoutConstraint!
     
     var people = People()
     
@@ -24,6 +26,7 @@ class PeopleView : UIView {
  
     public override init(frame: CGRect) {
         super.init(frame: frame)
+        
         
     }
     
@@ -40,6 +43,8 @@ class PeopleView : UIView {
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.addGestureRecognizer(tapGesture)
         
+        lbl_username.isHidden = true
+        constraint_avatar_to_top.constant = 4
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {

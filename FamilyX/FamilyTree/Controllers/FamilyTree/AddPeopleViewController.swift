@@ -34,9 +34,10 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
     @IBOutlet weak var textfield_deathday: UITextField!
     @IBOutlet weak var textfield_gender: UITextField!
     @IBOutlet weak var textfield_relationship: UITextField!
-    @IBOutlet weak var textfield_relate: UITextField!
+    @IBOutlet weak var textfield_relate: UILabel!
     @IBOutlet weak var textfield_note: UITextField!
     @IBOutlet weak var textfield_tagUser: UITextField!
+    @IBOutlet weak var image_avatar_tagUser: UIImageView!
     
     var delegate:AddPeopleDelegate?
     
@@ -55,6 +56,9 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         textfield_relate.text = relativePerson.firstName + " " + relativePerson.lastName
 
@@ -86,8 +90,18 @@ class AddPeopleViewController : UIViewController, NavigationControllerCustomDele
         navigationController?.popViewController(animated: true)
     }
     
-    @IBAction func btn_close(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
     
     @IBAction func btn_confirm(_ sender: Any) {
@@ -354,5 +368,25 @@ extension AddPeopleViewController : ListUserToTagDelegate {
     func tag(user: Account) {
         tagUser = user
         textfield_tagUser.text = user.firstName + " " + user.midName + " " + user.lastName
+        
+        let imageView = UIImageView()
+        var imageHolder = UIImage()
+        imageHolder = UIImage(named: "no_image")!
+        
+        if let url = URL(string: user.avatarUrl) {
+            
+            
+            imageView.kf.setImage(with: url, placeholder: imageHolder, options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            }, completionHandler: { result in
+                if let image = imageView.image {
+                    self.image_avatar_tagUser.image = image
+                }
+            })
+            
+        } else {
+            
+            self.image_avatar_tagUser.image = imageHolder
+        }
     }
 }

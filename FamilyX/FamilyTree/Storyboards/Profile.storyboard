@@ -205,6 +205,12 @@
                                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                         <real key="value" value="75"/>
                                                                     </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                        <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                                    </userDefinedRuntimeAttribute>
+                                                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                        <real key="value" value="2"/>
+                                                                    </userDefinedRuntimeAttribute>
                                                                 </userDefinedRuntimeAttributes>
                                                             </view>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="W89-yL-V1E">
@@ -334,7 +340,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="414" height="1422"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uf9-cZ-zag">
-                                                <rect key="frame" x="0.0" y="0.0" width="414" height="1070"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="414" height="740"/>
                                                 <subviews>
                                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VJY-Mu-hTQ">
                                                         <rect key="frame" x="0.0" y="210" width="414" height="420"/>
@@ -636,16 +642,22 @@
                                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                                 <real key="value" value="75"/>
                                                             </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                                                <real key="value" value="2"/>
+                                                            </userDefinedRuntimeAttribute>
+                                                            <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                                                <color key="value" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                            </userDefinedRuntimeAttribute>
                                                         </userDefinedRuntimeAttributes>
                                                     </view>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nJn-7z-VGG">
                                                         <rect key="frame" x="20" y="680" width="374" height="40"/>
-                                                        <color key="backgroundColor" red="1" green="0.63529411759999999" blue="0.20000000000000001" alpha="1" colorSpace="calibratedRGB"/>
+                                                        <color key="backgroundColor" red="0.60597121720000002" green="0.43665370349999999" blue="0.34507736560000002" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="40" id="o7l-Gi-qcq"/>
                                                         </constraints>
                                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
-                                                        <state key="normal" title="Confirm">
+                                                        <state key="normal" title="CONFIRM">
                                                             <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                                         </state>
                                                         <userDefinedRuntimeAttributes>
@@ -665,7 +677,7 @@
                                                     <constraint firstAttribute="trailing" secondItem="VJY-Mu-hTQ" secondAttribute="trailing" id="Cad-MQ-oLL"/>
                                                     <constraint firstAttribute="trailing" secondItem="nJn-7z-VGG" secondAttribute="trailing" constant="20" id="Dug-Xc-muN"/>
                                                     <constraint firstItem="xBj-Cd-cr7" firstAttribute="centerX" secondItem="uf9-cZ-zag" secondAttribute="centerX" id="FTA-bB-rUo"/>
-                                                    <constraint firstAttribute="bottom" secondItem="nJn-7z-VGG" secondAttribute="bottom" constant="350" id="ejb-bx-hwE"/>
+                                                    <constraint firstAttribute="bottom" secondItem="nJn-7z-VGG" secondAttribute="bottom" constant="20" id="ejb-bx-hwE"/>
                                                     <constraint firstItem="xBj-Cd-cr7" firstAttribute="top" secondItem="uf9-cZ-zag" secondAttribute="top" constant="20" id="mH9-6B-AEN"/>
                                                     <constraint firstItem="VJY-Mu-hTQ" firstAttribute="leading" secondItem="uf9-cZ-zag" secondAttribute="leading" id="njX-6h-aH9"/>
                                                     <constraint firstItem="VJY-Mu-hTQ" firstAttribute="top" secondItem="xBj-Cd-cr7" secondAttribute="bottom" constant="40" id="xzj-Rz-cZo"/>

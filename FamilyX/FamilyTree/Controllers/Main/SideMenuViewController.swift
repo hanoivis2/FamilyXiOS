@@ -21,8 +21,8 @@ class SideMenuViewController : UIViewController {
     @IBOutlet weak var tbl_menu: UITableView!
     
     var delegate:SideMenuDelegate?
-    var menuLabel = ["Family Trees List", "Users Profile", "Notification", "Calendar", "Log out"]
-    var menuIcon = ["list", "user_profile", "notification", "schedule", "logout"]
+    var menuLabel = ["Family Trees List", "Users Profile", "Log out"]
+    var menuIcon = ["list", "user_profile", "logout"]
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -60,10 +60,6 @@ extension SideMenuViewController : UITableViewDelegate, UITableViewDataSource {
             delegate?.familyTreesList()
         case 1:
             delegate?.profile()
-        case 2:
-            delegate?.notification()
-        case 3:
-            delegate?.calendar()
         default:
             delegate?.logout()
         }

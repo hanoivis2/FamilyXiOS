@@ -36,6 +36,9 @@ class EditUserProfileViewController : UIViewController, NavigationControllerCust
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
 
         dropDownGender.anchorView = textfield_gender
         
@@ -78,7 +81,14 @@ class EditUserProfileViewController : UIViewController, NavigationControllerCust
         textfield_firstName.text = person.firstName
         textfield_midName.text = person.midName
         textfield_lastName.text = person.lastName
-        textfield_birthday.text = person.birthday
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss"
+        let date1 = dateFormatter.date(from: person.birthday)
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        textfield_birthday.text = dateFormatter.string(from: date1 ?? Date())
+        
         textfield_gender.text = (person.gender == GENDER_ID.MALE.rawValue) ? "Male" : "Female"
         textfield_phone.text = person.phone
     }
@@ -95,6 +105,20 @@ class EditUserProfileViewController : UIViewController, NavigationControllerCust
     
     func backTap() {
         navigationController?.popViewController(animated: true)
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
     }
     
     func editProfile(avatarUrl:String){
@@ -247,7 +271,7 @@ class EditUserProfileViewController : UIViewController, NavigationControllerCust
             let dateFormatter = DateFormatter()
             dateFormatter.timeZone = TimeZone(abbreviation: "UTC")
             dateFormatter.dateFormat = "dd/MM/yyyy"
-            currentDate = dateFormatter.date(from: self.textfield_birthday.text!)!
+            currentDate = dateFormatter.date(from: self.textfield_birthday.text!) ?? Date()
         }
 
         datePicker.show("Choose birthday", doneButtonTitle: "Done", cancelButtonTitle: "Cancel", defaultDate: currentDate, minimumDate: Calendar.current.date(byAdding: dateComponents, to: Date()), maximumDate: Calendar.current.date(byAdding: dateComponentsFuture, to: Date()), datePickerMode: .date) { (date) in
