@@ -11,11 +11,11 @@ import UIKit
 class ColorUtils{
     
     static func toolbar()->UIColor{
-        return UIColor(hexString: "#885B46")
+        return UIColor(hexString: "#163868")
     }
     
     static func main_color()->UIColor{
-        return UIColor(hexString: "#885B46")
+        return UIColor(hexString: "#163868")
     }
     
     static func male_color()->UIColor{

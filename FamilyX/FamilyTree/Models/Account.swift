@@ -12,6 +12,7 @@ class Account : Mappable {
     
     var id = ""
     var username = ""
+    var usernameConnectedUser = ""
     var email = ""
     var emailConfirmed = false
     var firstName = ""
@@ -40,6 +41,7 @@ class Account : Mappable {
     func mapping(map: Map){
         id                                  <- map["id"]
         username                            <- map["userName"]
+        usernameConnectedUser               <- map["username"]
         email                               <- map["email"]
         emailConfirmed                      <- map["emailConfirmed"]
         firstName                           <- map["firstName"]

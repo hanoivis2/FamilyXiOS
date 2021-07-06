@@ -42,9 +42,16 @@ class PeopleView : UIView {
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(sender:)))
         self.addGestureRecognizer(tapGesture)
-        
-        lbl_username.isHidden = true
-        constraint_avatar_to_top.constant = 4
+    
+        if people.connectedUser.id != "" {
+            lbl_username.isHidden = false
+            lbl_username.text = people.connectedUser.usernameConnectedUser
+            constraint_avatar_to_top.constant = 12
+        }
+        else {
+            lbl_username.isHidden = true
+            constraint_avatar_to_top.constant = 4
+        }
     }
     
     @objc func handleTap(sender: UITapGestureRecognizer) {

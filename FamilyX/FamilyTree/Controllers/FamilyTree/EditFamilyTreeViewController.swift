@@ -63,6 +63,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         constraint_left_searchbar.constant = 0
         searchBar.backgroundImage = UIImage()
         searchBar.addDoneButtonOnKeyboard()
+        searchBar.placeholder = "Search people in tree ..."
         tbl_searchResult.separatorStyle = .none
         
         getTreeInfo()
@@ -249,6 +250,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         view.people = newPeople
         view.delegate = self
         
+       
+        
         let imageView = UIImageView()
         var imageHolder = UIImage()
         if view.people.gender == GENDER_ID.MALE.rawValue {
@@ -279,6 +282,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
         view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
         view.constraint_height_avatar.constant = 25
         view.setupView()
+
         if newPeople.gender == GENDER_ID.MALE.rawValue {
             view.backgroundColor = ColorUtils.male_color()
         }
@@ -406,6 +410,8 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 view.people = person
                 view.delegate = self
                 
+                
+                
                 let imageView = UIImageView()
                 var imageHolder = UIImage()
                 if view.people.gender == GENDER_ID.MALE.rawValue {
@@ -436,6 +442,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 view.lbl_birthday.font = UIFont(name: "Helvetica", size: 4)
                 view.constraint_height_avatar.constant = 25
                 view.setupView()
+    
                 if person.gender == GENDER_ID.MALE.rawValue {
                     view.backgroundColor = ColorUtils.male_color()
                 }

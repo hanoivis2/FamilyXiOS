@@ -21,6 +21,7 @@ class People : Mappable {
     var gender = GENDER_ID.MALE.rawValue
     var note = ""
     var userId:String?
+    var connectedUser = Account()
     var spouse = [Spouse]()
     
     var maxX:CGFloat = 0
@@ -44,6 +45,7 @@ class People : Mappable {
         note                                    <- map["note"]
         spouse                                  <- map["spouses"]
         userId                                  <- map["userId"]
+        connectedUser                           <- map["connectedUser"]
     }
     
 }

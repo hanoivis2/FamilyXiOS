@@ -18,7 +18,6 @@ class FamilyTreeManageViewController : UIViewController, NavigationControllerCus
         super.viewDidLoad()
         
         self.bmo_view_pager_nav_bar.viewPager = bmo_view_pager
-        self.bmo_view_pager_nav_bar.backgroundColor = UIColor(hexString: "#F3E7DF")
         self.bmo_view_pager.presentedPageIndex = 0
         self.bmo_view_pager.infinitScroll = false
         self.bmo_view_pager.dataSource = self
@@ -69,7 +68,7 @@ extension FamilyTreeManageViewController : BmoViewPagerDelegate, BmoViewPagerDat
             let view = Bundle.main.loadNibNamed("TreeSeperatorViewBmo", owner: self, options: nil)?.first as! TreeSeperatorViewBmo
             view.lbl_title.text = "My trees"
             view.lbl_title.textColor = .black
-            view.view_container.backgroundColor = .white
+            view.view_container.backgroundColor = .systemGray5
             view.view_container.clipsToBounds = true
             view.view_container.layer.cornerRadius = 12
             return view
@@ -77,7 +76,7 @@ extension FamilyTreeManageViewController : BmoViewPagerDelegate, BmoViewPagerDat
             let view = Bundle.main.loadNibNamed("TreeSeperatorViewBmo", owner: self, options: nil)?.first as! TreeSeperatorViewBmo
             view.lbl_title.text = "All trees"
             view.lbl_title.textColor = .black
-            view.view_container.backgroundColor = .white
+            view.view_container.backgroundColor = .systemGray5
             view.view_container.clipsToBounds = true
             view.view_container.layer.cornerRadius = 12
             return view

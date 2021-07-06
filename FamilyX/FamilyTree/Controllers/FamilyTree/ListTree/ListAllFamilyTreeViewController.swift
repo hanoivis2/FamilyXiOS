@@ -207,7 +207,126 @@ extension ListAllFamilyTreeViewController : UITableViewDelegate, UITableViewData
         
         cell.lbl_name.text = tree.name
         cell.lbl_description.text = tree.description
-        cell.lbl_owner.text = "Owner: \(tree.owner.username)"
+
+        let imageView = UIImageView()
+        if let url = URL(string: tree.owner.avatarUrl) {
+            
+            
+            imageView.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                // Progress updated
+            }, completionHandler: { result in
+                if let image = imageView.image {
+                    cell.img_owner.image = image
+                }
+            })
+            
+        } else {
+            cell.img_owner.image = UIImage(named: "no_image")!
+        }
+        
+        if tree.editors.count > 2 {
+            cell.img_contributor_1.isHidden = false
+            cell.img_contributor_2.isHidden = false
+            cell.lbl_moreContributors.isHidden = false
+            
+            cell.lbl_moreContributors.clipsToBounds = true
+            cell.lbl_moreContributors.layer.cornerRadius = 13
+            cell.lbl_moreContributors.text = "\(tree.editors.count - 2)+"
+    
+            if let url = URL(string: tree.editors[0].avatarUrl) {
+                
+                let imageView1 = UIImageView()
+                imageView1.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                    // Progress updated
+                }, completionHandler: { result in
+                    if let image = imageView1.image {
+                        cell.img_contributor_1.image = image
+                    }
+                })
+                
+            } else {
+                cell.img_contributor_1.image = UIImage(named: "no_image")!
+            }
+            
+            let imageView2 = UIImageView()
+            if let url = URL(string: tree.editors[1].avatarUrl) {
+                
+                
+                imageView2.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                    // Progress updated
+                }, completionHandler: { result in
+                    if let image = imageView2.image {
+                        cell.img_contributor_2.image = image
+                    }
+                })
+                
+            } else {
+                cell.img_contributor_2.image = UIImage(named: "no_image")!
+            }
+        }
+        else if tree.editors.count == 2 {
+            cell.img_contributor_1.isHidden = false
+            cell.img_contributor_2.isHidden = false
+            cell.lbl_moreContributors.isHidden = true
+    
+            if let url = URL(string: tree.editors[0].avatarUrl) {
+                
+                let imageView1 = UIImageView()
+                imageView1.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                    // Progress updated
+                }, completionHandler: { result in
+                    if let image = imageView1.image {
+                        cell.img_contributor_1.image = image
+                    }
+                })
+                
+            } else {
+                cell.img_contributor_1.image = UIImage(named: "no_image")!
+            }
+            
+            let imageView2 = UIImageView()
+            if let url = URL(string: tree.editors[1].avatarUrl) {
+                
+                
+                imageView2.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                    // Progress updated
+                }, completionHandler: { result in
+                    if let image = imageView2.image {
+                        cell.img_contributor_2.image = image
+                    }
+                })
+                
+            } else {
+                cell.img_contributor_2.image = UIImage(named: "no_image")!
+            }
+        }
+        else if tree.editors.count == 1 {
+            cell.img_contributor_1.isHidden = false
+            cell.img_contributor_2.isHidden = true
+            cell.lbl_moreContributors.isHidden = true
+            
+            let imageView = UIImageView()
+            if let url = URL(string: tree.editors[0].avatarUrl) {
+                
+                
+                imageView.kf.setImage(with: url, placeholder: UIImage(named: "no_image"), options: [.cacheOriginalImage], progressBlock: { receivedSize, totalSize in
+                    // Progress updated
+                }, completionHandler: { result in
+                    if let image = imageView.image {
+                        cell.img_contributor_1.image = image
+                    }
+                })
+                
+            } else {
+                cell.img_contributor_1.image = UIImage(named: "no_image")!
+            }
+        }
+        else {
+            cell.img_contributor_1.isHidden = true
+            cell.img_contributor_2.isHidden = true
+            cell.lbl_moreContributors.isHidden = true
+        }
+        
         cell.pos = indexPath.row
         cell.delegate = self
         
@@ -215,7 +334,7 @@ extension ListAllFamilyTreeViewController : UITableViewDelegate, UITableViewData
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 110
+        return 135
     }
     
 }
