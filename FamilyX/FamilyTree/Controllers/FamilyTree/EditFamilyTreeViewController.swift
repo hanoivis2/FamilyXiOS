@@ -486,6 +486,7 @@ class EditFamilyTreeViewController : UIViewController, NavigationControllerCusto
                 //Nếu có cha và cha không phải con rể thì dùng id của cha
                 //Ngược lại dùng id của mẹ
                 else if (person.fatherId != 0) && (father.fatherId != 0 && father.motherId != 0 || father.id == rootPeople.id) && (currentFatherId != person.fatherId)
+                    || (person.fatherId != 0 && person.motherId != 0) && (mother.fatherId != 0 &&  mother.motherId != 0 || mother.id == rootPeople.id) && currentFatherId != person .motherId
                     || (person.fatherId == 0 && person.motherId != 0 && currentFatherId != person .motherId) {
                     
                     if siblings.count > 1 {

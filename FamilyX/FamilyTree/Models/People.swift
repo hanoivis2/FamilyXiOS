@@ -74,8 +74,8 @@ class Spouse : Mappable {
         lastName                                <- map["lastName"]
         birthday                                <- map["birthday"]
         deathday                                <- map["deathday"]
-        fatherId                                <- map["fatherId"]
-        motherId                                <- map["motherId"]
+        fatherId                                <- map["parent1Id"]
+        motherId                                <- map["parent2Id"]
         gender                                  <- map["gender"]
         note                                    <- map["note"]
     }
